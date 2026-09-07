@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MNN Logo Concepts</title>
+<style>
+  body { background: #0a0a0a; color: #e0e0e0; font-family: Georgia, serif; padding: 2rem; }
+  h1 { color: #fff; font-size: 1.4rem; margin-bottom: 0.5rem; }
+  p.subtitle { color: #888; font-size: 0.9rem; margin-bottom: 2.5rem; }
+  .concepts { display: flex; flex-direction: column; gap: 3rem; }
+  .concept { display: flex; align-items: center; gap: 2rem; }
+  .concept .label { flex: 0 0 180px; }
+  .concept .label h2 { color: #e8a200; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; font-family: 'JetBrains Mono', monospace; }
+  .concept .label p { color: #888; font-size: 0.8rem; line-height: 1.4; }
+  .concept .preview { background: #141414; border: 1px solid #1e1e1e; border-radius: 8px; padding: 2rem; flex: 1; display: flex; align-items: center; justify-content: center; }
+  .concept .preview svg { max-width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<h1>MNN Logo Concepts</h1>
+<p class="subtitle">Six variations exploring different ways to connect the letters</p>
+
+<div class="concepts">
+
+<!-- Concept 1: Shared vertical strokes -->
+<div class="concept">
+  <div class="label">
+    <h2>#1 Shared Strokes</h2>
+    <p>The right stroke of the first M becomes the left stroke of the second M, which becomes the left stroke of the N. Three letters, one continuous path.</p>
+  </div>
+  <div class="preview">
+    <svg width="360" height="140" viewBox="0 0 360 140" xmlns="http://www.w3.org/2000/svg">
+      <text x="180" y="105" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="110" font-weight="900" fill="#e8a200" letter-spacing="-12">MNN</text>
+    </svg>
+  </div>
+</div>
+
+<!-- Concept 2: Interlocking MNN as continuous zigzag -->
+<div class="concept">
+  <div class="label">
+    <h2>#2 Continuous Zigzag</h2>
+    <p>MNN drawn as a single continuous zigzag line. The peaks and valleys of M flow into the diagonal of N. One stroke, three letters.</p>
+  </div>
+  <div class="preview">
+    <svg width="360" height="140" viewBox="0 0 360 140" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 30 120 L 30 30 L 80 100 L 130 30 L 130 120 M 130 30 L 130 120 L 230 30 L 230 120 M 230 30 L 230 120 L 330 30 L 330 120" stroke="#e8a200" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</div>
+
+<!-- Concept 3: Overlapping blocks -->
+<div class="concept">
+  <div class="label">
+    <h2>#3 Overlapping</h2>
+    <p>Heavy block letters that overlap each other, creating a layered, bold mark. The overlaps create negative space connections.</p>
+  </div>
+  <div class="preview">
+    <svg width="360" height="140" viewBox="0 0 360 140" xmlns="http://www.w3.org/2000/svg">
+      <text x="60" y="105" font-family="Arial Black, sans-serif" font-size="100" font-weight="900" fill="#e8a200" opacity="0.5">M</text>
+      <text x="150" y="105" font-family="Arial Black, sans-serif" font-size="100" font-weight="900" fill="#e8a200" opacity="0.75">N</text>
+      <text x="240" y="105" font-family="Arial Black, sans-serif" font-size="100" font-weight="900" fill="#e8a200">N</text>
+    </svg>
+  </div>
+</div>
+
+<!-- Concept 4: Single stroke path with rounded corners -->
+<div class="concept">
+  <div class="label">
+    <h2>#4 Rounded Mono</h2>
+    <p>Monospace-style MNN with rounded corners and a shared baseline rail connecting all three letters. Clean, technical, broadcast-feel.</p>
+  </div>
+  <div class="preview">
+    <svg width="360" height="140" viewBox="0 0 360 140" xmlns="http://www.w3.org/2000/svg">
+      <!-- baseline rail -->
+      <line x1="20" y1="115" x2="340" y2="115" stroke="#333" stroke-width="2" stroke-dasharray="4 4"/>
+      <path d="M 35 115 L 35 30 L 90 90 L 145 30 L 145 115 M 145 30 L 145 115 L 235 30 L 235 115 M 235 30 L 235 115 L 325 30 L 325 115" stroke="#e8a200" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="miter"/>
+    </svg>
+  </div>
+</div>
+
+<!-- Concept 5: News broadcast style - MNN in a circle/badge -->
+<div class="concept">
+  <div class="label">
+    <h2>#5 Badge Mark</h2>
+    <p>MNN inside a circular badge with the full name around the edge. Broadcast/news network feel. Works as a favicon and header logo.</p>
+  </div>
+  <div class="preview">
+    <svg width="160" height="160" viewBox="0 0 160 160" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="80" cy="80" r="75" fill="none" stroke="#e8a200" stroke-width="2.5"/>
+      <circle cx="80" cy="80" r="62" fill="none" stroke="#e8a200" stroke-width="1" opacity="0.4"/>
+      <text x="80" y="68" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="42" font-weight="900" fill="#e8a200" letter-spacing="-3">MNN</text>
+      <path id="circle" d="M 80 80 m -52 0 a 52 52 0 1 1 104 0 a 52 52 0 1 1 -104 0" fill="none"/>
+      <text font-family="Arial, sans-serif" font-size="9" fill="#888" letter-spacing="2">
+        <textPath href="#circle" startOffset="0%">MEME NETWORK NEWS · MEME NETWORK NEWS · </textPath>
+      </text>
+    </svg>
+  </div>
+</div>
+
+<!-- Concept 6: Letterpressed/embossed MNN with connecting bar -->
+<div class="concept">
+  <div class="label">
+    <h2>#6 Connected Bar</h2>
+    <p>MNN with a horizontal bar connecting the middle of all three letters — like a news ticker line running through the wordmark.</p>
+  </div>
+  <div class="preview">
+    <svg width="360" height="140" viewBox="0 0 360 140" xmlns="http://www.w3.org/2000/svg">
+      <text x="180" y="105" text-anchor="middle" font-family="Arial Black, sans-serif" font-size="100" font-weight="900" fill="#e8a200" letter-spacing="-8">MNN</text>
+      <rect x="30" y="72" width="300" height="5" fill="#e8a200" opacity="0.3"/>
+      <rect x="30" y="72" width="300" height="2" fill="#e8a200"/>
+    </svg>
+  </div>
+</div>
+
+</div>
+
+<p style="margin-top: 3rem; color: #555; font-size: 0.8rem;">All concepts use the site accent color (#e8a200 amber). Can be refined, combined, or recolored.</p>
+
+</body>
+</html>
