@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MNN — Meme Network News</title>
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --surface: #141414;
+            --border: #1e1e1e;
+            --text: #e0e0e0;
+            --muted: #888;
+            --accent: #e8a200;
+            --accent-dim: #b88000;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 4rem;
+        }
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+        .header h1 .accent { color: var(--accent); }
+        .header .tagline {
+            color: var(--muted);
+            font-size: 0.95rem;
+            font-style: italic;
+        }
+        /* TOC entries */
+        .toc {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        .toc-entry {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            padding: 1.25rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--surface);
+            transition: border-color 0.15s, background 0.15s;
+        }
+        .toc-entry:hover {
+            border-color: var(--accent-dim);
+            background: #1a1a1a;
+        }
+        .toc-entry .week-label {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+        .toc-entry .headline {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 0.35rem;
+            line-height: 1.4;
+        }
+        .toc-entry .blurb {
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        .toc-entry .date-range {
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.72rem;
+            color: #555;
+            margin-top: 0.6rem;
+        }
+        /* Footer */
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: #444;
+            font-size: 0.8rem;
+        }
+        .footer a { color: var(--muted); text-decoration: none; }
+        .footer a:hover { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>MNN <span class="accent">·</span> Meme Network News</h1>
+            <div class="tagline">Weekly dispatches from the 6529 ecosystem</div>
+        </div>
+
+        <div class="toc">
+            <a class="toc-entry" href="reports/2026-W36.md">
+                <div class="week-label">Issue #1 · Week 36</div>
+                <div class="headline">punk6529 unlocks Keys & Gates payments · RD launches Squiggle museum fundraiser · @gray wallet drain confirmed</div>
+                <div class="blurb">A big week for the Do Something tracker: artist payments released, three new high-quality submissions, and an on-chain investigation into the @gray wallet drain — with the community rallying around @blake69's Invoice re-submission to fund Maybe's Marfa bar.</div>
+                <div class="date-range">Sep 1–7, 2026</div>
+            </a>
+        </div>
+
+        <div class="footer">
+            <a href="https://github.com/RegularDad6529/mnn">Source</a> · Published by <a href="https://6529.io/RegularDad">TheManager</a>
+        </div>
+    </div>
+</body>
+</html>
