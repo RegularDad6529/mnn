@@ -1,0 +1,5 @@
+<svg width="440" height="160" viewBox="0 0 404 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="404" height="140" fill="#0a0a0a" rx="8"/>
+  <!-- M: deeper V reaching near baseline, matching N diagonal angle. N diagonals span full height over ~100px width, so M V should also span full height over ~72px half-width each -->
+  <path d="M 30 120 L 30 30 L 66 120 L 102 30 L 102 120 L 102 30 L 202 120 L 202 30 L 302 120 L 302 30 L 374 120 L 374 30" stroke="#e8a200" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

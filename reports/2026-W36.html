@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MNN — Issue #1 · Week 36 · Sep 1–7, 2026</title>
+<style>
+:root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --border: #1e1e1e;
+    --text: #e0e0e0;
+    --muted: #888;
+    --dim: #555;
+    --accent: #e8a200;
+    --accent-dim: #b88000;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --serif: 'Georgia', 'Times New Roman', serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--serif); background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+.container { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+/* Header */
+.report-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.report-header .logo { margin-bottom: 1rem; }
+.report-header .logo svg { max-width: 240px; height: auto; }
+.report-header .meta { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+.report-header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.3; }
+.report-header .date-range { color: var(--muted); font-size: 0.95rem; font-style: italic; margin-top: 0.25rem; }
+.back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--muted); font-size: 0.85rem; text-decoration: none; font-family: var(--mono); }
+.back-link:hover { color: var(--accent); }
+
+/* Sections */
+.section { margin-bottom: 2.5rem; }
+.section-title { font-size: 1.3rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+
+/* Headline story */
+.headline { margin-bottom: 1.5rem; }
+.headline h3 { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
+.headline p { color: #ccc; font-size: 0.98rem; }
+
+/* Story list */
+.story-list { list-style: none; }
+.story-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+.story-list li:last-child { border-bottom: none; }
+.story-list .author { color: var(--accent); font-weight: 600; }
+.story-list .title { color: #ccc; font-weight: 600; }
+.story-list .desc { color: var(--muted); font-size: 0.92rem; }
+
+/* Subsection headers */
+.subsection { font-size: 0.95rem; font-weight: 700; color: #aaa; margin: 1.25rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--mono); }
+
+/* No movement */
+.no-movement { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; }
+.no-movement ul { list-style: none; }
+.no-movement li { padding: 0.3rem 0; color: var(--muted); font-size: 0.9rem; }
+.no-movement li strong { color: #aaa; }
+
+/* Stat line */
+.stat-line { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 4px; padding: 0.75rem 1.25rem; margin: 1.5rem 0; font-family: var(--mono); font-size: 0.85rem; color: #ccc; }
+
+/* Bottom line */
+.bottom-line { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-top: 2rem; }
+.bottom-line .label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.bottom-line p { color: #ccc; font-size: 0.98rem; }
+
+/* Footer */
+.footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--dim); font-size: 0.8rem; }
+.footer a { color: var(--muted); text-decoration: none; }
+.footer a:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a class="back-link" href="../index.html">← Back to MNN</a>
+
+<div class="report-header">
+    <div class="logo">
+        <svg width="240" height="90" viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 30 120 L 30 30 L 102 120 L 174 30 L 174 120 L 174 30 L 274 120 L 274 30 L 374 120 L 374 30" stroke="#e8a200" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <div class="meta">Issue #1 · Week 36</div>
+    <h1>Meme Network News</h1>
+    <div class="date-range">Sep 1–7, 2026</div>
+</div>
+
+<!-- DO SOMETHING -->
+<div class="section">
+    <div class="section-title">📺 Do Something — Community Action Tracker</div>
+
+    <div class="headline">
+        <h3>punk6529 releases artist payments for Keys and Gates</h3>
+        <p>The biggest news this week came from punk6529 himself: artist payments for the Keys and Gates project (Card #493) are being released now — 0.5 ETH each to the 16 winning artists. The payment delay had sparked controversy in late August when grubnot raised concerns about artists waiting for funds. MadaCollects and HugoFaz mediated at the time, explaining museum fund compliance delays. The controversy is now resolved. punk6529 also announced a new Stream ERC-721 contract being built for museum minting, with all 16 artists asked to pledge participation in future minting. Minalisa, ikertje, and GIANT have already pledged. No rush on the contract — but the money is moving.</p>
+    </div>
+
+    <div class="subsection">Also in progress</div>
+    <ul class="story-list">
+        <li><span class="author">@JoelleLB</span> — <span class="title">"Codex Obscura" (Card #483):</span> <span class="desc">Reactivated after two weeks of silence. Returned Sep 2–5 with daily posts. A piece from her latest abstract photo collection was featured at "the Canal," an IRL exhibition — directly relevant to her art grant pursuit outside web3. Natural pigment research still on hold.</span></li>
+        <li><span class="author">@CasaNUA</span> — <span class="title">"PEBBLES at Domínio PubliCC0" (Card #516):</span> <span class="desc">Gallery exhibition ongoing. AWD spotlighting Casa NUA artists on X (Sep 1–4). Zoku shared a new proposal born from the Keys & Gates experience (Sep 2), with debate from pandelic and HugoFaz.</span></li>
+    </ul>
+
+    <div class="subsection">New this week</div>
+    <ul class="story-list">
+        <li><span class="author">@RegularDad</span> — <span class="title">"Chromie Squiggle Museum Acquisition" (#61, 12/25):</span> <span class="desc">All ETH raised goes toward a 6529 Museum acquisition of a Chromie Squiggle. Highest score on the current tracker. Climbed from rank #115 to #61 in one week. Cultural infrastructure fundraising — not just a card.</span></li>
+        <li><span class="author">@Bicasso</span> — <span class="title">"THE GAMES 6529" (#184, 8/25):</span> <span class="desc">Rescored from 0/25 to 8/25 after the artist provided details on Sep 7. Four interactive mini-games playable directly from the memecard. Physical item also planned from mint funds (surprise).</span></li>
+        <li><span class="author">@blake69</span> — <span class="title">"Invoice" (#93, 9/25):</span> <span class="desc">The original submission (rank #11, 14.3M TDH, Ruskin-backed) was deleted and re-submitted. The re-submission sits at rank #93 with only ~360K TDH and 4 raters — the heavy TDH did not carry over. Still 100% of proceeds to Maybe's Marfa bar.</span></li>
+    </ul>
+
+    <div class="subsection">No movement</div>
+    <div class="no-movement">
+        <ul>
+            <li><strong>Gas Wars (Card #461)</strong> — dormant since Jul 15, plan already met</li>
+            <li><strong>The Antifragile Bazaar (Card #500)</strong> — electronic version complete, paper copy still pending</li>
+            <li><strong>Freedom to Research (Card #447)</strong> — no dedicated wave, profile endpoint returns 404, can't monitor</li>
+            <li><strong>Citizen 6529 (Card #471)</strong> — wave active with daily GMs but no citizen/museum plan updates</li>
+            <li><strong>Network State of Mind (Card #499)</strong> — more active socially but no progress on the replica statue</li>
+        </ul>
+    </div>
+
+    <div class="subsection">The @gray situation (Card #541 "Burn Mechanism")</div>
+    <p style="color:#ccc;font-size:0.98rem;">On-chain investigation confirmed this week: @gray's wallet was drained on Aug 31 — 2.382 ETH swept to a drainer address in 12 seconds, plus 3 ERC-1155 NFTs. The drainer address has 9 IN-only transactions going back to Sep 2025 (classic accumulator). Card #541 mint proceeds were swept. This is why @maybe can't fund the Marfa bar from this card. @maybe says he's still going to Marfa and will bring the bar regardless — and @blake69's "Invoice" re-submission is now the community's backup funding mechanism.</p>
+
+    <div class="stat-line">📊 16 AA submissions tracked · 11 in progress · 9 completed · 1 won MS · 1 removed</div>
+</div>
+
+<!-- DEV REPORT -->
+<div class="section">
+    <div class="section-title">🛠️ Dev Report — Follow The Repo</div>
+
+    <div class="headline">
+        <h3>GelatoGenesis reworks subwave creation and access control</h3>
+        <p>The biggest dev story this week was GelatoGenesis's overhaul of the subwave creation flow. The new system allows independent subwave access groups — meaning wave creators can set different visibility per subwave rather than one blanket setting. The fix also adds warnings when parent access doesn't fully cover subwave access, closing a permissions gap. Multiple PRs shipped across frontend and backend to support this, with GelatoGenesis calling it a "bunch of flows that needed changing to make more sense."</p>
+    </div>
+
+    <div class="subsection">Desktop app v0.3.13</div>
+    <p style="color:#ccc;font-size:0.98rem;">prxt0bot announced Desktop Release v0.3.13 on Sep 4, bundling the latest web updates including Frontend Deploy #1700. Key new feature: search local transaction data using a paged API — useful for power users tracking their on-chain activity without hitting the web app.</p>
+
+    <div class="subsection">Main Stage media validation hardened</div>
+    <ul class="story-list">
+        <li><span class="desc">prxt0 shipped <strong>PR #1955</strong> — "Harden Main Stage media validation and publication" — and <strong>PR #3848</strong> aligning frontend validation. This followed a Tech Feedback report from @alexbenedith whose meme card appeared briefly on Main Stage then vanished. The hardened validation should prevent silently broken submissions.</span></li>
+        <li><span class="desc">GelatoGenesis also fixed wave access control to "allow everything but warn you if access of parent doesn't fully cover access of sub" — a pragmatic approach that doesn't block creators but surfaces potential misconfigurations.</span></li>
+    </ul>
+
+    <div class="subsection">Team activity (EOD highlights)</div>
+    <ul class="story-list">
+        <li><span class="author">@ragne</span> — <span class="desc">Refining "My Votes" with clearer layouts, readable totals, easier vote editing, and safer bulk resets. Simplifying Quick Vote controls.</span></li>
+        <li><span class="author">@simo</span> — <span class="desc">Fighting all day to add release-bus CLI npm installation to frontend and remove GitHub package installation option. The 7-day minimum window requirement was a sticking point.</span></li>
+        <li><span class="author">@prxt0</span> — <span class="desc">Shipped interactive HTML restoration in Memes drop hero, media upload changes for submissions and minting claims, iOS resubmission, and 6529 Core release notes fixes.</span></li>
+    </ul>
+
+    <div class="subsection">Tech Feedback from the community</div>
+    <ul class="story-list">
+        <li><span class="author">@HugoFaz</span> — <span class="desc">Requested that wave titles be clickable links to the full submission page, noting long-press isn't intuitive for navigation. ragne responded with screenshots and prxt0 looked into it.</span></li>
+        <li><span class="author">@arsonic</span> — <span class="desc">Posted screenshots testing vertical vs horizontal video display behavior.</span></li>
+        <li><span class="author">@SummerMaxi</span> — <span class="desc">Reported an issue that was fixed by prxt0 the same morning: "Yes its working now."</span></li>
+    </ul>
+
+    <div class="subsection">By the numbers</div>
+    <div class="stat-line">35 releases · ~50 PRs merged · 8 subwaves active · 4 team members posting EODs (GelatoGenesis, ragne, prxt0, simo)</div>
+</div>
+
+<!-- DIVE BAR -->
+<div class="section">
+    <div class="section-title">🍺 Dive Bar — Social Update</div>
+
+    <div class="headline">
+        <h3>Articulate wins Main Stage with PebbleLand</h3>
+        <p>6529Deployer announced Articulate as the latest Main Stage winner on Sep 7 for "PebbleLand" — 1,000 interactive 3D worlds adapted from the Pebbles algorithm, free to all, running on any device without accounts or crypto. The win was celebrated in the bar with congrats flowing in all evening. Articulate's card is also tracked on the Do Something board (scored 6/25, 90 voters, 57M TDH). A PFP-style celebration from maybe followed.</p>
+    </div>
+
+    <div class="subsection">Maybe goes to the movies</div>
+    <p style="color:#ccc;font-size:0.98rem;">maybe spent Labor Day evening at the new Spider-Man movie, returning to the bar to declare Tom Holland "the best Spider-Man we've had so far." Loop and thegameworld agreed. A rare IRL moment from the bar's patron — the kind of casual, off-topic moment that gives the dive bar its character.</p>
+
+    <div class="subsection">Parisa's TDH drama</div>
+    <p style="color:#ccc;font-size:0.98rem;">Parisa had a stressful night after TDH from MadaCollects and Giopetto was withdrawn — they voted against Blake's card, which affected Parisa's standing. "Since the TDH that Mada and Giopetto had given me was taken back, and they voted against Blake..." Parisa shared. The bar rallied: Kubti offered support, MahsaAli sent love, and maybe weighed in philosophically: "This has happened many times and every time the artist takes it personally because the machinations that happen here behind the scenes are incomprehensible."</p>
+
+    <div class="subsection">Bar episodes proposed</div>
+    <p style="color:#ccc;font-size:0.98rem;">maybe floated the idea of "bar episodes" — a new format for the dive bar. "How do I propose a bar episode?" he asked. EyEm wondered if the bar had ever had episodes before. arsonic was immediately suggested as a subject, with RegularDad declaring "she is the best part!" and maybe saying "someone should make that." The community seems ready for a new content format from the bar.</p>
+
+    <div class="subsection">The @gray / @maybe wallet situation, bar edition</div>
+    <p style="color:#ccc;font-size:0.98rem;">The wallet drain story reached the bar conversation too. Sherie_Margaret explained to newer members: "gray is the one who fucked maybe over" and "trust if you were here for maybe's hack because of gray it makes more sense in reverse." blake69's Invoice re-submission was discussed as the community's way of still funding the Marfa bar despite the drain. RegularDad asked: "if we are going to fund another maybe dive bar card, shouldn't it be a troll?"</p>
+
+    <div class="subsection">By the numbers</div>
+    <div class="stat-line">~1,000 drops this week (partial fetch) · ~101 GMs · 1 MS winner celebrated · 6 new member welcomes · 23 congrats</div>
+</div>
+
+<!-- BOTTOM LINE -->
+<div class="bottom-line">
+    <div class="label">💡 Bottom Line</div>
+    <p>A consequential week across the ecosystem: punk6529 unlocked Keys & Gates payments, Articulate took Main Stage with PebbleLand, the dev team shipped a major subwave overhaul plus desktop v0.3.13, and the @gray wallet drain was confirmed on-chain — with the community rallying around @blake69's Invoice to keep the Marfa bar dream alive.</p>
+</div>
+
+<div class="footer">
+    <a href="../index.html">← Back to MNN</a> · <a href="https://github.com/RegularDad6529/mnn">Source</a> · Published by <a href="https://6529.io/RegularDad">TheManager</a>
+</div>
+
+</div>
+</body>
+</html>

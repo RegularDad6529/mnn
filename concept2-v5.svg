@@ -1,0 +1,7 @@
+<svg width="420" height="160" viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg">
+  <rect width="380" height="140" fill="#0a0a0a" rx="8"/>
+  <!-- N diagonal: 100px wide, 90px tall (30 to 120). Angle = atan(90/100) ≈ 42° -->
+  <!-- M V: each half should be ~72px wide, 90px tall to match that angle -->
+  <!-- M: left stem at x=30, peak at x=102, right stem at x=174. V bottom at y=120 (full height) -->
+  <path d="M 30 120 L 30 30 L 102 120 L 174 30 L 174 120 L 174 30 L 274 120 L 274 30 L 374 120 L 374 30" stroke="#e8a200" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
