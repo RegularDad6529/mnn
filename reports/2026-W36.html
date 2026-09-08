@@ -31,9 +31,18 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
 .back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--muted); font-size: 0.85rem; text-decoration: none; font-family: var(--mono); }
 .back-link:hover { color: var(--accent); }
 
+/* Table of contents */
+.toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 2.5rem; }
+.toc .toc-label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.toc ul { list-style: none; }
+.toc li { padding: 0.25rem 0; }
+.toc a { color: #ccc; text-decoration: none; font-size: 0.9rem; }
+.toc a:hover { color: var(--accent); }
+
 /* Sections */
 .section { margin-bottom: 2.5rem; }
 .section-title { font-size: 1.3rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.section-title a { color: var(--accent); text-decoration: none; }
 
 /* Headline story */
 .headline { margin-bottom: 1.5rem; }
@@ -87,8 +96,21 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
     <div class="date-range">Sep 1–7, 2026</div>
 </div>
 
+<!-- TOC -->
+<div class="toc">
+    <div class="toc-label">In This Issue</div>
+    <ul>
+        <li><a href="#do-something">📺 Do Something</a></li>
+        <li><a href="#dev-report">🛠️ Dev Report</a></li>
+        <li><a href="#newest-memes">🖼️ Newest Memes</a></li>
+        <li><a href="#museum">🏛️ 6529 Network Museum</a></li>
+        <li><a href="#shillandia">📣 Shillandia — Planned Drops</a></li>
+        <li><a href="#socials">🍺 Socials</a></li>
+    </ul>
+</div>
+
 <!-- DO SOMETHING -->
-<div class="section">
+<div class="section" id="do-something">
     <div class="section-title">📺 Do Something — Community Action Tracker</div>
 
     <div class="headline">
@@ -127,7 +149,7 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
 </div>
 
 <!-- DEV REPORT -->
-<div class="section">
+<div class="section" id="dev-report">
     <div class="section-title">🛠️ Dev Report — Follow The Repo</div>
 
     <div class="headline">
@@ -163,13 +185,8 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
 </div>
 
 <!-- NEWEST MEMES -->
-<div class="section">
+<div class="section" id="newest-memes">
     <div class="section-title">🖼️ Newest Memes</div>
-
-    <div class="headline">
-        <h3>Main Stage Winner: PebbleLand by @Articulate</h3>
-        <p>6529Deployer announced Articulate as the latest Main Stage winner on Sep 7 — "PebbleLand," 1,000 interactive 3D worlds adapted from the Pebbles algorithm, free to all, running on any device without accounts or crypto. Card pending minting. <a href="https://6529.io/waves?&wave=b6128077-ea78-4dd9-b381-52c4eadb2077&drop=51e77587-c482-4973-8c2a-bdf9cdf5363e" style="color:var(--accent);text-decoration:none;">View on Main Stage →</a></p>
-    </div>
 
     <div class="subsection">Cards issued this week</div>
     <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-top:0.5rem;">
@@ -212,62 +229,34 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
     </table>
 
     <p style="color:var(--dim);font-size:0.78rem;margin-top:0.75rem;font-family:var(--mono);">Community mints = total supply − 79 (team + museum) − 6529Research holdings. Research: #545=0, #544=134, #543=156. Card #545 still minting at time of report.</p>
-</div>
 
-<!-- SOCIALS -->
-<div class="section">
-    <div class="section-title">🍺 Socials</div>
-
-    <div class="headline">
-        <h3>Parisa's TDH drama: when withdrawn votes hit artists</h3>
-        <p>Parisa had a stressful night after TDH from MadaCollects and Giopetto was withdrawn — they voted against Blake's card, which affected Parisa's standing. "Since the TDH that Mada and Giopetto had given me was taken back, and they voted against Blake..." Parisa shared. The bar rallied: Kubti offered support, MahsaAli sent love, and maybe weighed in philosophically: "This has happened many times and every time the artist takes it personally because the machinations that happen here behind the scenes are incomprehensible." The incident surfaced a recurring tension — TDH withdrawals can hit artists who had nothing to do with the dispute.</p>
-    </div>
-
-    <div class="subsection">Bar episodes — a new format?</div>
-    <p style="color:#ccc;font-size:0.98rem;">maybe floated the idea of "bar episodes" — a new content format for the dive bar. "How do I propose a bar episode?" he asked. EyEm wondered if the bar had ever had episodes before. arsonic was immediately suggested as a subject, with maybe saying "someone should make that." The community seems ready for a new content format — but what exactly a "bar episode" is remains undefined.</p>
-
-    <div class="subsection">The @gray wallet situation, bar edition</div>
-    <p style="color:#ccc;font-size:0.98rem;">The wallet drain story reached wider bar conversation this week. Sherie_Margaret explained to newer members: "gray is the one who fucked maybe over" and "trust if you were here for maybe's hack because of gray it makes more sense in reverse." blake69's Invoice re-submission was discussed as the community's way of still funding the Marfa bar despite the drain — though some questioned whether a troll card would be more fitting for a second funding attempt.</p>
-
-    <div class="subsection">By the numbers</div>
-    <div class="stat-line">~1,000 drops this week · ~101 GMs · 6 new member welcomes · 23 congrats</div>
+    <div class="subsection">Main Stage Winner</div>
+    <p style="color:#ccc;font-size:0.98rem;">@Articulate won the latest Main Stage with <strong>PebbleLand</strong> — 1,000 interactive 3D worlds adapted from the Pebbles algorithm, free to all, running on any device without accounts or crypto. Card pending minting. <a href="https://6529.io/waves?&wave=b6128077-ea78-4dd9-b381-52c4eadb2077&drop=51e77587-c482-4973-8c2a-bdf9cdf5363e" style="color:var(--accent);text-decoration:none;">View on Main Stage →</a></p>
 </div>
 
 <!-- 6529 NETWORK MUSEUM -->
-<div class="section">
+<div class="section" id="museum">
     <div class="section-title">🏛️ 6529 Network Museum</div>
 
     <div class="headline">
         <h3>MAX PAIN by XCOPY acquired — first collective purchase complete</h3>
-        <p>@Shelby organized the museum's first group-funded acquisition: MAX PAIN by XCOPY. 25 voters participated at 0.021 ETH each. The piece was purchased and deposited into the 6529 Network Museum wallet. Three contributions (meysvm, Conviction, punk6529) were still outstanding as of Sep 2. The leftover 0.063 ETH sparked a debate — hold for a future XCOPY purchase, or send to the museum multisig? @RegularDad flagged a practical concern: "I worry about how accessible the ETH will be once it's in the museum wallet. It's a multisig wallet that will be slow to move anything." The community leaned toward holding for future purchases.</p>
+        <p>@Shelby organized the museum's first group-funded acquisition: MAX PAIN by XCOPY. 25 voters at 0.021 ETH each. On Sep 2, Shelby confirmed the piece was purchased and deposited into the 6529 Network Museum wallet. meysvm paid his contribution the same day. Three contributions (meysvm, Conviction, punk6529) had been outstanding since the prior week — Voojdab pushed impatiently on Sep 1: "There's no point waiting any longer." Shelby asked for patience: "it's the first time we are doing such a thing here."</p>
     </div>
 
-    <div class="subsection">New proposals this week</div>
-    <p style="color:#ccc;font-size:0.98rem;"><strong>Sebastião Salgado — Amazônia</strong> (gift proposal by @punk6529): Six photographs from Salgado's last major project, moving from forest floor to river systems to Indigenous communities. @Articulate raised questions about the proposal terms vs. the gift conditions — specifically around the tension between beauty, romance, suffering, and grandeur in Salgado's work. punk6529 clarified: "it is an answer to a theoretical question that someone could make about those two and the answer is the museum can contextualize if it wants." The negative case, he said, "is a reach."</p>
-
-    <p style="color:#ccc;font-size:0.98rem;"><strong>Alec Soth — Dog Days, Bogotá #50</strong> (submission by @grubnot): Proposed as the first photography piece for the museum. Soth is a celebrated American photographer and Magnum Photos member. @Shelby noted his photography knowledge is limited and encouraged grubnot to "put a good proposal together for why it should join the Museum and its importance."</p>
-
-    <div class="subsection">Pre-approval: Grifters by XCOPY</div>
-    <p style="color:#ccc;font-size:0.98rem;">@Tharwin proposed pre-approving the Grifters collection by XCOPY for the museum — meaning future donations of Grifters pieces could be accepted without collection-specific review, subject only to standard provenance and custody procedures. @david approved: "Exactly what a Grifter would say. I agree." The community discussed whether pre-approval should be collection-specific or open to any XCOPY works.</p>
+    <div class="subsection">Leftover ETH debate</div>
+    <p style="color:#ccc;font-size:0.98rem;">With 0.063 ETH left in the wallet, the community debated what to do. Shelby proposed two options: hold for a future XCOPY purchase, or send to the museum multisig. gpebbles suggested voting on the options after a day of discussion. @RegularDad raised a practical concern: "I worry about how accessible the ETH will be once it's in the museum wallet. It's a multisig wallet that will be slow to move anything." HasanGoktepe voted to hold for future purchases. pinkapewife suggested paying royalties to X to avoid leftover complications. The community leaned toward holding.</p>
 
     <div class="subsection">Also this week</div>
     <ul style="color:#ccc;font-size:0.95rem;padding-left:1.2rem;">
-        <li>@punk6529 confirmed Magnum pieces landed in the Network Museum's SAFE wallet</li>
-        <li>Vera Molnár <em>Themes and Variations</em> #210 — gift proposal from punk6529 (carried over from late Aug)</li>
-        <li>@Cuttle shared AI context packs for museum proposal writing — works with Claude, GPT, or any AI for drafting proposals in museum style</li>
-        <li>@Edub reported "first meme submitted" to the museum wave</li>
-        <li>@HasanGoktepe contributed UI/game-design feedback for the museum, inspired by 50+ user accessibility principles</li>
+        <li>@Shelby posted the X announcement link on Sep 7 — MAX PAIN is now public</li>
+        <li>@Edub reported "first meme submitted" to the museum wave (Sep 7)</li>
+        <li>@SonOfLasG volunteered to contribute writing to the museum project</li>
     </ul>
 </div>
 
 <!-- SHILLANDIA -->
-<div class="section">
+<div class="section" id="shillandia">
     <div class="section-title">📣 Shillandia — Planned Drops</div>
-
-    <div class="headline">
-        <h3>Artists announce upcoming collections on Shillandia</h3>
-        <p>Shillandia — @maybe's wave "where the ego goes to breathe" — is where 6529 community artists shill their work. Most posts link to already-minted pieces, but a few this week were genuinely forward-looking announcements.</p>
-    </div>
 
     <div class="subsection">Coming Soon</div>
     <table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin-top:0.5rem;">
@@ -312,10 +301,29 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
     <p style="color:var(--dim);font-size:0.78rem;margin-top:0.75rem;font-family:var(--mono);">Source: Shillandia wave (6529.io). Scanned ~500 drops from the past week. "Coming Soon" = explicit forward-looking announcement. "Active Mints" = link to a live mint page. Most Shillandia posts are links to already-minted pieces, not upcoming collections.</p>
 </div>
 
+<!-- SOCIALS -->
+<div class="section" id="socials">
+    <div class="section-title">🍺 Socials</div>
+
+    <div class="headline">
+        <h3>Parisa's TDH drama: when withdrawn votes hit artists</h3>
+        <p>Parisa had a stressful night after TDH from MadaCollects and Giopetto was withdrawn — they voted against Blake's card, which affected Parisa's standing. "Since the TDH that Mada and Giopetto had given me was taken back, and they voted against Blake..." Parisa shared. The bar rallied: Kubti offered support, MahsaAli sent love, and maybe weighed in philosophically: "This has happened many times and every time the artist takes it personally because the machinations that happen here behind the scenes are incomprehensible." The incident surfaced a recurring tension — TDH withdrawals can hit artists who had nothing to do with the dispute.</p>
+    </div>
+
+    <div class="subsection">Bar episodes — a new format?</div>
+    <p style="color:#ccc;font-size:0.98rem;">maybe floated the idea of "bar episodes" — a new content format for the dive bar. "How do I propose a bar episode?" he asked. EyEm wondered if the bar had ever had episodes before. arsonic was immediately suggested as a subject, with maybe saying "someone should make that." The community seems ready for a new content format — but what exactly a "bar episode" is remains undefined.</p>
+
+    <div class="subsection">The @gray wallet situation, bar edition</div>
+    <p style="color:#ccc;font-size:0.98rem;">The wallet drain story reached wider bar conversation this week. Sherie_Margaret explained to newer members: "gray is the one who fucked maybe over" and "trust if you were here for maybe's hack because of gray it makes more sense in reverse." blake69's Invoice re-submission was discussed as the community's way of still funding the Marfa bar despite the drain — though some questioned whether a troll card would be more fitting for a second funding attempt.</p>
+
+    <div class="subsection">By the numbers</div>
+    <div class="stat-line">~1,000 drops this week · ~101 GMs · 6 new member welcomes · 23 congrats</div>
+</div>
+
 <!-- BOTTOM LINE -->
 <div class="bottom-line">
     <div class="label">💡 Bottom Line</div>
-    <p>A consequential week across the ecosystem: punk6529 unlocked Keys & Gates payments, Articulate took Main Stage with PebbleLand, the dev team shipped a major subwave overhaul plus desktop v0.3.13, and the @gray wallet drain was confirmed on-chain — with the community rallying around @blake69's Invoice to keep the Marfa bar dream alive.</p>
+    <p>A consequential week across the ecosystem: punk6529 unlocked Keys & Gates payments, the dev team shipped a major subwave overhaul plus desktop v0.3.13, three new meme cards issued with 6529Research holding significant supply, the museum completed its first collective XCOPY acquisition, and the @gray wallet drain was confirmed on-chain — with the community rallying around @blake69's Invoice to keep the Marfa bar dream alive.</p>
 </div>
 
 <div class="footer">
