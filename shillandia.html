@@ -6,120 +6,998 @@
 <title>MNN — Shillandia Drop Calendar</title>
 <style>
 :root {
-    --bg: #0a0a0a;
-    --surface: #141414;
-    --border: #222;
-    --accent: #e8a200;
-    --text: #e0e0e0;
-    --muted: #888;
-    --dim: #555;
-    --mono: 'SF Mono', 'Fira Code', 'JetBrains Mono', monospace;
+    --bg: #0a0a0a; --surface: #141414; --border: #222;
+    --accent: #e8a200; --text: #e0e0e0; --muted: #888;
+    --dim: #555; --green: #4caf50; --red: #f44336; --blue: #2196f3;
+    --mono: 'SF Mono', 'Fira Code', monospace;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; }
-.container { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; }
+.container { max-width: 850px; margin: 0 auto; padding: 2rem 1.5rem; }
 h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
 .subtitle { color: var(--muted); font-size: 0.85rem; font-family: var(--mono); margin-bottom: 1.5rem; }
 .back-link { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; display: inline-block; text-decoration: none; }
 .back-link:hover { color: var(--accent); }
 
-.date-section { margin-bottom: 2rem; }
-.date-header { 
-    font-size: 1.1rem; color: var(--accent); 
-    border-bottom: 1px solid var(--border); 
-    padding-bottom: 0.5rem; margin-bottom: 1rem; 
-    font-weight: 600;
-}
-.date-header .day-name { color: var(--muted); font-weight: 400; font-size: 0.9rem; margin-left: 0.5rem; }
+.legend { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; font-size: 0.75rem; color: var(--muted); font-family: var(--mono); }
+.legend-item { display: flex; align-items: center; gap: 0.4rem; }
+.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
 
-.drop-entry {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    border-radius: 4px;
-    padding: 0.75rem 1rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-}
-.drop-entry.live { border-left-color: #4caf50; }
+.platform-section { margin-bottom: 2.5rem; }
+.platform-header { font-size: 1.2rem; color: var(--accent); border-bottom: 2px solid var(--accent); padding-bottom: 0.5rem; margin-bottom: 1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+.platform-header .platform-count { font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+
+.date-section { margin-bottom: 1.5rem; }
+.date-header { font-size: 0.95rem; color: var(--muted); border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; margin-bottom: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+.date-header .day-name { color: var(--dim); font-weight: 400; margin-left: 0.5rem; text-transform: none; }
+
+.drop-entry { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 4px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.75rem; }
+.drop-entry.live { border-left-color: var(--green); }
+.drop-entry.ended { border-left-color: var(--red); opacity: 0.55; }
+.drop-entry.sold { border-left-color: var(--red); opacity: 0.55; }
 .drop-entry.upcoming { border-left-color: var(--accent); }
 
-.level-badge {
-    flex-shrink: 0;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: 0.75rem; font-weight: 600;
-    color: var(--accent);
-}
+.level-badge { flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.72rem; font-weight: 600; color: var(--accent); }
 .level-badge.high { border-color: var(--accent); color: var(--accent); }
 .level-badge.mid { border-color: var(--muted); color: var(--muted); }
 .level-badge.low { border-color: var(--dim); color: var(--dim); }
 
-.drop-info { flex: 1; }
-.drop-artist { font-size: 0.9rem; font-weight: 600; color: #ccc; }
+.drop-info { flex: 1; min-width: 0; }
+.drop-artist { font-size: 0.9rem; font-weight: 600; color: #ccc; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
 .drop-artist a { color: var(--accent); text-decoration: none; }
 .drop-title { font-size: 0.95rem; color: #ddd; font-weight: 500; margin-top: 0.15rem; }
 .drop-title a { color: var(--accent); text-decoration: underline; }
-.drop-details { font-size: 0.8rem; color: var(--muted); margin-top: 0.25rem; }
-.drop-platform { font-size: 0.72rem; color: var(--dim); font-family: var(--mono); text-transform: uppercase; margin-top: 0.2rem; }
-.status-tag {
-    font-size: 0.68rem; font-family: var(--mono); text-transform: uppercase;
-    padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.5rem;
-}
-.status-tag.live { background: rgba(76,175,80,0.15); color: #4caf50; }
+
+.mint-data { display: grid; grid-template-columns: auto auto auto auto; gap: 0.25rem 1rem; margin-top: 0.4rem; font-size: 0.78rem; font-family: var(--mono); }
+.mint-label { color: var(--dim); }
+.mint-value { color: #ccc; }
+.mint-value.sold-out { color: var(--red); }
+.mint-value.nearly { color: #ff9800; }
+
+.progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 0.35rem; overflow: hidden; width: 100%; }
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; }
+.progress-fill.sold-out { background: var(--red); }
+.progress-fill.nearly { background: #ff9800; }
+
+.mint-stats { font-size: 0.72rem; color: var(--muted); font-family: var(--mono); margin-top: 0.15rem; }
+
+.drop-platform { font-size: 0.68rem; color: var(--dim); font-family: var(--mono); text-transform: uppercase; margin-top: 0.3rem; letter-spacing: 0.5px; }
+
+.status-tag { font-size: 0.65rem; font-family: var(--mono); text-transform: uppercase; padding: 0.1rem 0.4rem; border-radius: 3px; margin-left: 0.3rem; letter-spacing: 0.5px; }
+.status-tag.live { background: rgba(76,175,80,0.15); color: var(--green); }
+.status-tag.ended { background: rgba(244,67,54,0.15); color: var(--red); }
+.status-tag.sold { background: rgba(244,67,54,0.15); color: var(--red); }
 .status-tag.upcoming { background: rgba(232,162,0,0.15); color: var(--accent); }
 .status-tag.announced { background: rgba(136,136,136,0.15); color: var(--muted); }
 
-.legend {
-    display: flex; gap: 1.5rem; margin-bottom: 1.5rem;
-    font-size: 0.75rem; color: var(--muted); font-family: var(--mono);
-}
-.legend-item { display: flex; align-items: center; gap: 0.4rem; }
-.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-
-.section-divider {
-    margin: 2rem 0 1rem 0;
-    border-top: 1px solid var(--border);
-    padding-top: 1rem;
-}
+.section-divider { margin: 2rem 0 1rem 0; border-top: 1px solid var(--border); padding-top: 1rem; }
 .section-divider h2 { font-size: 1rem; color: var(--muted); font-weight: 400; }
 
-.footer {
-    margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border);
-    font-size: 0.78rem; color: var(--dim); font-family: var(--mono);
-}
+.footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--dim); font-family: var(--mono); }
 .footer a { color: var(--muted); text-decoration: none; }
+
+@media (max-width: 600px) {
+    .mint-data { grid-template-columns: auto auto; }
+}
 </style>
 </head>
 <body>
 <div class="container">
     <a href="../index.html" class="back-link">← Back to MNN</a>
     <h1>📣 Shillandia Drop Calendar</h1>
-    <div class="subtitle">Upcoming and active drops from the 6529 Shillandia wave · Updated Sep 12, 2026</div>
+    <div class="subtitle">Active and upcoming drops from the 6529 Shillandia wave · Updated Sep 12, 2026 · 1,579 drops scanned · Mint data live from Transient, Manifold &amp; SuperRare</div>
 
     <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#4caf50;"></div> Live now</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#4caf50;"></div> Live</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f44336;"></div> Ended / Sold</div>
         <div class="legend-item"><div class="legend-dot" style="background:#e8a200;"></div> Upcoming</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#888;"></div> Announced (date TBD)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#0a0a0a;border:1px solid #e8a200;"></div> L## = artist level</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#888;"></div> Announced (TBD)</div>
+        <div class="legend-item">L## = artist level</div>
     </div>
 
-    <!-- UPCOMING / ANNOUNCED -->
-    <div class="date-section">
-        <div class="date-header">Announced — Date TBD</div>
+    <!-- ============ TRANSIENT ============ -->
+    <div class="platform-section">
+        <div class="platform-header">Transient <span class="platform-count">— 46 drops · live mint data</span></div>
+
+        <!-- Sep 12 -->
+        <div class="date-section">
+            <div class="date-header">Sep 12 <span class="day-name">Today</span></div>
+
+            <div class="drop-entry live">
+                <div class="level-badge high">L57</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Zigmarillion">@Zigmarillion</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/crossing-by-the-lights">Crossing By The Lights</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0189 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">20</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">5 / 20</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">15</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge high">L51</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/AEZY">@AEZY</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/whatremains">BLOOM</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">21</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">7 / 21</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">14</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/SWOKE">@SWOKE</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/-the-blue-bouquet-">The Blue Bouquet</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0700 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">7</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 7</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">7</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/SWOKE">@SWOKE</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/-an-austian-paint-">An Austrian Paint</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.1000 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">25</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 25</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">25</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/SWOKE">@SWOKE</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/-don-rad-on-m-">Don Rad</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.1000 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">7</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">1 / 7</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">6</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/SWOKE">@SWOKE</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/-unidentified-flying-object-">UFO</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.1000 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">7</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 7</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">7</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/SWOKE">@SWOKE</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/-supersmash-">Supersmash</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0700 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">10</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">3 / 10</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">7</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:30%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L6</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Ainaliora">@Ainaliora</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/little-world">Little World</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">5</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 5</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">5</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sep 11 -->
+        <div class="date-section">
+            <div class="date-header">Sep 11</div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L22</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Nekomaru">@Nekomaru</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/stillheree">Still Here</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">10</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 10</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">10</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/flostitanarum">@flostitanarum</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/flostitanarum">Heaven</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0180 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">11</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 11</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">11</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L6</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/SajiFall">@SajiFall</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/parity">Parity</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">5</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">2 / 5</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">3</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:40%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L7</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/motherlouisiane">@motherlouisiane</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/folded_horizons_01">Folded Horizons</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0069 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">10</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">2 / 10</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">8</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L12</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Fereshte_a_mehr">@Fereshte_a_mehr</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/dream-of-freedom">Dream of Freedom</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0060 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">Open (timed)</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                    </div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sep 10 -->
+        <div class="date-section">
+            <div class="date-header">Sep 10</div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L31</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/pixeljunkie">@pixeljunkie</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/stray">STRAY</a> (1/1)</div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0500 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">1</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 1</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">1</span>
+                    </div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L31</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/pixeljunkie">@pixeljunkie</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/social-media-the-land-of-fake-smiles">Social Media: Land of Fake Smiles</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0069 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">6</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 6</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">6</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/HELLia">@HELLia</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/incognita">Incognita</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0069 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">69</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">3 / 69</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">66</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:4%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/junrott">@junrott</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/luv4share">Love for Share</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">20</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 20</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">20</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/arctefact">@arctefact</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/feverr">Fever</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0111 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">7</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">1 / 7</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">6</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Grims">@Grims</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/blessedwithacurse">Blessed With a Curse</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0130 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">13</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 13</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">13</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Grims">@Grims</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/memedollar">M3M3DOLLAR</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0653 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">328</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 328</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">328</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sep 8-9 -->
+        <div class="date-section">
+            <div class="date-header">Sep 8–9</div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L34</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Restless_M">@Restless_M</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/monke-business-as-usual">Monke Business as Usual</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0120 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">15</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 15</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">15</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L34</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Restless_M">@Restless_M</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/cabal-say-buy-more">Cabal Say Buy More</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0090 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">Open (timed)</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                    </div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry ended">
+                <div class="level-badge mid">L27</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/GOG">@GOG</a> <span class="status-tag ended">Ended</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/anatomy-of-a-burnout">Anatomy of a Burnout</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0050 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">Open (48hr)</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                    </div>
+                    <div class="drop-platform">Transient · Timed edition ended</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L26</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/ArtFromAbove">@ArtFromAbove</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/brave">Brave</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0111 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">33</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">2 / 33</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">31</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:6%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sep 6-7 -->
+        <div class="date-section">
+            <div class="date-header">Sep 6–7</div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/MdYaqub">@MdYaqub</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/nfts-energy-drink">NFTs Energy Drink</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">10</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 10</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">10</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/MdYaqub">@MdYaqub</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/empress">Empress</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">10</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 10</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">10</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/MdYaqub">@MdYaqub</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/mojo">Mojo</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">10</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">1 / 10</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">9</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/RezaMilani">@RezaMilani</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/religious-machinery">Religious Machinery</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0060 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">Open (timed)</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                    </div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L23</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Mayudrops">@Mayudrops</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/little-mantis">Little Mantis</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0080 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">10</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">2 / 10</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">8</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sep 2-5 -->
+        <div class="date-section">
+            <div class="date-header">Sep 2–5</div>
+
+            <div class="drop-entry live">
+                <div class="level-badge high">L52</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/kristopher">@kristopher</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/the-color-of-elsewhere-edition">The Color of Elsewhere</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">69</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">10 / 69</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">59</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:14%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge high">L52</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/kristopher">@kristopher</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/taking-it-all-in">Taking It All In</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0690 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">10</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">1 / 10</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">9</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:10%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L6</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/liapsart">@liapsart</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/wanderlight-synth-1">Wanderlight</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">6</span>
+                        <span class="mint-label">Minted</span><span class="mint-value nearly">3 / 6</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value nearly">3</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill nearly" style="width:50%"></div></div>
+                    <div class="drop-platform">Transient · 50% minted</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sep 1 -->
+        <div class="date-section">
+            <div class="date-header">Sep 1</div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L23</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Mayudrops">@Mayudrops</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/fishermen-on-the-way-on-home">Fishermen on the Way Home</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0090 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">12</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 12</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">12</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/MdYaqub">@MdYaqub</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/lost-in-time">Lost in Time</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">7</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 7</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">7</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L21</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/BettyNajafi">@BettyNajafi</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/out-of-frame">Out of Frame</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0050 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">20</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">4 / 20</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">16</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:20%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L24</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Samanta">@Samanta</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/finding-the-rhythm">Finding the Rhythm</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0069 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">20</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">7 / 20</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">13</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:35%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L25</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Guillaume_M_K">@Guillaume_M_K</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/cryofunghus">CryoFunghus</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0690 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">30</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">10 / 30</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">20</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:33%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L26</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/ArtFromAbove">@ArtFromAbove</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/guardians-of-the-parhelion">Guardians of the Parhelion</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0369 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">25</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 25</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">25</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L6</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/HBVarun">@HBVarun</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/eyes">Eyes</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0065 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">12</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">1 / 12</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">11</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:8%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L23</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/neuralartistry">@neuralartistry</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/legs">LEGS</a> — 170/1/1 collection</div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0092 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">170</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">8 / 170</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">162</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:5%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L38</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/awhurst">@awhurst</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/embraced">Embraced</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">11</span>
+                        <span class="mint-label">Minted</span><span class="mint-value nearly">10 / 11</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value nearly">1</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill nearly" style="width:91%"></div></div>
+                    <div class="drop-platform">Transient · 🔥 91% minted — almost gone!</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/HELLia">@HELLia</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/silentsymphony">Silent Symphony</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0042 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">10</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 10</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">10</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L19</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/mhankumiz">@mhankumiz</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/the-gate-of-vorr">The Gate of Vorr</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">10</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 10</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">10</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge mid">L31</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/pixeljunkie">@pixeljunkie</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/rancid-slug">Rancid Slug</a> (1/1)</div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0500 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">1</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 1</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">1</span>
+                    </div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L23</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/Josei">@Josei</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/come-and-consume">Come and Consume</a></div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.0169 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">15</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">2 / 15</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">13</span>
+                    </div>
+                    <div class="progress-bar"><div class="progress-fill" style="width:13%"></div></div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+
+            <div class="drop-entry live">
+                <div class="level-badge low">L6</div>
+                <div class="drop-info">
+                    <div class="drop-artist"><a href="https://6529.io/SajiFall">@SajiFall</a> <span class="status-tag live">Live</span></div>
+                    <div class="drop-title"><a href="https://www.transient.xyz/mint/gules">Gules</a> (1/1)</div>
+                    <div class="mint-data">
+                        <span class="mint-label">Price</span><span class="mint-value">0.1000 ETH</span>
+                        <span class="mint-label">Edition</span><span class="mint-value">1</span>
+                        <span class="mint-label">Minted</span><span class="mint-value">0 / 1</span>
+                        <span class="mint-label">Remaining</span><span class="mint-value">1</span>
+                    </div>
+                    <div class="drop-platform">Transient</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ MANIFOLD ============ -->
+    <div class="platform-section">
+        <div class="platform-header">Manifold <span class="platform-count">— 4 drops · API + on-chain data</span></div>
+
+        <div class="drop-entry live">
+            <div class="level-badge mid">L26</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/ArtFromAbove">@ArtFromAbove</a> <span class="status-tag live">Live</span></div>
+                <div class="drop-title"><a href="https://app.manifold.xyz/c/divinebalance">Divine Balance</a></div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value">0.0110 ETH</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">33</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">17 / 33</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">16</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:52%"></div></div>
+                <div class="drop-platform">Manifold · ERC1155 · wallet max 3</div>
+            </div>
+        </div>
+
+        <div class="drop-entry live">
+            <div class="level-badge mid">L22</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/ArijitMondal">@ArijitMondal</a> <span class="status-tag live">Live</span></div>
+                <div class="drop-title"><a href="https://manifold.xyz/@arijitmondal/id/4064792816">Anchored</a></div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value">0.0095 ETH</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">11</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">4 / 11</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">7</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:36%"></div></div>
+                <div class="drop-platform">Manifold · ERC1155 · Travel &amp; Landscape collection</div>
+            </div>
+        </div>
+
+        <div class="drop-entry live">
+            <div class="level-badge low">L20</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/youmiirror">@youmiirror</a> <span class="status-tag live">Live</span></div>
+                <div class="drop-title"><a href="https://manifold.xyz/@youmiirror/id/3476470000">Lost Inside Your Words</a></div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value">0.0069 ETH</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">22</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">5 / 22</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">17</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill" style="width:23%"></div></div>
+                <div class="drop-platform">Manifold · ERC1155 · wallet max 4</div>
+            </div>
+        </div>
+
+        <div class="drop-entry live">
+            <div class="level-badge low">L19</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/barokah">@barokah</a> <span class="status-tag live">Live</span></div>
+                <div class="drop-title"><a href="https://manifold.xyz/@barokah/id/3476478192">Untitled</a></div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value">0.0240 ETH</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">—</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                </div>
+                <div class="drop-platform">Manifold · Edition data not available via API</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SUPERRARE ============ -->
+    <div class="platform-section">
+        <div class="platform-header">SuperRare <span class="platform-count">— 3 pieces · 1/1s · on-chain ownership</span></div>
+
+        <div class="drop-entry sold">
+            <div class="level-badge mid">L21</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/amanrasouli">@amanrasouli</a> <span class="status-tag sold">Sold</span></div>
+                <div class="drop-title"><a href="https://superrare.com/artwork/eth/0x53DDa9c4a96AB69C4EFbbecBE062E949A22ebB70/16">Faceless #8</a></div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value sold-out">0.300 ETH (sale)</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">1/1</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">1 / 1</span>
+                    <span class="mint-label">Owner</span><span class="mint-value">keefsnfts</span>
+                </div>
+                <div class="drop-platform">SuperRare · Sold for $527 · Faceless collection</div>
+            </div>
+        </div>
+
+        <div class="drop-entry sold">
+            <div class="level-badge mid">L20</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/dorinphotograph">@dorinphotograph</a> <span class="status-tag sold">Sold</span></div>
+                <div class="drop-title"><a href="https://superrare.com/artwork/eth/0xBD08B929a592F9FDD596d64D9FFf707a74Cd66D5/26">Life After Death</a></div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value sold-out">0.550 ETH (sale)</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">1/1</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">1 / 1</span>
+                    <span class="mint-label">Owner</span><span class="mint-value">0x9...07b</span>
+                </div>
+                <div class="drop-platform">SuperRare · Sold for $2,030 · Photo Art collection</div>
+            </div>
+        </div>
+
+        <div class="drop-entry sold">
+            <div class="level-badge mid">L20</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/dorinphotograph">@dorinphotograph</a> <span class="status-tag sold">Sold</span></div>
+                <div class="drop-title"><a href="https://superrare.com/artwork/eth/0xBD08B929a592F9FDD596d64D9FFf707a74Cd66D5/29">Burning Token</a></div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value">—</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">1/1</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">1 / 1</span>
+                    <span class="mint-label">Owner</span><span class="mint-value">0x50538f...</span>
+                </div>
+                <div class="drop-platform">SuperRare · Sold · Photo Art collection</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ UPCOMING ============ -->
+    <div class="platform-section">
+        <div class="platform-header">Announced — Date TBD <span class="platform-count">— 3 drops</span></div>
 
         <div class="drop-entry upcoming">
             <div class="level-badge mid">L27</div>
             <div class="drop-info">
                 <div class="drop-artist"><a href="https://6529.io/Pseudonym478">@Pseudonym478</a> <span class="status-tag upcoming">Upcoming</span></div>
                 <div class="drop-title">New collection (name TBD)</div>
-                <div class="drop-details">6529 meme card holders whitelisted. Asked community for whitelist suggestions. Announced Sep 10.</div>
-                <div class="drop-platform">Platform TBD</div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                </div>
+                <div class="drop-platform">Platform TBD · 6529 meme card holders whitelisted · Announced Sep 10</div>
             </div>
         </div>
 
@@ -128,8 +1006,13 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             <div class="drop-info">
                 <div class="drop-artist"><a href="https://6529.io/HasanGoktepe">@HasanGoktepe</a> <span class="status-tag upcoming">Upcoming</span></div>
                 <div class="drop-title">1/1/50 Collection</div>
-                <div class="drop-details">50-piece collection, details TBD. Announced Sep 5.</div>
-                <div class="drop-platform">NINFA</div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">50</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                </div>
+                <div class="drop-platform">NINFA · Announced Sep 5</div>
             </div>
         </div>
 
@@ -138,317 +1021,42 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             <div class="drop-info">
                 <div class="drop-artist"><a href="https://6529.io/Mistershot">@Mistershot</a> <span class="status-tag announced">Announced</span></div>
                 <div class="drop-title">First generative PFP project</div>
-                <div class="drop-details">First PFP project from the artist. Announced Sep 1.</div>
-                <div class="drop-platform">Platform TBD</div>
-            </div>
-        </div>
-
-        <div class="drop-entry upcoming">
-            <div class="level-badge low">L23</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/neuralartistry">@neuralartistry</a> <span class="status-tag announced">Announced</span></div>
-                <div class="drop-title">LEGS — 170/1/1 Collection</div>
-                <div class="drop-details">170 artworks, 170 stories. Created with custom procedural algorithm. Announced Sep 1.</div>
-                <div class="drop-platform">Platform TBD</div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                </div>
+                <div class="drop-platform">Platform TBD · Announced Sep 1</div>
             </div>
         </div>
     </div>
 
-    <!-- LIVE NOW -->
-    <div class="section-divider">
-        <h2>🔴 Live Now — Active Mints</h2>
-    </div>
-
-    <!-- Today Sep 12 -->
-    <div class="date-section">
-        <div class="date-header">Sep 12, 2026 <span class="day-name">Today</span></div>
+    <!-- ============ HOT DROPS ============ -->
+    <div class="platform-section">
+        <div class="platform-header">🔥 Hot — Almost Sold Out <span class="platform-count">— 1 drop</span></div>
 
         <div class="drop-entry live">
-            <div class="level-badge high">L57</div>
+            <div class="level-badge mid">L38</div>
             <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Zigmarillion">@Zigmarillion</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/crossing-by-the-lights">Crossing By The Lights</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge mid">L51</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/AEZY">@AEZY</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/whatremains">What Remains</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge mid">L22</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/ArijitMondal">@ArijitMondal</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://manifold.xyz/@arijitmondal/id/4064792816">Anchored</a> · <a href="https://manifold.xyz/@arijitmondal/id/4064792816">Fly to the Moon</a></div>
-                <div class="drop-details">Limited edition photography. Durgapur, WB, India. DJI MAVIC AIR 2 + Nikon D7200.</div>
-                <div class="drop-platform">Manifold</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L19</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/SWOKE">@SWOKE</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/-the-blue-bouquet-">The Blue Bouquet</a> · <a href="https://www.transient.xyz/mint/-an-austian-paint-">An Austrian Paint</a> · <a href="https://www.transient.xyz/mint/-don-rad-on-m-">Don Rad</a> · <a href="https://www.transient.xyz/mint/-unidentified-flying-object-">UFO</a> · <a href="https://www.transient.xyz/mint/-supersmash-">Supersmash</a></div>
-                <div class="drop-platform">Transient · 5 active mints</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L6</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Ainaliora">@Ainaliora</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/little-world">Little World</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sep 11 -->
-    <div class="date-section">
-        <div class="date-header">Sep 11, 2026 <span class="day-name">Yesterday</span></div>
-
-        <div class="drop-entry live">
-            <div class="level-badge mid">L22</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Nekomaru">@Nekomaru</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/stillheree">Still Here</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L19</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/flostitanarum">@flostitanarum</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/flostitanarum">Flostitanarum</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L6</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/SajiFall">@SajiFall</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/parity">Parity</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L7</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/motherlouisiane">@motherlouisiane</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/folded_horizons_01">Folded Horizons 01</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L12</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Fereshte_a_mehr">@Fereshte_a_mehr</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/dream-of-freedom">Dream of Freedom</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sep 10 -->
-    <div class="date-section">
-        <div class="date-header">Sep 10, 2026</div>
-
-        <div class="drop-entry live">
-            <div class="level-badge mid">L31</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/pixeljunkie">@pixeljunkie</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/stray">Stray</a> · <a href="https://www.transient.xyz/mint/social-media-the-land-of-fake-smiles">Social Media: The Land of Fake Smiles</a></div>
-                <div class="drop-platform">Transient · 2 active mints</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L19</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/HELLia">@HELLia</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/incognita">Incognita</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L19</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/junrott">@junrott</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/luv4share">Luv4Share</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L19</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/arctefact">@arctefact</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/feverr">Fever</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sep 8-9 -->
-    <div class="date-section">
-        <div class="date-header">Sep 8–9, 2026</div>
-
-        <div class="drop-entry live">
-            <div class="level-badge mid">L34</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Restless_M">@Restless_M</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/monke-business-as-usual">Monke Business as Usual</a> · <a href="https://www.transient.xyz/mint/cabal-say-buy-more">Cabal Say Buy More</a></div>
-                <div class="drop-platform">Transient · 2 active mints</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L27</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/GOG">@GOG</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/anatomy-of-a-burnout">Anatomy of a Burnout</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L26</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/ArtFromAbove">@ArtFromAbove</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/brave">Brave</a> (0.0111 ETH, limited edition)</div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L19</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Grims">@Grims</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/blessedwithacurse">Blessed With a Curse</a> · <a href="https://www.transient.xyz/mint/memedollar">Meme Dollar</a></div>
-                <div class="drop-platform">Transient · 2 active mints</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sep 6-7 -->
-    <div class="date-section">
-        <div class="date-header">Sep 6–7, 2026</div>
-
-        <div class="drop-entry live">
-            <div class="level-badge mid">L19</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/MdYaqub">@MdYaqub</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/nfts-energy-drink">NFTs Energy Drink</a> · <a href="https://www.transient.xyz/mint/empress">Empress</a> · <a href="https://www.transient.xyz/mint/mojo">Mojo</a></div>
-                <div class="drop-platform">Transient · 3 active mints</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge mid">L19</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/RezaMilani">@RezaMilani</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/religious-machinery">Religious Machinery</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L23</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Mayudrops">@Mayudrops</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/little-mantis">Little Mantis</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sep 2-5 -->
-    <div class="date-section">
-        <div class="date-header">Sep 2–5, 2026</div>
-
-        <div class="drop-entry live">
-            <div class="level-badge high">L52</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/kristopher">@kristopher</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/the-color-of-elsewhere-edition">The Color of Elsewhere</a> · <a href="https://www.transient.xyz/mint/taking-it-all-in">Taking It All In</a></div>
-                <div class="drop-platform">Transient · 2 active mints</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge mid">L34</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Restless_M">@Restless_M</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/cabal-say-buy-more">Cabal Say Buy More</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L6</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/liapsart">@liapsart</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/wanderlight-synth-1">Wanderlight Synth 1</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L20</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/dorinphotograph">@dorinphotograph</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/freedom-to-rize">Freedom to Rize</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Sep 1 -->
-    <div class="date-section">
-        <div class="date-header">Sep 1, 2026</div>
-
-        <div class="drop-entry live">
-            <div class="level-badge mid">L23</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Mayudrops">@Mayudrops</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/fishermen-on-the-way-on-home">Fishermen on the Way Home</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge low">L19</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/MdYaqub">@MdYaqub</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/lost-in-time">Lost in Time</a></div>
-                <div class="drop-platform">Transient</div>
-            </div>
-        </div>
-
-        <div class="drop-entry live">
-            <div class="level-badge mid">L21</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/BettyNajafi">@BettyNajafi</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/mint/out-of-frame">Out of Frame</a></div>
-                <div class="drop-platform">Transient</div>
+                <div class="drop-artist"><a href="https://6529.io/awhurst">@awhurst</a> <span class="status-tag live">Live</span></div>
+                <div class="drop-title"><a href="https://www.transient.xyz/mint/embraced">Embraced</a></div>
+                <div class="mint-data">
+                    <span class="mint-label">Price</span><span class="mint-value">0.0100 ETH</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">11</span>
+                    <span class="mint-label">Minted</span><span class="mint-value nearly">10 / 11</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value nearly">1</span>
+                </div>
+                <div class="progress-bar"><div class="progress-fill nearly" style="width:91%"></div></div>
+                <div class="drop-platform">Transient · 91% minted — only 1 left!</div>
             </div>
         </div>
     </div>
 
     <div class="footer">
-        Source: <a href="https://6529.io/waves/c143d8f7-d04f-41ec-b0fd-377e61512d71">Shillandia wave</a> on 6529.io · 1,579 drops scanned (Sep 1–12) · Artist levels from 6529.io identity profiles · Published by RegularDad &amp; <a href="https://6529.io/RegularDad">TheManager</a>
+        Source: <a href="https://6529.io/waves/c143d8f7-d04f-41ec-b0fd-377e61512d71">Shillandia wave</a> · 1,579 drops scanned (Sep 1–12)<br>
+        Mint data: Transient (embedded JSON) · Manifold (public API + on-chain <code>totalSupply</code>) · SuperRare (on-chain <code>ownerOf</code> + page scrape)<br>
+        RPC: eth.drpc.org · Artist levels from 6529.io · Published by RegularDad &amp; <a href="https://6529.io/RegularDad">TheManager</a>
     </div>
 </div>
 </body>
