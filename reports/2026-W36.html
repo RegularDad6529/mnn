@@ -10,15 +10,15 @@
     --surface: #141414;
     --border: #1e1e1e;
     --text: #e0e0e0;
-    --muted: #888;
-    --dim: #555;
+    --muted: #aaa;
+    --dim: #888;
     --accent: #e8a200;
     --accent-dim: #b88000;
     --mono: 'JetBrains Mono', 'Courier New', monospace;
-    --serif: 'Georgia', 'Times New Roman', serif;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: var(--serif); background: var(--bg); color: var(--text); line-height: 1.7; -webkit-font-smoothing: antialiased; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.65; -webkit-font-smoothing: antialiased; }
 .container { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
 
 /* Header */
@@ -27,7 +27,7 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
 .report-header .logo svg { max-width: 240px; height: auto; }
 .report-header .meta { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
 .report-header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.3; }
-.report-header .date-range { color: var(--muted); font-size: 0.95rem; font-style: italic; margin-top: 0.25rem; }
+.report-header .date-range { color: var(--muted); font-size: 0.95rem; margin-top: 0.25rem; }
 .back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--muted); font-size: 0.85rem; text-decoration: none; font-family: var(--mono); }
 .back-link:hover { color: var(--accent); }
 
@@ -41,13 +41,13 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
 
 /* Sections */
 .section { margin-bottom: 2.5rem; }
-.section-title { font-size: 1.3rem; font-weight: 700; color: var(--accent); margin-bottom: 1rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.section-title { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
 .section-title a { color: var(--accent); text-decoration: none; }
 
 /* Headline story */
 .headline { margin-bottom: 1.5rem; }
-.headline h3 { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; }
-.headline p { color: #ccc; font-size: 0.98rem; }
+.headline h3 { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; line-height: 1.35; }
+.headline p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
 
 /* Story list */
 .story-list { list-style: none; }
@@ -55,16 +55,16 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
 .story-list li:last-child { border-bottom: none; }
 .story-list .author { color: var(--accent); font-weight: 600; }
 .story-list .title { color: #ccc; font-weight: 600; }
-.story-list .desc { color: var(--muted); font-size: 0.92rem; }
+.story-list .desc { color: #bbb; font-size: 0.92rem; line-height: 1.55; }
 
 /* Subsection headers */
-.subsection { font-size: 0.95rem; font-weight: 700; color: #aaa; margin: 1.25rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--mono); }
+.subsection { font-size: 0.9rem; font-weight: 600; color: #999; margin: 1.25rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--mono); }
 
 /* No movement */
 .no-movement { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; }
 .no-movement ul { list-style: none; }
-.no-movement li { padding: 0.3rem 0; color: var(--muted); font-size: 0.9rem; }
-.no-movement li strong { color: #aaa; }
+.no-movement li { padding: 0.3rem 0; color: #bbb; font-size: 0.9rem; }
+.no-movement li strong { color: #ccc; }
 
 /* Stat line */
 .stat-line { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 4px; padding: 0.75rem 1.25rem; margin: 1.5rem 0; font-family: var(--mono); font-size: 0.85rem; color: #ccc; }
@@ -72,7 +72,7 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
 /* Bottom line */
 .bottom-line { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-top: 2rem; }
 .bottom-line .label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
-.bottom-line p { color: #ccc; font-size: 0.98rem; }
+.bottom-line p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
 
 /* Footer */
 .footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--dim); font-size: 0.8rem; }
@@ -143,7 +143,7 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
     </div>
 
     <div class="subsection">The @gray situation (Card #541 "Burn Mechanism")</div>
-    <p style="color:#ccc;font-size:0.98rem;">On-chain investigation confirmed this week: @gray's wallet was drained on Aug 31 — 2.382 ETH swept to a drainer address in 12 seconds, plus 3 ERC-1155 NFTs. The drainer address has 9 IN-only transactions going back to Sep 2025 (classic accumulator). Card #541 mint proceeds were swept. This is why @maybe can't fund the Marfa bar from this card. @maybe says he's still going to Marfa and will bring the bar regardless — and @blake69's "Invoice" re-submission is now the community's backup funding mechanism.</p>
+    <p style="color:#ccc;font-size:0.98rem;line-height:1.6;">On-chain investigation confirmed this week: @gray's wallet was drained on Aug 31 — 2.382 ETH swept to a drainer address in 12 seconds, plus 3 ERC-1155 NFTs. The drainer address has 9 IN-only transactions going back to Sep 2025 (classic accumulator). Card #541 mint proceeds were swept. This is why @maybe can't fund the Marfa bar from this card. @maybe says he's still going to Marfa and will bring the bar regardless — and @blake69's "Invoice" re-submission is now the community's backup funding mechanism.</p>
 
     <div class="stat-line">📊 16 AA submissions tracked · 11 in progress · 9 completed · 1 won MS · 1 removed</div>
 </div>
@@ -158,7 +158,7 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
     </div>
 
     <div class="subsection">Desktop app v0.3.13</div>
-    <p style="color:#ccc;font-size:0.98rem;">prxt0bot announced Desktop Release v0.3.13 on Sep 4, bundling the latest web updates including Frontend Deploy #1700. Key new feature: search local transaction data using a paged API — useful for power users tracking their on-chain activity without hitting the web app.</p>
+    <p style="color:#ccc;font-size:0.98rem;line-height:1.6;">prxt0bot announced Desktop Release v0.3.13 on Sep 4, bundling the latest web updates including Frontend Deploy #1700. Key new feature: search local transaction data using a paged API — useful for power users tracking their on-chain activity without hitting the web app.</p>
 
     <div class="subsection">Main Stage media validation hardened</div>
     <ul class="story-list">
@@ -167,7 +167,7 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
     </ul>
 
     <div class="subsection">Team activity (weekly summary)</div>
-    <p style="color:#ccc;font-size:0.98rem;">All four team members posted regularly throughout the week. <strong>GelatoGenesis</strong> focused on the subwave overhaul and backend log cleanup. <strong>ragne</strong> refined voting UX — \"My Votes\" layouts, Quick Vote controls, bulk reset safety. <strong>simo</strong> fought through release-bus CLI npm migration, eventually replacing GitHub package installation. <strong>prxt0</strong> shipped media upload changes, iOS resubmission, and Core release notes fixes. The team is in a voting UX sprint alongside the subwave rework.</p>
+    <p style="color:#ccc;font-size:0.98rem;line-height:1.6;">All four team members posted regularly throughout the week. <strong>GelatoGenesis</strong> focused on the subwave overhaul and backend log cleanup. <strong>ragne</strong> refined voting UX — \"My Votes\" layouts, Quick Vote controls, bulk reset safety. <strong>simo</strong> fought through release-bus CLI npm migration, eventually replacing GitHub package installation. <strong>prxt0</strong> shipped media upload changes, iOS resubmission, and Core release notes fixes. The team is in a voting UX sprint alongside the subwave rework.</p>
 
     <div class="subsection">Tech Feedback from the community</div>
     <ul class="story-list">
@@ -199,36 +199,36 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
         </thead>
         <tbody>
             <tr style="border-bottom:1px solid var(--border);">
-                <td style="padding:0.6rem 0.5rem 0.6rem 0;font-family:var(--mono);color:var(--muted);">#545</td>
+                <td style="padding:0.6rem 0.5rem 0.6rem 0;font-family:var(--mono);color:#aaa;">#545</td>
                 <td style="padding:0.6rem 0.5rem;"><a href="https://6529.io/the-memes/545" style="color:var(--accent);font-weight:600;text-decoration:underline;">Age of Memes</a></td>
-                <td style="padding:0.6rem 0.5rem;color:var(--muted);">@HasanGoktepe</td>
+                <td style="padding:0.6rem 0.5rem;color:#aaa;">@HasanGoktepe</td>
                 <td style="padding:0.6rem 0.5rem;text-align:right;color:#ccc;font-family:var(--mono);">76 / 231</td>
-                <td style="padding:0.6rem 0.5rem;text-align:right;color:var(--muted);font-family:var(--mono);">67</td>
+                <td style="padding:0.6rem 0.5rem;text-align:right;color:#aaa;font-family:var(--mono);">67</td>
                 <td style="padding:0.6rem 0.5rem;text-align:right;color:var(--accent);font-size:0.85rem;">🔥 Minting</td>
                 <td style="padding:0.6rem 0;text-align:center;"><a href="https://6529.io/the-memes/545" style="display:inline-block;padding:0.2rem 0.6rem;border:1px solid var(--border);border-radius:4px;color:var(--accent);text-decoration:none;font-family:var(--mono);font-size:0.72rem;">View →</a></td>
             </tr>
             <tr style="border-bottom:1px solid var(--border);">
-                <td style="padding:0.6rem 0.5rem 0.6rem 0;font-family:var(--mono);color:var(--muted);">#544</td>
+                <td style="padding:0.6rem 0.5rem 0.6rem 0;font-family:var(--mono);color:#aaa;">#544</td>
                 <td style="padding:0.6rem 0.5rem;"><a href="https://6529.io/the-memes/544" style="color:var(--accent);font-weight:600;text-decoration:underline;">The Ride</a></td>
-                <td style="padding:0.6rem 0.5rem;color:var(--muted);">@GarryB1rd</td>
+                <td style="padding:0.6rem 0.5rem;color:#aaa;">@GarryB1rd</td>
                 <td style="padding:0.6rem 0.5rem;text-align:right;color:#ccc;font-family:var(--mono);">97 / 231</td>
-                <td style="padding:0.6rem 0.5rem;text-align:right;color:var(--muted);font-family:var(--mono);">68</td>
-                <td style="padding:0.6rem 0.5rem;text-align:right;color:var(--dim);font-size:0.85rem;">✅ Done</td>
+                <td style="padding:0.6rem 0.5rem;text-align:right;color:#aaa;font-family:var(--mono);">68</td>
+                <td style="padding:0.6rem 0.5rem;text-align:right;color:#888;font-size:0.85rem;">✅ Done</td>
                 <td style="padding:0.6rem 0;text-align:center;"><a href="https://6529.io/the-memes/544" style="display:inline-block;padding:0.2rem 0.6rem;border:1px solid var(--border);border-radius:4px;color:var(--accent);text-decoration:none;font-family:var(--mono);font-size:0.72rem;">View →</a></td>
             </tr>
             <tr>
-                <td style="padding:0.6rem 0.5rem 0.6rem 0;font-family:var(--mono);color:var(--muted);">#543</td>
+                <td style="padding:0.6rem 0.5rem 0.6rem 0;font-family:var(--mono);color:#aaa;">#543</td>
                 <td style="padding:0.6rem 0.5rem;"><a href="https://6529.io/the-memes/543" style="color:var(--accent);font-weight:600;text-decoration:underline;">GIANT — Freedom to Burn</a></td>
-                <td style="padding:0.6rem 0.5rem;color:var(--muted);">@GIANT</td>
+                <td style="padding:0.6rem 0.5rem;color:#aaa;">@GIANT</td>
                 <td style="padding:0.6rem 0.5rem;text-align:right;color:#ccc;font-family:var(--mono);">75 / 231</td>
-                <td style="padding:0.6rem 0.5rem;text-align:right;color:var(--muted);font-family:var(--mono);">67</td>
-                <td style="padding:0.6rem 0.5rem;text-align:right;color:var(--dim);font-size:0.85rem;">✅ Done</td>
+                <td style="padding:0.6rem 0.5rem;text-align:right;color:#aaa;font-family:var(--mono);">67</td>
+                <td style="padding:0.6rem 0.5rem;text-align:right;color:#888;font-size:0.85rem;">✅ Done</td>
                 <td style="padding:0.6rem 0;text-align:center;"><a href="https://6529.io/the-memes/543" style="display:inline-block;padding:0.2rem 0.6rem;border:1px solid var(--border);border-radius:4px;color:var(--accent);text-decoration:none;font-family:var(--mono);font-size:0.72rem;">View →</a></td>
             </tr>
         </tbody>
     </table>
 
-    <p style="color:var(--dim);font-size:0.78rem;margin-top:0.75rem;font-family:var(--mono);">Community mints = total supply − 79 (team + museum) − 6529Research holdings. Research: #545=0, #544=134, #543=156. Card #545 still minting at time of report.</p>
+    <p style="color:#888;font-size:0.78rem;margin-top:0.75rem;font-family:var(--mono);">Community mints = total supply − 79 (team + museum) − 6529Research holdings. Research: #545=0, #544=134, #543=156. Card #545 still minting at time of report.</p>
 </div>
 
 <!-- 6529 NETWORK MUSEUM -->
@@ -241,10 +241,10 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
     </div>
 
     <div class="subsection">Leftover ETH debate</div>
-    <p style="color:#ccc;font-size:0.98rem;">With 0.063 ETH left in the wallet, the community debated what to do. Shelby proposed two options: hold for a future XCOPY purchase, or send to the museum multisig. gpebbles suggested voting on the options after a day of discussion. @RegularDad raised a practical concern: "I worry about how accessible the ETH will be once it's in the museum wallet. It's a multisig wallet that will be slow to move anything." HasanGoktepe voted to hold for future purchases. pinkapewife suggested paying royalties to X to avoid leftover complications. The community leaned toward holding.</p>
+    <p style="color:#ccc;font-size:0.98rem;line-height:1.6;">With 0.063 ETH left in the wallet, the community debated what to do. Shelby proposed two options: hold for a future XCOPY purchase, or send to the museum multisig. gpebbles suggested voting on the options after a day of discussion. @RegularDad raised a practical concern: "I worry about how accessible the ETH will be once it's in the museum wallet. It's a multisig wallet that will be slow to move anything." HasanGoktepe voted to hold for future purchases. pinkapewife suggested paying royalties to X to avoid leftover complications. The community leaned toward holding.</p>
 
     <div class="subsection">Also this week</div>
-    <p style="color:#ccc;font-size:0.98rem;">@Shelby posted the X announcement link on Sep 7 — MAX PAIN is now public.</p>
+    <p style="color:#ccc;font-size:0.98rem;line-height:1.6;">@Shelby posted the X announcement link on Sep 7 — MAX PAIN is now public.</p>
 </div>
 
 <!-- SHILLANDIA -->
@@ -272,15 +272,15 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
         </thead>
         <tbody>
             <tr style="border-bottom:1px solid var(--border);">
-                <td style="padding:0.6rem 0.5rem 0.6rem 0;color:var(--muted);">@MRC_Arte</td>
+                <td style="padding:0.6rem 0.5rem 0.6rem 0;color:#aaa;">@MRC_Arte</td>
                 <td style="padding:0.6rem 0.5rem;color:#ccc;font-weight:600;">The Journey</td>
-                <td style="padding:0.6rem 0.5rem;color:var(--muted);">SuperRare</td>
+                <td style="padding:0.6rem 0.5rem;color:#aaa;">SuperRare</td>
                 <td style="padding:0.6rem 0 0.6rem 0.5rem;color:#ccc;font-size:0.85rem;">Fully on-chain, 0.1 ETH 24hr reserve auction, includes bidder + winner editions. Announced Sep 4 for "tomorrow."</td>
             </tr>
             <tr>
-                <td style="padding:0.6rem 0.5rem 0.6rem 0;color:var(--muted);">@HasanGoktepe</td>
+                <td style="padding:0.6rem 0.5rem 0.6rem 0;color:#aaa;">@HasanGoktepe</td>
                 <td style="padding:0.6rem 0.5rem;color:#ccc;font-weight:600;">1/1/50 Collection</td>
-                <td style="padding:0.6rem 0.5rem;color:var(--muted);">NINFA</td>
+                <td style="padding:0.6rem 0.5rem;color:#aaa;">NINFA</td>
                 <td style="padding:0.6rem 0 0.6rem 0.5rem;color:#ccc;font-size:0.85rem;">50-piece collection, details TBD. Announced Sep 5.</td>
             </tr>
         </tbody>
@@ -300,7 +300,7 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
         <div style="color:#ccc;">@JasonOPhoto — <a href="https://manifold.xyz/@jason-orourke/id/3476170992" style="color:var(--accent);text-decoration:none;">Wanderer: Wild</a> (Manifold)</div>
     </div>
 
-    <p style="color:var(--dim);font-size:0.78rem;margin-top:0.75rem;font-family:var(--mono);">Source: Shillandia wave (6529.io). Scanned ~500 drops from the past week. "Coming Soon" = explicit forward-looking announcement. "Active Mints" = link to a live mint page. Most Shillandia posts are links to already-minted pieces, not upcoming collections.</p>
+    <p style="color:#888;font-size:0.78rem;margin-top:0.75rem;font-family:var(--mono);">Source: Shillandia wave (6529.io). Scanned ~500 drops from the past week. "Coming Soon" = explicit forward-looking announcement. "Active Mints" = link to a live mint page. Most Shillandia posts are links to already-minted pieces, not upcoming collections.</p>
 </div>
 
 <!-- SOCIALS -->
@@ -313,10 +313,10 @@ body { font-family: var(--serif); background: var(--bg); color: var(--text); lin
     </div>
 
     <div class="subsection">Bar episodes — a new format?</div>
-    <p style="color:#ccc;font-size:0.98rem;">maybe floated the idea of "bar episodes" — a new content format for the dive bar. "How do I propose a bar episode?" he asked. EyEm wondered if the bar had ever had episodes before. arsonic was immediately suggested as a subject, with maybe saying "someone should make that." The community seems ready for a new content format — but what exactly a "bar episode" is remains undefined.</p>
+    <p style="color:#ccc;font-size:0.98rem;line-height:1.6;">maybe floated the idea of "bar episodes" — a new content format for the dive bar. "How do I propose a bar episode?" he asked. EyEm wondered if the bar had ever had episodes before. arsonic was immediately suggested as a subject, with maybe saying "someone should make that." The community seems ready for a new content format — but what exactly a "bar episode" is remains undefined.</p>
 
     <div class="subsection">The @gray wallet situation, bar edition</div>
-    <p style="color:#ccc;font-size:0.98rem;">The wallet drain story reached wider bar conversation this week. Sherie_Margaret explained to newer members: "gray is the one who fucked maybe over" and "trust if you were here for maybe's hack because of gray it makes more sense in reverse." blake69's Invoice re-submission was discussed as the community's way of still funding the Marfa bar despite the drain — though some questioned whether a troll card would be more fitting for a second funding attempt.</p>
+    <p style="color:#ccc;font-size:0.98rem;line-height:1.6;">The wallet drain story reached wider bar conversation this week. Sherie_Margaret explained to newer members: "gray is the one who fucked maybe over" and "trust if you were here for maybe's hack because of gray it makes more sense in reverse." blake69's Invoice re-submission was discussed as the community's way of still funding the Marfa bar despite the drain — though some questioned whether a troll card would be more fitting for a second funding attempt.</p>
 
     <div class="subsection">By the numbers</div>
     <div class="stat-line">12,286 drops · 874 GMs · 206 unique voices · Sep 1–7</div>
