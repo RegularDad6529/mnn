@@ -3,6 +3,5 @@
   <!-- Zigzag mark: 344px wide, centered with 18px margins in 380px viewBox -->
   <path d="M 18 100 L 18 20 L 90 100 L 162 20 L 162 100 L 162 20 L 262 100 L 262 20 L 362 100 L 362 20" stroke="#e8a200" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
   <!-- Centered text below -->
-  <text x="190" y="155" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="28" font-weight="700" fill="#e8a200" letter-spacing="6">MNN</text>
-  <text x="190" y="180" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="400" fill="#aaa" letter-spacing="2">MEME NETWORK NEWS</text>
+  <text x="190" y="165" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="400" fill="#aaa" letter-spacing="3">MEME NETWORK NEWS</text>
 </svg>
