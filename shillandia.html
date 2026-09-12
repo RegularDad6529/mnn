@@ -9,7 +9,7 @@
     --bg: #0a0a0a; --surface: #141414; --border: #222;
     --accent: #e8a200; --text: #e0e0e0; --muted: #888;
     --dim: #555; --green: #4caf50; --red: #f44336; --orange: #ff9800;
-    --mono: 'SF Mono', 'Fira Code', monospace;
+    --blue: #6dc4ff; --mono: 'SF Mono', 'Fira Code', monospace;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, sans-serif; line-height: 1.6; }
@@ -19,25 +19,24 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
 .back-link { color: var(--muted); font-size: 0.85rem; margin-bottom: 1.5rem; display: inline-block; text-decoration: none; }
 .back-link:hover { color: var(--accent); }
 
-.legend { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; font-size: 0.75rem; color: var(--muted); font-family: var(--mono); }
-.legend-item { display: flex; align-items: center; gap: 0.4rem; }
-.legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+/* Tabs */
+.tabs { display: flex; gap: 0; border-bottom: 2px solid var(--border); margin-bottom: 1.5rem; flex-wrap: wrap; }
+.tab { padding: 0.6rem 1.2rem; font-size: 0.9rem; font-weight: 600; color: var(--muted); cursor: pointer; border: none; background: none; border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; font-family: inherit; }
+.tab:hover { color: #ccc; }
+.tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab .tab-count { font-size: 0.72rem; color: var(--dim); font-weight: 400; margin-left: 0.25rem; }
+.tab.active .tab-count { color: var(--muted); }
 
-.section { margin-bottom: 2.5rem; }
-.section-header { font-size: 1.15rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-bottom: 1rem; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
-.section-header.hot { color: var(--orange); border-bottom-color: var(--orange); }
-.section-header.editions { color: var(--accent); border-bottom-color: var(--accent); }
-.section-header.oneofone { color: #6dc4ff; border-bottom-color: #6dc4ff; }
-.section-header.sold { color: var(--red); border-bottom-color: var(--red); }
-.section-header.upcoming { color: var(--muted); border-bottom-color: var(--muted); }
-.section-count { font-size: 0.8rem; color: var(--dim); font-weight: 400; }
-.sort-note { font-size: 0.72rem; color: var(--dim); font-family: var(--mono); margin-left: auto; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
+.sort-note { font-size: 0.72rem; color: var(--dim); font-family: var(--mono); margin-bottom: 1rem; }
+
+/* Drop cards */
 .drop-card { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.75rem 1rem; margin-bottom: 0.5rem; display: flex; align-items: flex-start; gap: 0.75rem; transition: border-color 0.2s; }
 .drop-card:hover { border-color: var(--accent); }
 .drop-card.hot { border-left: 3px solid var(--orange); }
 .drop-card.live { border-left: 3px solid var(--green); }
-.drop-card.ended { border-left: 3px solid var(--red); opacity: 0.5; }
 .drop-card.sold { border-left: 3px solid var(--red); opacity: 0.5; }
 .drop-card.upcoming { border-left: 3px solid var(--accent); }
 
@@ -72,12 +71,16 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
 .status-tag.upcoming { background: rgba(232,162,0,0.15); color: var(--accent); }
 .status-tag.announced { background: rgba(136,136,136,0.15); color: var(--muted); }
 
+.date-pill { font-size: 0.68rem; font-family: var(--mono); background: rgba(232,162,0,0.1); color: var(--accent); padding: 0.15rem 0.5rem; border-radius: 10px; margin-left: 0.4rem; border: 1px solid rgba(232,162,0,0.2); }
+
+.empty-state { text-align: center; padding: 2rem; color: var(--dim); font-size: 0.9rem; }
+
 .footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.78rem; color: var(--dim); font-family: var(--mono); }
 .footer a { color: var(--muted); text-decoration: none; }
 
 @media (max-width: 600px) {
     .mint-grid { grid-template-columns: auto auto; }
-    .sort-note { display: none; }
+    .tab { padding: 0.5rem 0.8rem; font-size: 0.82rem; }
 }
 </style>
 </head>
@@ -85,20 +88,21 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
 <div class="container">
     <a href="../index.html" class="back-link">← Back to MNN</a>
     <h1>📣 Shillandia Drop Calendar</h1>
-    <div class="subtitle">Active and upcoming drops from the 6529 Shillandia wave · Updated Sep 12, 2026 · 1,579 drops scanned · Mint data live from Transient, Manifold &amp; SuperRare</div>
+    <div class="subtitle">Active and upcoming drops from the 6529 Shillandia wave · Updated Sep 12, 2026 · 1,579 drops scanned · Mint data from Transient, Manifold &amp; SuperRare</div>
 
-    <div class="legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#ff9800;"></div> 🔥 Almost Sold Out</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#4caf50;"></div> Live</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#f44336;"></div> Sold / Ended</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#e8a200;"></div> Upcoming</div>
-        <div class="legend-item">L## = artist level</div>
+    <!-- Tabs -->
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('editions')">Editions <span class="tab-count">45</span></button>
+        <button class="tab" onclick="showTab('oneofone')">1/1s <span class="tab-count">6</span></button>
+        <button class="tab" onclick="showTab('upcoming')">Upcoming <span class="tab-count">3</span></button>
+        <button class="tab" onclick="showTab('sold')">Sold Out <span class="tab-count">4</span></button>
     </div>
 
-    <!-- ============ 🔥 ALMOST SOLD OUT ============ -->
-    <div class="section">
-        <div class="section-header hot">🔥 Almost Sold Out <span class="section-count">— 1 drop · 75%+ minted</span><span class="sort-note">sorted by % minted</span></div>
+    <!-- ============ EDITIONS TAB ============ -->
+    <div id="editions" class="tab-content active">
+        <div class="sort-note">Sorted by % minted ↓ — drops closest to selling out at top. Drops without mint count sorted by price ↑ at the bottom.</div>
 
+        <!-- 91% -->
         <div class="drop-card hot">
             <div class="level-badge mid">L38</div>
             <div class="drop-info">
@@ -111,14 +115,9 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
                     <span class="mint-label">Remaining</span><span class="mint-value hot">1</span>
                 </div>
                 <div class="progress-bar"><div class="progress-fill hot" style="width:91%"></div></div>
-                <div class="drop-platform">Transient · 91% minted — only 1 left!</div>
+                <div class="drop-platform">Transient · 🔥 91% minted — only 1 left!</div>
             </div>
         </div>
-    </div>
-
-    <!-- ============ LIVE EDITIONS ============ -->
-    <div class="section">
-        <div class="section-header editions">Live Editions <span class="section-count">— 27 drops with mint data</span><span class="sort-note">sorted by % minted ↓</span></div>
 
         <!-- 52% -->
         <div class="drop-card live">
@@ -239,7 +238,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 30% Supersmash -->
+        <!-- 30% -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -510,11 +509,11 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
                 <div class="drop-platform">Transient</div>
             </div>
         </div>
-    </div>
 
-    <!-- ============ LIVE EDITIONS — NO MINT COUNT ============ -->
-    <div class="section">
-        <div class="section-header editions">Live Editions — Mint Count Unavailable <span class="section-count">— 18 drops</span><span class="sort-note">sorted by price ↑</span></div>
+        <!-- --- NO MINT COUNT --- -->
+        <div style="border-top: 1px solid var(--border); margin: 1rem 0 0.5rem 0; padding-top: 0.5rem;">
+            <div class="sort-note" style="margin-bottom: 0.5rem;">↓ No mint count available — sorted by price ↑</div>
+        </div>
 
         <!-- 0.0042 -->
         <div class="drop-card live">
@@ -532,7 +531,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0060 Dream of Freedom -->
+        <!-- 0.0060 ×2 -->
         <div class="drop-card live">
             <div class="level-badge low">L12</div>
             <div class="drop-info">
@@ -548,7 +547,6 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0060 Religious Machinery -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -564,7 +562,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0069 Social Media -->
+        <!-- 0.0069 -->
         <div class="drop-card live">
             <div class="level-badge mid">L31</div>
             <div class="drop-info">
@@ -580,7 +578,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0090 Cabal -->
+        <!-- 0.0090 ×2 -->
         <div class="drop-card live">
             <div class="level-badge mid">L34</div>
             <div class="drop-info">
@@ -596,7 +594,6 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0090 Fishermen -->
         <div class="drop-card live">
             <div class="level-badge low">L23</div>
             <div class="drop-info">
@@ -612,7 +609,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0100 Ainaliora -->
+        <!-- 0.0100 ×7 -->
         <div class="drop-card live">
             <div class="level-badge low">L6</div>
             <div class="drop-info">
@@ -628,7 +625,6 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0100 Nekomaru -->
         <div class="drop-card live">
             <div class="level-badge mid">L22</div>
             <div class="drop-info">
@@ -644,7 +640,6 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0100 junrott -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -660,7 +655,6 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0100 MdYaqub ×3 -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -706,7 +700,6 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0100 mhankumiz -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -722,7 +715,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0120 Monke Business -->
+        <!-- 0.0120 -->
         <div class="drop-card live">
             <div class="level-badge mid">L34</div>
             <div class="drop-info">
@@ -738,7 +731,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0130 Grims -->
+        <!-- 0.0130 -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -754,7 +747,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0180 flostitanarum -->
+        <!-- 0.0180 -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -770,7 +763,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0240 barokah -->
+        <!-- 0.0240 -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -786,7 +779,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0369 Guardians -->
+        <!-- 0.0369 -->
         <div class="drop-card live">
             <div class="level-badge mid">L26</div>
             <div class="drop-info">
@@ -802,7 +795,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0653 M3M3DOLLAR -->
+        <!-- 0.0653 -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -818,7 +811,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0700 Blue Bouquet -->
+        <!-- 0.0700 -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -834,7 +827,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.1000 Austrian Paint -->
+        <!-- 0.1000 ×2 -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -850,7 +843,6 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.1000 UFO -->
         <div class="drop-card live">
             <div class="level-badge low">L19</div>
             <div class="drop-info">
@@ -867,11 +859,10 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
         </div>
     </div>
 
-    <!-- ============ LIVE 1/1s ============ -->
-    <div class="section">
-        <div class="section-header oneofone">Live 1/1s <span class="section-count">— 3 drops</span><span class="sort-note">sorted by price ↑</span></div>
+    <!-- ============ 1/1s TAB ============ -->
+    <div id="oneofone" class="tab-content">
+        <div class="sort-note">Sorted by price ↑ — cheapest 1/1 entry first</div>
 
-        <!-- 0.0500 STRAY -->
         <div class="drop-card live">
             <div class="level-badge mid">L31</div>
             <div class="drop-info">
@@ -887,7 +878,6 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.0500 Rancid Slug -->
         <div class="drop-card live">
             <div class="level-badge mid">L31</div>
             <div class="drop-info">
@@ -903,7 +893,6 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             </div>
         </div>
 
-        <!-- 0.1000 Gules -->
         <div class="drop-card live">
             <div class="level-badge low">L6</div>
             <div class="drop-info">
@@ -920,9 +909,59 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
         </div>
     </div>
 
-    <!-- ============ SOLD / ENDED ============ -->
-    <div class="section">
-        <div class="section-header sold">Sold / Ended <span class="section-count">— 4 drops · archive</span></div>
+    <!-- ============ UPCOMING TAB ============ -->
+    <div id="upcoming" class="tab-content">
+        <div class="sort-note">Sorted by artist level ↓. Dates announced when available.</div>
+
+        <div class="drop-card upcoming">
+            <div class="level-badge mid">L37</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/HasanGoktepe">@HasanGoktepe</a> <span class="status-tag upcoming">Upcoming</span> <span class="date-pill">Date TBD</span></div>
+                <div class="drop-title">1/1/50 Collection</div>
+                <div class="mint-grid">
+                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">50</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                </div>
+                <div class="drop-platform">NINFA · highest-level artist on the board (L37) · Announced Sep 5</div>
+            </div>
+        </div>
+
+        <div class="drop-card upcoming">
+            <div class="level-badge mid">L27</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/Pseudonym478">@Pseudonym478</a> <span class="status-tag upcoming">Upcoming</span> <span class="date-pill">Date TBD</span></div>
+                <div class="drop-title">New collection (name TBD)</div>
+                <div class="mint-grid">
+                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                </div>
+                <div class="drop-platform">Platform TBD · 6529 meme card holders whitelisted · Announced Sep 10</div>
+            </div>
+        </div>
+
+        <div class="drop-card upcoming">
+            <div class="level-badge low">L24</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/Mistershot">@Mistershot</a> <span class="status-tag announced">Announced</span> <span class="date-pill">Date TBD</span></div>
+                <div class="drop-title">First generative PFP project</div>
+                <div class="mint-grid">
+                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                </div>
+                <div class="drop-platform">Platform TBD · generative PFP · Announced Sep 1</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============ SOLD OUT TAB ============ -->
+    <div id="sold" class="tab-content">
+        <div class="sort-note">Archive of ended and sold drops</div>
 
         <div class="drop-card sold">
             <div class="level-badge mid">L27</div>
@@ -985,61 +1024,20 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
         </div>
     </div>
 
-    <!-- ============ UPCOMING ============ -->
-    <div class="section">
-        <div class="section-header upcoming">Upcoming — Date TBD <span class="section-count">— 3 drops</span></div>
-
-        <div class="drop-card upcoming">
-            <div class="level-badge mid">L37</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/HasanGoktepe">@HasanGoktepe</a> <span class="status-tag upcoming">Upcoming</span></div>
-                <div class="drop-title">1/1/50 Collection</div>
-                <div class="mint-grid">
-                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
-                    <span class="mint-label">Edition</span><span class="mint-value">50</span>
-                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
-                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
-                </div>
-                <div class="drop-platform">NINFA · highest-level artist on the board (L37)</div>
-            </div>
-        </div>
-
-        <div class="drop-card upcoming">
-            <div class="level-badge mid">L27</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Pseudonym478">@Pseudonym478</a> <span class="status-tag upcoming">Upcoming</span></div>
-                <div class="drop-title">New collection (name TBD)</div>
-                <div class="mint-grid">
-                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
-                    <span class="mint-label">Edition</span><span class="mint-value">TBD</span>
-                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
-                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
-                </div>
-                <div class="drop-platform">Platform TBD · 6529 meme card holders whitelisted</div>
-            </div>
-        </div>
-
-        <div class="drop-card upcoming">
-            <div class="level-badge low">L24</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Mistershot">@Mistershot</a> <span class="status-tag announced">Announced</span></div>
-                <div class="drop-title">First generative PFP project</div>
-                <div class="mint-grid">
-                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
-                    <span class="mint-label">Edition</span><span class="mint-value">TBD</span>
-                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
-                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
-                </div>
-                <div class="drop-platform">Platform TBD · generative PFP</div>
-            </div>
-        </div>
-    </div>
-
     <div class="footer">
         Source: <a href="https://6529.io/waves/c143d8f7-d04f-41ec-b0fd-377e61512d71">Shillandia wave</a> · 1,579 drops scanned (Sep 1–12)<br>
         Mint data: Transient (embedded JSON) · Manifold (public API + on-chain <code>totalSupply</code>) · SuperRare (on-chain <code>ownerOf</code> + page scrape)<br>
         RPC: eth.drpc.org · Artist levels from 6529.io · Published by RegularDad &amp; <a href="https://6529.io/RegularDad">TheManager</a>
     </div>
 </div>
+
+<script>
+function showTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+}
+</script>
 </body>
 </html>
