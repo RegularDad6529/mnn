@@ -44,6 +44,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
 .level-badge.high { border-color: var(--accent); color: var(--accent); }
 .level-badge.mid { border-color: var(--muted); color: var(--muted); }
 .level-badge.low { border-color: var(--dim); color: var(--dim); }
+        .level-badge.external { border-color: #555; color: #888; background: #1a1a1a; }
 
 .drop-info { flex: 1; min-width: 0; }
 .drop-artist { font-size: 0.9rem; font-weight: 600; color: #ccc; display: flex; align-items: center; flex-wrap: wrap; gap: 0.3rem; }
@@ -94,7 +95,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
     <div class="tabs">
         <button class="tab active" onclick="showTab('editions')">Editions <span class="tab-count">45</span></button>
         <button class="tab" onclick="showTab('oneofone')">1/1s <span class="tab-count">6</span></button>
-        <button class="tab" onclick="showTab('upcoming')">Upcoming <span class="tab-count">3</span></button>
+        <button class="tab" onclick="showTab('upcoming')">Upcoming <span class="tab-count">4</span></button>
         <button class="tab" onclick="showTab('sold')">Sold Out <span class="tab-count">4</span></button>
     </div>
 
@@ -958,6 +959,21 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
                     <span class="mint-label">Remaining</span><span class="mint-value">—</span>
                 </div>
                 <div class="drop-platform">Platform TBD · generative PFP · Announced Sep 1</div>
+            </div>
+        </div>
+
+        <div class="drop-card upcoming">
+            <div class="level-badge external">EXT</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://x.com/MeebitCompany">@MeebitCompany</a> <span class="status-tag upcoming">Upcoming</span> <span class="date-pill">Sep 14, 1pm EDT</span></div>
+                <div class="drop-title"><a href="https://x.com/meebitcompany/status/2098559464676749605">Nightshades</a> · NFT Mint &amp; Faction Tokens</div>
+                <div class="mint-grid">
+                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">TBD</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">—</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">—</span>
+                </div>
+                <div class="drop-platform">External · Meebits ecosystem · shared by @RegularDad</div>
             </div>
         </div>
     </div>
