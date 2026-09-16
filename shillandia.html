@@ -104,7 +104,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
         <button class="tab" onclick="showTab('editions')">Editions <span class="tab-count">66</span></button>
         <button class="tab" onclick="showTab('oneofone')">1/1s <span class="tab-count">104</span></button>
         <button class="tab active" onclick="showTab('upcoming')">Upcoming <span class="tab-count">4</span></button>
-        <button class="tab" onclick="showTab('sold')">Sold Out <span class="tab-count">25</span></button>
+        <button class="tab" onclick="showTab('sold')">Sold Out <span class="tab-count">26</span></button>
     </div>
 
     <!-- ============ EDITIONS TAB ============ -->
@@ -117,19 +117,19 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
             <button class="sort-btn" onclick="sortCards('editions','edition')">Edition Size</button>
         </div>
 
-        <!-- NEW: IslandTreasures -->
-        <div data-level="26" data-price="0.15" data-edition="9" class="drop-card live">
-            <div class="level-badge mid">L26</div>
+        <!-- NEW Sep 16: Bird of Joy by stardust -->
+        <div data-level="42" data-price="0.005" data-edition="5" class="drop-card live">
+            <div class="level-badge high">L42</div>
             <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/ArtFromAbove">@ArtFromAbove</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://opensea.io/collection/islandtreasures">IslandTreasures</a></div>
+                <div class="drop-artist"><a href="https://6529.io/stardust">@stardust</a> <span class="status-tag live">Live</span></div>
+                <div class="drop-title"><a href="https://www.transient.xyz/mint/bird-of-joy">Bird of Joy</a></div>
                 <div class="mint-grid">
-                    <span class="mint-label">Price</span><span class="mint-value">0.150 ETH (floor)</span>
-                    <span class="mint-label">Edition</span><span class="mint-value">9 items</span>
-                    <span class="mint-label">Minted</span><span class="mint-value">9 / 9</span>
-                    <span class="mint-label">Status</span><span class="mint-value">Listed</span>
+                    <span class="mint-label">Price</span><span class="mint-value">0.0050 ETH</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">5</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">0 / 5</span>
+                    <span class="mint-label">Remaining</span><span class="mint-value">5</span>
                 </div>
-                <div class="drop-platform">OpenSea · drone photography · landscapes from above</div>
+                <div class="drop-platform">Transient · dream-inspired · from a dream of a tiny insect that became a glowing bird</div>
             </div>
         </div>
 
@@ -3240,6 +3240,22 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
                 </div>
                 <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
                 <div class="drop-platform">Transient · 30% minted</div>
+            </div>
+        </div>
+
+        <!-- moved from editions Sep 16: IslandTreasures (9/9 sold out) -->
+        <div data-level="26" data-price="0.15" data-edition="9" class="drop-card sold">
+            <div class="level-badge mid">L26</div>
+            <div class="drop-info">
+                <div class="drop-artist"><a href="https://6529.io/ArtFromAbove">@ArtFromAbove</a> <span class="status-tag sold">Sold</span></div>
+                <div class="drop-title"><a href="https://opensea.io/collection/islandtreasures">IslandTreasures</a></div>
+                <div class="mint-grid">
+                    <span class="mint-label">Price</span><span class="mint-value sold-out">0.150 ETH (floor)</span>
+                    <span class="mint-label">Edition</span><span class="mint-value">9 items</span>
+                    <span class="mint-label">Minted</span><span class="mint-value">9 / 9</span>
+                    <span class="mint-label">Status</span><span class="mint-value">All listed</span>
+                </div>
+                <div class="drop-platform">OpenSea · drone photography · all 9 items minted</div>
             </div>
         </div>
 
