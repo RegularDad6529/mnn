@@ -6277,6 +6277,29 @@ document.addEventListener('DOMContentLoaded', function() {
         cards.reverse();
         cards.forEach(function(c) { tab.appendChild(c); });
     });
+
+    // Upcoming tab: sort by date proximity (closest date first, TBD at bottom)
+    var upcomingTab = document.getElementById('upcoming');
+    if (upcomingTab) {
+        var cards = Array.from(upcomingTab.querySelectorAll('.drop-card'));
+        cards.sort(function(a, b) {
+            var aDate = a.getAttribute('data-date') || 'Date TBD';
+            var bDate = b.getAttribute('data-date') || 'Date TBD';
+            var aTBD = (aDate === 'Date TBD' || aDate === '');
+            var bTBD = (bDate === 'Date TBD' || bDate === '');
+            // TBD cards go to bottom
+            if (aTBD && !bTBD) return 1;
+            if (!aTBD && bTBD) return -1;
+            if (aTBD && bTBD) return 0;
+            // Both have dates: parse and compare (earlier date = closer = first)
+            var aTime = new Date(aDate).getTime();
+            var bTime = new Date(bDate).getTime();
+            if (isNaN(aTime)) aTime = Infinity;
+            if (isNaN(bTime)) bTime = Infinity;
+            return aTime - bTime;
+        });
+        cards.forEach(function(c) { upcomingTab.appendChild(c); });
+    }
 });
 </script>
 </body>
