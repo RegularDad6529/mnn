@@ -102,7 +102,7 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
     <!-- Tabs -->
     <div class="tabs">
         <button class="tab" onclick="showTab('editions')">Editions <span class="tab-count">170</span></button>
-        <button class="tab" onclick="showTab('oneofone')">1/1s <span class="tab-count">500</span></button>
+        <button class="tab" onclick="showTab('oneofone')">1/1s <span class="tab-count">499</span></button>
         <button class="tab" onclick="showTab('collections')">Collections <span class="tab-count">29</span></button>
         <button class="tab active" onclick="showTab('upcoming')">Upcoming <span class="tab-count">11</span></button>
         <button class="tab" onclick="showTab('sold')">Sold Out <span class="tab-count">31</span></button>
@@ -9687,20 +9687,6 @@ h1 { font-size: 1.5rem; color: var(--accent); margin-bottom: 0.25rem; }
                 <div class="drop-platform">Manifold · 1/1</div>
             </div>
         </div>
-        <!-- auto-added Sep 25: Overtime by Skitchism (drop #1462079) -->
-        <div data-level="44" data-price="0" data-edition="1" data-date="Sep 25, 2026" class="drop-card live">
-            <div class="level-badge mid">L44</div>
-            <div class="drop-info">
-                <div class="drop-artist"><a href="https://6529.io/Skitchism">@Skitchism</a> <span class="status-tag live">Live</span></div>
-                <div class="drop-title"><a href="https://www.transient.xyz/nfts/ethereum/0xb08894ab5f4ccb8164d7f383681270b9d03456f7/4">Overtime</a></div>
-                <div class="mint-grid">
-                    <span class="mint-label">Price</span><span class="mint-value">TBD</span>
-                    <span class="mint-label">Edition</span><span class="mint-value">1/1</span>
-                    <span class="mint-label">Platform</span><span class="mint-value">Transient Labs</span>
-                </div>
-                <div class="drop-platform">Transient Labs · 1/1</div>
-            </div>
-        </div>
         <!-- auto-added Sep 25: It is a mystic by ArijitMondal (drop #1461958) -->
         <div data-level="22" data-price="0" data-edition="1" data-date="Sep 25, 2026" class="drop-card live">
             <div class="level-badge mid">L22</div>
@@ -11255,11 +11241,14 @@ function sortCards(tabId, sortBy) {
         } else if (sortBy === 'edition') {
             av = parseInt(a.getAttribute('data-edition') || 0);
             bv = parseInt(b.getAttribute('data-edition') || 0);
-        } else { // date (newest = most recently added = last in DOM order)
-            // Use DOM order as proxy for newest: later in DOM = newer
-            // We'll use the original index
-            av = Array.from(tab.querySelectorAll('.drop-card')).indexOf(a);
-            bv = Array.from(tab.querySelectorAll('.drop-card')).indexOf(b);
+        } else { // date — sort by actual data-date attribute (real mint/post date)
+            var aDate = a.getAttribute('data-date') || '';
+            var bDate = b.getAttribute('data-date') || '';
+            // Parse to timestamp; cards without data-date go to bottom (newest sort) or top (oldest)
+            av = new Date(aDate).getTime();
+            bv = new Date(bDate).getTime();
+            if (isNaN(av)) av = -Infinity; // no date = oldest possible
+            if (isNaN(bv)) bv = -Infinity;
         }
         
         if (sortBy === 'price' || sortBy === 'edition') {
@@ -11271,7 +11260,7 @@ function sortCards(tabId, sortBy) {
             if (currentDir === 'asc') return av - bv;
             return bv - av;
         } else {
-            // Date: descending = newest first (later in DOM = newer)
+            // Date: descending = newest first (higher timestamp = newer)
             if (currentDir === 'desc') return bv - av;
             return av - bv;
         }
@@ -11281,14 +11270,21 @@ function sortCards(tabId, sortBy) {
     cards.forEach(function(c) { tab.appendChild(c); });
 }
 
-// Default sort: newest (DOM order = newest first, reversed since later = newer)
+// Default sort: newest by actual data-date (highest timestamp first, no-date cards at bottom)
 document.addEventListener('DOMContentLoaded', function() {
     ['editions', 'oneofone'].forEach(function(tabId) {
         var tab = document.getElementById(tabId);
         if (!tab) return;
         var cards = Array.from(tab.querySelectorAll('.drop-card'));
-        // Reverse so newest (last added) is first
-        cards.reverse();
+        cards.sort(function(a, b) {
+            var aDate = a.getAttribute('data-date') || '';
+            var bDate = b.getAttribute('data-date') || '';
+            var aTime = new Date(aDate).getTime();
+            var bTime = new Date(bDate).getTime();
+            if (isNaN(aTime)) aTime = -Infinity; // no date = goes to bottom
+            if (isNaN(bTime)) bTime = -Infinity;
+            return bTime - aTime; // newest first
+        });
         cards.forEach(function(c) { tab.appendChild(c); });
     });
 
