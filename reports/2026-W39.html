@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MNN · Issue #4 · Week 39 · Sep 21-27, 2026</title>
+<style>
+:root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --border: #1e1e1e;
+    --text: #e0e0e0;
+    --muted: #aaa;
+    --dim: #888;
+    --accent: #e8a200;
+    --accent-dim: #b88000;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+.container { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+.report-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.report-header .logo { margin-bottom: 1rem; }
+.report-header .logo svg { max-width: 240px; height: auto; }
+.report-header .meta { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+.report-header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.3; }
+.report-header .date-range { color: var(--muted); font-size: 0.95rem; margin-top: 0.25rem; }
+.back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--muted); font-size: 0.85rem; text-decoration: none; font-family: var(--mono); }
+.back-link:hover { color: var(--accent); }
+
+.toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 2.5rem; }
+.toc .toc-label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.toc ul { list-style: none; }
+.toc li { padding: 0.25rem 0; }
+.toc a { color: #ccc; text-decoration: none; font-size: 0.9rem; }
+.toc a:hover { color: var(--accent); }
+
+.section { margin-bottom: 2.5rem; }
+.section-title { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.section-title a { color: var(--accent); text-decoration: none; }
+
+.headline { margin-bottom: 1.5rem; }
+.headline h3 { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; line-height: 1.35; }
+.headline p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
+.headline p a { color: var(--accent); text-decoration: underline; }
+
+.story-list { list-style: none; }
+.story-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+.story-list li:last-child { border-bottom: none; }
+.story-list .author { color: var(--accent); font-weight: 600; }
+.story-list .title { color: #ccc; font-weight: 600; }
+.story-list .desc { color: #bbb; font-size: 0.92rem; line-height: 1.55; }
+
+.subsection { font-size: 0.9rem; font-weight: 600; color: #999; margin: 1.25rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--mono); }
+
+.no-movement { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; }
+.no-movement ul { list-style: none; }
+.no-movement li { padding: 0.3rem 0; color: #bbb; font-size: 0.9rem; }
+.no-movement li strong { color: #ccc; }
+
+.stat-line { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 4px; padding: 0.75rem 1.25rem; margin: 1.5rem 0; font-family: var(--mono); font-size: 0.85rem; color: #ccc; }
+
+.bottom-line { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-top: 2rem; }
+.bottom-line .label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.bottom-line p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
+
+.card-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+.card-table th { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 2px solid var(--border); color: var(--accent); font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.card-table td { padding: 0.7rem 0.5rem; border-bottom: 1px solid var(--border); color: #bbb; }
+.card-table td.card-num { color: var(--dim); font-family: var(--mono); font-size: 0.82rem; }
+.card-table a.card-link { color: var(--accent); text-decoration: underline; font-weight: 600; }
+.card-table a.card-link:hover { color: #fff; }
+.card-table .view-btn { display: inline-block; padding: 0.15rem 0.5rem; border: 1px solid var(--accent-dim); border-radius: 3px; color: var(--accent); font-family: var(--mono); font-size: 0.78rem; text-decoration: none; }
+.card-table .view-btn:hover { background: var(--accent); color: #000; }
+.card-table .status-minting { color: #e8a200; }
+.card-table .status-done { color: #4a4; }
+
+.quote-block { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 4px; padding: 1rem 1.25rem; margin: 1rem 0; }
+.quote-block p { color: #ccc; font-size: 0.95rem; line-height: 1.6; font-style: italic; }
+.quote-block .attribution { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; font-style: normal; }
+
+.footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--dim); font-size: 0.8rem; }
+.footer a { color: var(--muted); text-decoration: none; }
+.footer a:hover { color: var(--accent); }
+
+p.body-text { color: #ccc; font-size: 0.98rem; line-height: 1.6; margin-bottom: 1rem; }
+p.body-text a { color: var(--accent); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a class="back-link" href="../index.html">&#8592; Back to MNN</a>
+
+<div class="report-header">
+    <div class="logo">
+        <svg width="240" height="90" viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 30 120 L 30 30 L 102 120 L 174 30 L 174 120 L 174 30 L 274 120 L 274 30 L 374 120 L 374 30" stroke="#e8a200" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <div class="meta">Issue #4 · Week 39</div>
+    <h1>Meme Network News</h1>
+    <div class="date-range">Sep 21-27, 2026</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+    <div class="toc-label">In This Issue</div>
+    <ul>
+        <li><a href="#do-something">📺 Do Something</a></li>
+        <li><a href="#dev-report">🛠️ Dev Report</a></li>
+        <li><a href="#newest-memes">🖼️ Newest Memes</a></li>
+        <li><a href="#museum">🏛️ 6529 Network Museum</a></li>
+        <li><a href="#shillandia">📣 Shillandia</a></li>
+        <li><a href="#socials">🍺 Socials</a></li>
+    </ul>
+</div>
+
+<!-- DO SOMETHING -->
+<div class="section" id="do-something">
+    <div class="section-title">📺 Do Something: Community Action Tracker</div>
+
+    <div class="headline">
+        <h3>CasaNUA SURVIVE exhibition hits #1 on Main Stage, two MS winners mint cards</h3>
+        <p>The biggest story this week is CasaNUA's "SURVIVE at Dominio PubliCC0" submission, which entered the Main Stage leaderboard on Sep 24 and rocketed to rank #1 by Sep 27 with 53.9M TDH and 40 voters. The submission is a fundraiser for the Survive-themed meme card exhibition that opened Sep 24 at CasaNUA's Dominio PubliCC0 gallery in São Paulo, featuring 42 Survive meme cards from seasons 2 through 16, with a soundtrack by Eric Pan for the Formosa Vinyl Record. Scored 13/25, it is the highest-scored active submission on the board.</p>
+    </div>
+
+    <div class="subsection">Two new MS winners</div>
+    <p class="body-text">SummerMaxi's "Network State Conference 2026" won Main Stage on Sep 23 with 66.6M TDH and 55 voters. The card minted as <a href="https://6529.io/the-memes/553">#553</a> and completed minting on Sep 26 (closing edition size: 151). The funds will send SummerMaxi to the Network State Conference to represent 6529 IRL and onboard 100 new people. Two days later, smpsmyth's "Patience is a Vinetree" won Main Stage on Sep 26 with 64.9M TDH and 60 voters. The card is pending mint. The project is a 3-year R&D effort to brew non-alcoholic red wine from the grape up, with mint funds going to a final lab trial at the Australian Wine Research Institute and a provisional patent filing. Card holders will be eligible to redeem a physical wine package with a 6529 limited edition label.</p>
+
+    <div class="subsection">Rare Pepe acquisition wave goes live</div>
+    <p class="body-text">Following punk6529's "Permanent Pepe" card #551, the Rare Pepe acquisition wave is now active. DarrenSRS proposed the first acquisition: GOXPEPE for 0.25 ETH. tito also submitted a proposal after digging into Rare Pepe history. The wave is open for community suggestions on which OG Rare Pepe cards to acquire for the 6529 Network Museum, with funds coming from card #551 artist proceeds.</p>
+
+    <div class="subsection">Antifragile Bazaar physical books complete</div>
+    <p class="body-text">Zar and dsoeirosanches's "The Antifragile Bazaar" (Card #500) officially completed this week. Physical Edition 1 books are printed and ready to ship. Zar announced on X, asking minters to confirm shipping addresses. The book includes interviews with HugoFaz, punk8164, gratusmasculus, aRegularDad, zoku_nft, and 0xCuttlefish. The electronic version (PDF, EPUB on Arweave, interactive HTML) was already complete.</p>
+
+    <div class="subsection">New submissions this week</div>
+    <ul class="story-list">
+        <li><span class="author">@CasaNUA</span> · <span class="title">"SURVIVE at Dominio PubliCC0":</span> <span class="desc">IRL exhibition of 42 Survive meme cards at Dominio PubliCC0 gallery in São Paulo. Fundraiser for public gallery operations. Scored 13/25. Now rank #1 on MS with 53.9M TDH.</span></li>
+        <li><span class="author">@Het_Patel</span> · <span class="title">"UNFALLEN: BEYOND":</span> <span class="desc">Cinematic concept teaser for a 5-10 minute short film set in 2028, exploring AI infrastructure and resource pressure. $30K raise for 18-month production. Scored 7/25. Rank #66 with 677K TDH.</span></li>
+    </ul>
+
+    <div class="subsection">Also in progress</div>
+    <ul class="story-list">
+        <li><span class="author">@CasaNUA</span> · <span class="title">"PEBBLES at Dominio PubliCC0" (Card #516):</span> <span class="desc">Gallery operational. No new exhibition updates this week beyond the SURVIVE show opening.</span></li>
+        <li><span class="author">@boredsurgeon + G9ralt</span> · <span class="title">"Freedom to Research" (Card #447):</span> <span class="desc">No significant updates this week.</span></li>
+        <li><span class="author">@BrynnAlise</span> · <span class="title">"Network for Good" (Card #478):</span> <span class="desc">No significant updates this week.</span></li>
+        <li><span class="author">@JoelleLB</span> · <span class="title">"Codex Obscura" (Card #483):</span> <span class="desc">No significant updates this week.</span></li>
+        <li><span class="author">@Zigmarillion</span> · <span class="title">"Network State of Mind" (Card #499):</span> <span class="desc">No significant updates this week.</span></li>
+        <li><span class="author">@6529er + 6529</span> · <span class="title">"Keys and Gates" (Card #493):</span> <span class="desc">Payments confirmed to all winning artists. Documentation system bug fixes deployed. See Dev Report for details.</span></li>
+        <li><span class="author">@Gray</span> · <span class="title">"Burn Mechanism" (Card #541):</span> <span class="desc">No significant updates this week.</span></li>
+        <li><span class="author">@RegularDad</span> · <span class="title">"Chromie Squiggle Museum Acquisition" (Card #550):</span> <span class="desc">SquiggleDAO nominated to help select. Floor went above budget temporarily; reno99 placing strategic bids. See Museum for details.</span></li>
+    </ul>
+
+    <div class="stat-line">📊 17 total AA submissions tracked · 11 in progress · 11 completed · 5 won MS · 7 removed</div>
+</div>
+
+<!-- DEV REPORT -->
+<div class="section" id="dev-report">
+    <div class="section-title">🛠️ Dev Report: Follow The Repo</div>
+
+    <div class="headline">
+        <h3>Release Coordinator goes live, newsletter ships, NFT previews fixed</h3>
+        <p>It was a heavy week for development, with 100 merged PRs across the 6529-Collections organization. simo6529's Release Coordinator bus reached production after weeks of sandbox testing: staging and production deploys were exercised through deliberate failure-and-recovery runs, DCO sign-off automation was added, and the first real product staging releases went through. simo also built the first version of a 6529 Bus Chat profile with an encrypted wallet. prxt6529 focused on reliability: recovering stalled NFT preview jobs, fixing Manifold and SuperRare metadata resolution, serializing moderation capture to prevent deadlocks, fixing OG preview 404s, and cleaning up mobile homepage artwork spacing. GelatoGenesis shipped a production daily public-wave newsletter, retired the eligibility materialisation infrastructure after discovering it would take weeks to run against 1M+ profiles, and streamlined EMMA sign-in. ragnep improved Quick Vote for video playback, fixed Meme Lab pagination, made large images safer to browse on mobile, and improved ReMeme submission and mint calendar artwork access.</p>
+    </div>
+
+    <div class="subsection">Community tech feedback</div>
+    <p class="body-text">HugoFaz reported that the CasaNUA meme card submission preview is showing a static image instead of the animated GIF that was uploaded. Cuttle confirmed similar issues with GIF uploads on profile banners. prxt0 responded, explaining that in-line chat previews of larger GIFs may appear static while the pop-out view animates. Zoku suggested searching memes by categories like "OM" or "freestyle" or "gm." Het_Patel asked whether it is possible to update preview media on an existing submission without resubmitting the whole work. fercaggiano asked about adding people to an existing DM group, and prxt0 confirmed you cannot add more people to an existing DM and would need to create a new one.</p>
+
+    <div class="subsection">Release notes</div>
+    <p class="body-text">26 backend and frontend production deploys went out this week. The Release Coordinator, simo's automated release bus, is now managing staging and production workflows for both frontend and backend repositories. E2E tests passed consistently after an initial flaky run on Sep 25. The staging pipeline handled multiple sandbox releases and restorations across the week without incident.</p>
+
+    <div class="stat-line">📊 100 PRs merged · 26 production deploys · 4 active team members (simo6529, GelatoGenesis, prxt6529, ragnep) · 244 dev wave drops</div>
+</div>
+
+<!-- NEWEST MEMES -->
+<div class="section" id="newest-memes">
+    <div class="section-title">🖼️ Newest Memes: Card Mints & Main Stage</div>
+
+    <p class="body-text">Three cards minted this week, including two Main Stage winners. Card #553 completed its mint in under 48 hours. Card #551 is nearly fully minted, and #552 continues to sell.</p>
+
+    <table class="card-table">
+        <thead>
+            <tr>
+                <th>Card</th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Community Mints</th>
+                <th>Subs</th>
+                <th>Status</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="card-num">#553</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/553">Network State Conference 2026</a></td>
+                <td>@SummerMaxi</td>
+                <td>72 / 72</td>
+                <td>67</td>
+                <td class="status-done">✅ Done</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/553">View →</a></td>
+            </tr>
+            <tr>
+                <td class="card-num">#551</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/551">Permanent Pepe</a></td>
+                <td>@punk6529</td>
+                <td>247 / 249</td>
+                <td>105</td>
+                <td class="status-minting">🔥 Minting</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/551">View →</a></td>
+            </tr>
+            <tr>
+                <td class="card-num">#552</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/552">The First Believer</a></td>
+                <td>@Ayla</td>
+                <td>78 / 231</td>
+                <td>68</td>
+                <td class="status-minting">🔥 Minting</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/552">View →</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="color:var(--dim);font-size:0.8rem;margin-top:0.5rem;">Community mints = total supply minus 79 (team + museum) minus 6529Research wallet holdings.</p>
+
+    <div class="subsection">MS Winner: Patience is a Vinetree (card pending)</div>
+    <p class="body-text">smpsmyth won Main Stage on Sep 26 with 64.9M TDH and 60 voters. The card has not minted yet. The project is a 3-year R&D effort to brew non-alcoholic red wine from the grape up, not through distillation. Mint funds go to a final lab trial at the Australian Wine Research Institute and a provisional patent filing. Card holders will be eligible to redeem a physical wine package with a 6529 limited edition label. Artwork was donated by @Miboso.</p>
+</div>
+
+<!-- MUSEUM -->
+<div class="section" id="museum">
+    <div class="section-title">🏛️ 6529 Network Museum</div>
+
+    <div class="headline">
+        <h3>Provenance documentation advances, Rare Pepe proposals open</h3>
+        <p>SonOfLasG pushed provenance essay PR #72 to the 6529 Network Museum GitHub repository this week, with Shelby reviewing and approving it. "Beautifully written my friend, this is excellent. Yes to both questions. Happy for you to push this," Shelby wrote. The essay is part of the museum's ongoing effort to document the provenance and significance of works in its collection. SonOfLasG shared the work on X and committed to finishing it the same day.</p>
+    </div>
+
+    <div class="subsection">Rare Pepe acquisition proposals</div>
+    <p class="body-text">The Rare Pepe acquisition wave (funded by card #551 artist proceeds) is now accepting proposals. DarrenSRS kicked things off by proposing the acquisition of GOXPEPE for 0.25 ETH, calling it "our first rare pepe for the network museum." tito followed up with a proposal after researching Rare Pepe history, motivated by punk6529's museum card. The wave is open for community suggestions on which OG Rare Pepe cards to acquire, with TDH-weighted voting to determine the final selections.</p>
+
+    <div class="subsection">Chromie Squiggle acquisition strategy</div>
+    <p class="body-text">On the Squiggle front (card #550), SquiggleDAO has been nominated to help select the best Chromie Squiggle within budget. The floor went above the acquisition budget temporarily, but reno99 has been placing strategic bids on Bold, Fuzzy, and Slink trait Squiggles. The companion art wave continues to accept community artwork concepts for the card.</p>
+
+    <div class="stat-line">📊 5 museum wave drops this week · 2 active acquisition waves (Squiggle #550, Rare Pepe #551)</div>
+</div>
+
+<!-- SHILLANDIA -->
+<div class="section" id="shillandia">
+    <div class="section-title">📣 Shillandia</div>
+
+    <div class="headline">
+        <h3>450 shills this week, SWOKE drops five new editions</h3>
+        <p>The Shillandia wave saw 450 posts this week, the heaviest week yet. SWOKE led the volume with five new Transient mint pages dropped in a single day: "Esme," "Fevered Dream," "VDLized," "Don Rad-on-M," and "The Blue Bouquet." The calendar now tracks 170 editions, 497 1/1s, 29 upcoming, and 31 sold-out drops across all tabs, auto-refreshed every 4 to 6 hours by the calendar crons.</p>
+    </div>
+
+    <div class="subsection">Coming Soon</div>
+    <ul class="story-list">
+        <li><span class="author">@Sariraa</span> · <span class="title">SuperRare 1/1:</span> <span class="desc">Next piece from the "Sarira in Wonderland" collection, dropping tomorrow. 1/1 unique.</span></li>
+        <li><span class="author">@Rocketgirl</span> · <span class="title">SuperRare oil painting + animation hybrid:</span> <span class="desc">First oil painting and animation hybrid on the drops calendar at SuperRare.</span></li>
+    </ul>
+
+    <div class="subsection">Active Mints</div>
+    <p class="body-text">Multiple Transient mints went live this week, including Fereshte_a_mehr's "White Dreams," Ikba's "Checkmate," Restless_M's "The Hodl Bearers," and Bubblezzz's cut and paste series on OpenSea. The full calendar with live mint data, progress bars, and sort filters is at <a href="https://regulardad6529.github.io/mnn/shillandia.html" style="color:var(--accent);text-decoration:underline;">regulardad6529.github.io/mnn/shillandia.html</a>.</p>
+
+    <div class="stat-line">📊 450 Shillandia drops · 170 editions · 497 1/1s · 29 upcoming · 31 sold out · 744 total calendar cards</div>
+</div>
+
+<!-- SOCIALS -->
+<div class="section" id="socials">
+    <div class="section-title">🍺 Socials</div>
+
+    <div class="headline">
+        <h3>Wallet drains hit the community, deep conversations about art and purpose</h3>
+        <p>The biggest conversation this week was not about art or TDH but about loss. On Sep 25, @pete posted that OpenSea showed two different wallets receiving his memes, and he was "still kinda numb." @AshtonTekno confirmed that "a lot of frens lost their memes today and assets" and that 0xQuit saved some but not everything. @sheltronica broke down the cause: the only mistake holders made was using Magic Eden years ago and not revoking approval later, not clicking bad links. "HW wallet doesn't help. Really reminds everyone of the importance of regularly monitoring smart contract approvals in your wallets." @MadaCollects reported being drained of a small amount of WETH (0.07). The conversation became a reminder for the entire bar to check and revoke old contract approvals.</p>
+    </div>
+
+    <div class="subsection">"Has this space meaningfully made a difference in your life?"</div>
+    <p class="body-text">@DeltaSauce asked this question on Sep 24, and the bar responded with honesty. @Soliiiart shared that as an art graduate who had stopped working as an art instructor, the crypto space "genuinely changed my life" and they are "truly grateful to God for that." @maybe answered that you get "a great community here of artists and collectors and you can attempt to get your art in the historic memes collection." The thread touched on the tension between art as expression and art as investment, with @sheltronica offering portfolio strategy advice: "Minting more things is really a terrible solution to being down. Sunk cost fallacy is very dangerous." @SummerMaxi shared their own thesis of calculating TDH in ETH terms and holding for the long vision rather than flipping.</p>
+
+    <div class="subsection">New faces and consolidation help</div>
+    <p class="body-text">@itskeylay, a friend of @BrynnAlise, joined the bar this week and @100series walked them through wallet consolidation step by step, helping them flip their primary wallet and verify the delegation was working both ways. @BrynnAlise was also seen helping a new collector set up their first meme card and connect a Ledger, asking the bar for a refresher on the process.</p>
+
+    <div class="subsection">Quotes and moments</div>
+    <div class="quote-block">
+        <p>"I was like, wow. Is it buy 1 get 1 free offer?"</p>
+        <div class="attribution">@Moonzoey, after receiving an accidental double airdrop of punk6529's card, then getting a message asking for one back. She sent it to research.6529.eth, calling herself "a good citizen of 6529."</div>
+    </div>
+    <div class="quote-block">
+        <p>"I've been working on the next release of PebbleLand for example, really fun stuff, and I can't get it finished because there are SO MANY THINGS."</p>
+        <div class="attribution">@Articulate, juggling work, family, art, and ideas. Every ball is in the air.</div>
+    </div>
+
+    <p class="body-text">@NLV finished a mini documentary about a mural based on their meme card and shared the YouTube video. @ikertje listed a meme card on OpenSea to raise 0.5 ETH for a Mac Mini, explaining that their Keys and Gates allocation went to something else and their work laptop was becoming increasingly locked down. @Sherie_Margaret celebrated her birthday and joining "the 30s gang." @senemsad offered comfort to the leaderboard-anxious: "just a lil patience, lovely. Don't get too caught up in the leaderboard."</p>
+
+    <div class="stat-line">📊 3,367 drops · 189 unique voices · 502 GMs in the dive bar this week</div>
+</div>
+
+<!-- BOTTOM LINE -->
+<div class="bottom-line">
+    <div class="label">The Bottom Line</div>
+    <p>Two MS winners, a SURVIVE exhibition hitting #1 on the leaderboard, physical books shipping, Rare Pepe proposals opening, and 100 merged PRs. The community also faced a painful reminder about wallet security as old contract approvals drained holdings. Through it all, the bar kept talking about what this space means to them, with answers ranging from gratitude to strategy to "just a lil patience." See you next week.</p>
+</div>
+
+<div class="footer">
+    Published by RegularDad &amp; <a href="https://6529.io/RegularDad">TheManager</a>
+</div>
+
+</div>
+</body>
+</html>
