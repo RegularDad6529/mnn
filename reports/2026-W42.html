@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MNN · Issue #7 · Week 42 · Oct 12-18, 2026</title>
+<style>
+:root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --border: #1e1e1e;
+    --text: #e0e0e0;
+    --muted: #aaa;
+    --dim: #888;
+    --accent: #e8a200;
+    --accent-dim: #b88000;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+.container { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+.report-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.report-header .logo { margin-bottom: 1rem; }
+.report-header .logo svg { max-width: 240px; height: auto; }
+.report-header .meta { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+.report-header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.3; }
+.report-header .date-range { color: var(--muted); font-size: 0.95rem; margin-top: 0.25rem; }
+.back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--muted); font-size: 0.85rem; text-decoration: none; font-family: var(--mono); }
+.back-link:hover { color: var(--accent); }
+
+.toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 2.5rem; }
+.toc .toc-label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.toc ul { list-style: none; }
+.toc li { padding: 0.25rem 0; }
+.toc a { color: #ccc; text-decoration: none; font-size: 0.9rem; }
+.toc a:hover { color: var(--accent); }
+
+.section { margin-bottom: 2.5rem; }
+.section-title { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+.section-title a { color: var(--accent); text-decoration: none; }
+
+.headline { margin-bottom: 1.5rem; }
+.headline h3 { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; line-height: 1.35; }
+.headline p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
+.headline p a { color: var(--accent); text-decoration: underline; }
+
+.story-list { list-style: none; }
+.story-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+.story-list li:last-child { border-bottom: none; }
+.story-list .author { color: var(--accent); font-weight: 600; }
+.story-list .title { color: #ccc; font-weight: 600; }
+.story-list .desc { color: #bbb; font-size: 0.92rem; line-height: 1.55; }
+
+.subsection { font-size: 0.9rem; font-weight: 600; color: #999; margin: 1.25rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--mono); }
+
+.no-movement { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; }
+.no-movement ul { list-style: none; }
+.no-movement li { padding: 0.3rem 0; color: #bbb; font-size: 0.9rem; }
+.no-movement li strong { color: #ccc; }
+
+.stat-line { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 4px; padding: 0.75rem 1.25rem; margin: 1.5rem 0; font-family: var(--mono); font-size: 0.85rem; color: #ccc; }
+
+.bottom-line { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-top: 2rem; }
+.bottom-line .label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.bottom-line p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
+
+.card-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+.card-table th { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 2px solid var(--border); color: var(--accent); font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.card-table td { padding: 0.7rem 0.5rem; border-bottom: 1px solid var(--border); color: #bbb; }
+.card-table td.card-num { color: var(--dim); font-family: var(--mono); font-size: 0.82rem; }
+.card-table a.card-link { color: var(--accent); text-decoration: underline; font-weight: 600; }
+.card-table a.card-link:hover { color: #fff; }
+.card-table .view-btn { display: inline-block; padding: 0.15rem 0.5rem; border: 1px solid var(--accent-dim); border-radius: 3px; color: var(--accent); font-family: var(--mono); font-size: 0.78rem; text-decoration: none; }
+.card-table .view-btn:hover { background: var(--accent); color: #000; }
+.card-table .status-minting { color: #e8a200; }
+.card-table .status-done { color: #4a4; }
+
+.quote-block { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 4px; padding: 1rem 1.25rem; margin: 1rem 0; }
+.quote-block p { color: #ccc; font-size: 0.95rem; line-height: 1.6; font-style: italic; }
+.quote-block .attribution { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; font-style: normal; }
+
+.footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--dim); font-size: 0.8rem; }
+.footer a { color: var(--muted); text-decoration: none; }
+.footer a:hover { color: var(--accent); }
+
+p.body-text { color: #ccc; font-size: 0.98rem; line-height: 1.6; margin-bottom: 1rem; }
+p.body-text a { color: var(--accent); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a class="back-link" href="../index.html">&#8592; Back to MNN</a>
+
+<div class="report-header">
+    <div class="logo">
+        <svg width="240" height="90" viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 30 120 L 30 30 L 102 120 L 174 30 L 174 120 L 174 30 L 274 120 L 274 30 L 374 120 L 374 30" stroke="#e8a200" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <div class="meta">Issue #7 · Week 42</div>
+    <h1>Meme Network News</h1>
+    <div class="date-range">Oct 12 - 18, 2026</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+    <div class="toc-label">In This Issue</div>
+    <ul>
+        <li><a href="#do-something">📺 Do Something</a></li>
+        <li><a href="#dev-report">🛠️ Dev Report</a></li>
+        <li><a href="#newest-memes">🖼️ Newest Memes</a></li>
+        <li><a href="#museum">🏛️ 6529 Network Museum</a></li>
+        <li><a href="#shillandia">📣 Shillandia</a></li>
+        <li><a href="#socials">🍺 Socials</a></li>
+    </ul>
+</div>
+
+<!-- DO SOMETHING -->
+<div class="section" id="do-something">
+    <div class="section-title">📺 Do Something: Community Action Tracker</div>
+
+    <div class="headline">
+        <h3>Three MS winners, three cards minted, Cuttle's community commercial goes live</h3>
+        <p>It was a busy week on the Main Stage. Three winners as usual: @Cuttle on Monday with "Contribute Now," the community-made 6529 commercial where 100% of ETH funds ad experiments on X and TikTok. @simonemonte on Wednesday with "Play the Long Game," a street photograph from Rio de Janeiro. @senemsad on Friday with "Reef Node 6529," a reflection on networks as living, coral-like structures. All three had cards either minted or pending by week's end. Cuttle's card #561 and simonemonte's card #562 both minted within days of winning, while senemsad's card is still pending.</p>
+    </div>
+
+    <div class="subsection">New MS winners this week</div>
+    <ul class="story-list">
+        <li><span class="author">@Cuttle</span> · <span class="title">"Contribute Now" (Card #561, closed at 310):</span> <span class="desc">Won Oct 12. The card minted and closed at 310 editions by Oct 14. AA: 100% of ETH from the card funds ad experiments on X and TikTok to test user acquisition for 6529.io. No ad experiment results reported yet this week. CuttleWave set up for monitoring.</span></li>
+        <li><span class="author">@simonemonte</span> · <span class="title">"Play the Long Game" (Card #562, still minting):</span> <span class="desc">Won Oct 14. Street photograph from Rio, 2023, of a woman tattooed with "Give time to time." Card minted Oct 16 and is still minting at 152 editions. No additional action described beyond the artwork.</span></li>
+        <li><span class="author">@senemsad</span> · <span class="title">"Reef Node 6529" (card pending):</span> <span class="desc">Won Oct 16. A reflection on networks, collective creation, and emergent culture, treating memes as living structures that grow and multiply like coral. Card has not minted yet.</span></li>
+    </ul>
+
+    <div class="subsection">Active in-progress items</div>
+    <ul class="story-list">
+        <li><span class="author">@CasaNUA</span> · <span class="title">"SURVIVE at Dominio PubliCC0" (Card #555, supersedes #516):</span> <span class="desc">AWD posted new artist spotlight threads Oct 13-15 featuring MrMisang, GavinMeeler, and baiwei. @fercaggiano visited the exhibition. Gallery operational at Dominio PubliCC0 in Sao Paulo.</span></li>
+        <li><span class="author">@SummerMaxi</span> · <span class="title">"Network State Conference 2026" (Card #553):</span> <span class="desc">Conference attendance complete. Posted Oct 10 heading home, will write final write-up. Made zines for the event. Awaiting summary post.</span></li>
+        <li><span class="author">@Het_Patel</span> · <span class="title">"UNFALLEN: BEYOND" (Card #560, closed at 310):</span> <span class="desc">Card minted Oct 12 and closed at 310. AA: $30K raise for 18-month R&D and production of short film. ThinkingOut wave mostly general art and community. No film production progress this week.</span></li>
+        <li><span class="author">@RegularDad</span> · <span class="title">"Shill Alert" (Card #559, closed at 310):</span> <span class="desc">Card closed at 310 editions this week (was still minting in W41). Funds MNN and the Shillandia Calendar.</span></li>
+        <li><span class="author">@Articulate</span> · <span class="title">"PebbleLand" (plan met, still building):</span> <span class="desc">Pebble Dash game live at pebbleland.art/dash. OUTSIDERS Wave active with REP prizes. Plan met, still building and engaging community.</span></li>
+    </ul>
+
+    <div class="subsection">No significant updates this week</div>
+    <div class="no-movement">
+        <ul>
+            <li><strong>@boredsurgeon + G9ralt</strong> · "Freedom to Research" (Card #447): No new data. Profile endpoint returns 404.</li>
+            <li><strong>@BrynnAlise</strong> · "Network for Good" (Card #478): Wave active with GMs. No conservation advocacy updates.</li>
+            <li><strong>@JoelleLB</strong> · "Codex Obscura" (Card #483): Natural pigment research on hold. Wave is alchemy lab posts only.</li>
+            <li><strong>@Zigmarillion</strong> · "Network State of Mind" (Card #499): No replica statue or farm sale progress.</li>
+            <li><strong>@Gray</strong> · "Burn Mechanism" (Card #541): No update wave. No progress. Marfa bar status unchanged.</li>
+            <li><strong>@smpsmyth</strong> · "Patience is a Vinetree" (Card #554): Wave last active Sep 28. First ferment done, fine-tuning phase next. No updates this week.</li>
+            <li><strong>@Zoku</strong> · "Seize Your Community" (Card #557): No update wave assigned yet for the UX improvement work.</li>
+            <li><strong>@6529er + 6529</strong> · "Keys and Gates" (Card #493): Last activity Oct 7. No new updates.</li>
+        </ul>
+    </div>
+
+    <div class="stat-line">📊 26 total AA submissions tracked · 17 in progress · 13 completed · 10 won MS · 7 removed</div>
+</div>
+
+<!-- DEV REPORT -->
+<div class="section" id="dev-report">
+    <div class="section-title">🛠️ Dev Report: Follow The Repo</div>
+
+    <div class="headline">
+        <h3>Desktop app gets a major overhaul, migration recovery hardened, frontend goes on a performance diet</h3>
+        <p>The biggest story this week is a sweeping overhaul of the 6529-core desktop app. punk6529 merged 10 PRs in 6529-core on Oct 18 alone, covering security hardening (loopback server, IPC allowlist, fuses), IPFS repository management (capping cached blocks at 10 GB), desktop slimming (bundled main process, tray for background mode, size budget), Windows installer signing, and delegation indexing recovery after chain reorganizations. Release v0.3.15 shipped the same day. This is the most concentrated desktop work in months, transforming the app from a wrapper into a hardened, self-contained application.</p>
+    </div>
+
+    <div class="subsection">Backend: migration recovery and WebSocket stability</div>
+    <p class="body-text">GelatoGenesis spent the week hardening the competition migration system. The work focused on recovery: checkpoint guards for rolled-back batches, bounded migration comparisons to stay within ownership budgets, and timeout diagnostics that survive loop query errors. Multiple PRs addressed WebSocket stability, including preventing authentication gap-lock deadlocks, recovering throttled listeners, and adding diagnostics for fleet failures. The migration also cleaned up stale copied winner rows from the leaderboard. About 26 backend PRs merged this week, almost all from GelatoGenesis and punk6529.</p>
+
+    <div class="subsection">Frontend: performance, mobile, and analytics</div>
+    <p class="body-text">The frontend saw 41 merged PRs, heavily focused on performance and mobile experience. Key changes: analytics SDKs (Mixpanel, Google Analytics, AWS RUM) now load lazily instead of blocking first render; React Query cache retention dropped from a day to five minutes for unused data; UI timers pause when the page is hidden; avatar images request resized versions instead of full-size; and locale dictionaries load only when needed. On mobile, network filters became easier to use, wave headers went compact, and the iOS subscription row handling was fixed for US country checks. prxt6529 fixed repeated edits of image posts and restored wave typing indicators. ragnep continued iOS PDF work and improved network group forms.</p>
+
+    <div class="subsection">6529-works: release candidate and mutation testing</div>
+    <p class="body-text">The 6529-works repo saw 17 PRs, wrapping up mutation baseline testing across all contracts (Editions, FixedPriceSale, MintSaleBase, GovernanceConfig). The last four contracts were triaged with gap tests and per-contract floors. Release notes for v1.0.0-rc.1 were published, with a Sepolia rehearsal r3 verified on Sourcify. The mutation baseline's 78 open gaps were closed: 69 killed by tests, 3 re-triaged, 6 moved. This puts the contract suite at release candidate status.</p>
+
+    <div class="subsection">Production deploys</div>
+    <p class="body-text">Roughly 35 production deploys went out this week across frontend and backend, plus competition migration loop updates. The deploy cadence was heaviest Oct 15-16 with 85 of 100 PRs merging on those two days alone.</p>
+
+    <div class="stat-line">📊 100 PRs merged (41 frontend, 26 backend, 17 6529-works, 16 6529-core) · ~35 production deploys · 4 active team members (punk6529 59 PRs, GelatoGenesis 26, prxt6529 9, ragnep 6) · 450 dev wave drops</div>
+</div>
+
+<!-- NEWEST MEMES -->
+<div class="section" id="newest-memes">
+    <div class="section-title">🖼️ Newest Memes: Card Mints & Main Stage</div>
+
+    <p class="body-text">Four cards were active this week. Three new cards minted and closed at 310 editions, and card #559 (still minting last week) closed at 310. Card #562 is still minting.</p>
+
+    <table class="card-table">
+        <thead>
+            <tr>
+                <th>Card</th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Community Mints</th>
+                <th>Subs</th>
+                <th>Status</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="card-num">#562</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/562">Play the Long Game</a></td>
+                <td>@simonemonte</td>
+                <td>73 / 231</td>
+                <td>66</td>
+                <td class="status-minting">🔥 Minting</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/562">View →</a></td>
+            </tr>
+            <tr>
+                <td class="card-num">#561</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/561">Contribute Now</a></td>
+                <td>@Cuttle &amp; Zar</td>
+                <td>73 / 231</td>
+                <td>66</td>
+                <td class="status-done">✅ Done</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/561">View →</a></td>
+            </tr>
+            <tr>
+                <td class="card-num">#560</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/560">UNFALLEN: BEYOND</a></td>
+                <td>@Het_Patel</td>
+                <td>70 / 231</td>
+                <td>67</td>
+                <td class="status-done">✅ Done</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/560">View →</a></td>
+            </tr>
+            <tr>
+                <td class="card-num">#559</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/559">Shill Alert</a></td>
+                <td>@RegularDad</td>
+                <td>70 / 231</td>
+                <td>65</td>
+                <td class="status-done">✅ Done</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/559">View →</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="color:var(--dim);font-size:0.8rem;margin-top:0.5rem;">Community mints = total minted supply minus 79 (team + museum) minus 6529Research wallet holdings. Cards that close early have fewer community mints than the 231 maximum for a standard 310-edition card. Card #562 is still minting: 152 minted so far, heading toward 310.</p>
+
+    <div class="subsection">MS Winner: senemsad, "Reef Node 6529" (card pending)</div>
+    <p class="body-text">senemsad won Main Stage on Oct 16 with "Reef Node 6529," a piece about networks as living structures that grow, mutate, and multiply through connection, like coral accumulating digital traces. The card has not minted yet. See Do Something section for details.</p>
+</div>
+
+<!-- MUSEUM -->
+<div class="section" id="museum">
+    <div class="section-title">🏛️ 6529 Network Museum</div>
+
+    <div class="headline">
+        <h3>Quiet week on the museum wave</h3>
+        <p>The 6529 Network Museum wave was quiet this week with only five drops, all casual greetings or light discussion. grubnot asked about the status of a potential purchase, and Tharwin clarified that a recent proposal was about simplifying the acceptance of potential donations, not about making a purchase. gpebbles reminded punk6529 about a pending merge. No new acquisitions, proposals, or governance decisions this week.</p>
+    </div>
+
+    <div class="subsection">Ongoing acquisition waves</div>
+    <p class="body-text">The Chromie Squiggle acquisition (Card #550) and Rare Pepe acquisition (Card #551) waves remain active but saw lighter activity this week. See Do Something section above for the latest status on both.</p>
+
+    <div class="stat-line">📊 5 museum wave drops this week (all casual) · 2 active acquisition waves (Squiggle #550, Rare Pepe #551)</div>
+</div>
+
+<!-- SHILLANDIA -->
+<div class="section" id="shillandia">
+    <div class="section-title">📣 Shillandia</div>
+
+    <div class="headline">
+        <h3>Calendar crosses 1,300 cards, 250 wave posts this week</h3>
+        <p>The Shillandia calendar continued to grow, now tracking 1,320 total drop cards across all tabs: 287 editions, 807 1/1s, 187 collections, 8 upcoming, and 31 sold-out pieces. The wave saw about 250 posts this week from artists sharing their work across Transient, SuperRare, objkt, and X. The auto-refresh crons kept mint counts current every 4 to 6 hours, with multiple new drops added daily including new SuperRare 1/1s from fercaggiano, Transient editions from SWRKSWOLF and neuralartistry, and objkt pieces.</p>
+    </div>
+
+    <p class="body-text">The full calendar with live mint data, progress bars, sort filters, and allowlist information is at <a href="https://regulardad6529.github.io/mnn/shillandia.html" style="color:var(--accent);text-decoration:underline;">regulardad6529.github.io/mnn/shillandia.html</a>. The calendar opens to the Upcoming tab by default, showing drops that haven't gone live yet, with dated drops sorted by closest first.</p>
+
+    <div class="stat-line">📊 287 editions · 807 1/1s · 187 collections · 8 upcoming · 31 sold · 1,320 total cards · Calendar auto-refreshed every 4-6h</div>
+</div>
+
+<!-- SOCIALS -->
+<div class="section" id="socials">
+    <div class="section-title">🍺 Socials</div>
+
+    <div class="headline">
+        <h3>punk6529 goes deep on Bittensor, network state economics, and Botto as a 6529 participant</h3>
+        <p>The biggest conversation this week was punk6529's sprawling Oct 15 posting session across the dive bar and Ministry of Validation. He covered a lot of ground. On Bittensor (TAO), he was blunt: "i own some but I find them to be utterly baffling in their plans" and "they change how it works every six months." He also found the concept of fractionalized NFTs lacking: "you got exactly none of the nice vibes that you get with holding NFTs and since those vibes are the whole game, fractionalized NFTs are ngmi." On network state economics, he sketched out a model where "$6529 can go to the validators and ETH to grow the network," calling a blockchain that earns money on another blockchain as part of its core process "absolutely fascinating" and "something I have never seen before." He also floated the idea of Botto becoming "a full fledged participant" in 6529, walking through how the AI artist could use the same protocol as humans: cards in a SAFE, a hot wallet for posting, and the 6529 API for interaction.</p>
+    </div>
+
+    <div class="subsection">DM shilling drama and bar culture</div>
+    <p class="body-text">@Moonzoey sparked a lively conversation about DM shilling by calling out artists who ask for money or tell you to buy their work while having more wallet activity than the people they're asking. "There's a guy who asked me for $15 to mint new collection, but when I checked his wallet activity he had more transaction than me," she posted, followed by a reflection that posting under a shill thread is OK but "continuously asking in DMs to buy is not good." @Mayudrops agreed, noting the trend of receiving DMs from artist friends asking to buy their work. @DeltaSauce opened up about finding his voice in the space: "I was told that I am too quiet in the space, when I do have a voice to share. I tend to not entangle myself in drama or else I would be fighting off the Anti-AI art trolls."</p>
+
+    <div class="subsection">Soliiiart's TDH journey and leaderboard sprint</div>
+    <p class="body-text">@Soliiiart shared a series of reflective posts about her experience as a newcomer to 6529, from the initial assumption that her card would get minted within a week to the reality of the competitive leaderboard. "I was over here daydreaming about feeling rich with the 10 million TDH my card earned, and then BOOM! Another card passed me!" she wrote. "This isn't a leaderboard anymore, it's the freaking Olympic sprint finals!" @Loop responded warmly: "at first I found it annoying but then I realised the persona and the true Soliii." Soliiiart also reflected on worrying that her TDH-obsessed cat persona might "give people the wrong impression, making me look greedy," and expressed gratitude for the community's understanding.</p>
+
+    <div class="subsection">tito launches El Memeño competition, Kubti celebration</div>
+    <p class="body-text">@tito announced the El Memeño Meme Competition, offering a chance at a Meme card selection plus climate change solutions, with gpebbles, Ruskin, and Mada all committing to blast the contest winner with TDH on the Main Stage. Meanwhile, the bar celebrated @Kubti, with @amanrasouli posting: "my amazing @[Kubti], so happy for you. You were one of the artists I admired, always wanted to see you at the top." @ikertje announced a second additional action for their meme card submission: a photo piece with storytelling, top ten voters getting 10/10 airdrops over 10 months, and a goal of becoming a 6529 validator.</p>
+
+    <div class="subsection">Quotes and moments</div>
+    <div class="quote-block">
+        <p>"i bought some many years ago. it is...unhelpful in my opinion. dont worry, the people running it also don't fully understand it."</p>
+        <div class="attribution">@punk6529, on Bittensor (TAO).</div>
+    </div>
+    <div class="quote-block">
+        <p>"This isn't a leaderboard anymore, it's the freaking Olympic sprint finals!"</p>
+        <div class="attribution">@Soliiiart, on the competitive MS leaderboard.</div>
+    </div>
+
+    <p class="body-text">punk6529 also shared thoughts on branding, explaining why he switched from "seize" to "6529" for the site name: "it is impossible to build 2 brands at the same time" and "seize was wittier, cooler" but 6529 is clearer for newcomers. On the Ethereum Foundation selling ETH, he noted: "the aesthetics of the Ethereum Foundation selling ETH are not great, even if logical and understandable," and suggested 6529 should aim to keep operating expenses within its ETH budget.</p>
+
+    <div class="stat-line">📊 7,423 drops · 186 unique voices · 659 GMs in the dive bar this week</div>
+</div>
+
+<!-- BOTTOM LINE -->
+<div class="bottom-line">
+    <div class="label">The Bottom Line</div>
+    <p>A week of heavy building and deep thinking. The desktop app got its most significant overhaul yet, with security hardening, IPFS management, and a release candidate for the contract suite. Three MS winners, three cards minted, one still going. punk6529 spent an entire afternoon in the bar and Ministry of Validation thinking out loud about network state economics, Bittensor, and what it means for an AI artist to become a real participant. The bar wrestled with the ethics of DM shilling and celebrated newcomers finding their footing. The museum wave was quiet, the Shillandia calendar crossed 1,300 cards, and the competition migration finally settled into production. The infrastructure keeps getting stronger; the conversations keep getting deeper. See you next week.</p>
+</div>
+
+<div class="footer">
+    Published by RegularDad &amp; <a href="https://6529.io/RegularDad">TheManager</a>
+</div>
+
+</div>
+</body>
+</html>
