@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MNN · Issue #9 · Week 44 · Oct 26-Nov 1, 2026</title>
+<style>
+:root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --border: #1e1e1e;
+    --text: #e0e0e0;
+    --muted: #aaa;
+    --dim: #888;
+    --accent: #e8a200;
+    --accent-dim: #b88000;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+.container { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+.report-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.report-header .logo { margin-bottom: 1rem; }
+.report-header .logo svg { max-width: 240px; height: auto; }
+.report-header .meta { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+.report-header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.3; }
+.report-header .date-range { color: var(--muted); font-size: 0.95rem; margin-top: 0.25rem; }
+.back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--muted); font-size: 0.85rem; text-decoration: none; font-family: var(--mono); }
+.back-link:hover { color: var(--accent); }
+
+.toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 2.5rem; }
+.toc .toc-label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.toc ul { list-style: none; }
+.toc li { padding: 0.25rem 0; }
+.toc a { color: #ccc; text-decoration: none; font-size: 0.9rem; }
+.toc a:hover { color: var(--accent); }
+
+.section { margin-bottom: 2.5rem; }
+.section-title { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+
+.headline { margin-bottom: 1.5rem; }
+.headline h3 { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; line-height: 1.35; }
+.headline p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
+.headline p a { color: var(--accent); text-decoration: underline; }
+
+.story-list { list-style: none; }
+.story-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+.story-list li:last-child { border-bottom: none; }
+.story-list .author { color: var(--accent); font-weight: 600; }
+.story-list .title { color: #ccc; font-weight: 600; }
+.story-list .desc { color: #bbb; font-size: 0.92rem; line-height: 1.55; }
+
+.subsection { font-size: 0.9rem; font-weight: 600; color: #999; margin: 1.25rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--mono); }
+
+.no-movement { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; }
+.no-movement ul { list-style: none; }
+.no-movement li { padding: 0.3rem 0; color: #bbb; font-size: 0.9rem; }
+.no-movement li strong { color: #ccc; }
+
+.stat-line { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 4px; padding: 0.75rem 1.25rem; margin: 1.5rem 0; font-family: var(--mono); font-size: 0.85rem; color: #ccc; }
+
+.bottom-line { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-top: 2rem; }
+.bottom-line .label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.bottom-line p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
+
+.card-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+.card-table th { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 2px solid var(--border); color: var(--accent); font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.card-table td { padding: 0.7rem 0.5rem; border-bottom: 1px solid var(--border); color: #bbb; }
+.card-table td.card-num { color: var(--dim); font-family: var(--mono); font-size: 0.82rem; }
+.card-table a.card-link { color: var(--accent); text-decoration: underline; font-weight: 600; }
+.card-table a.card-link:hover { color: #fff; }
+.card-table .view-btn { display: inline-block; padding: 0.15rem 0.5rem; border: 1px solid var(--accent-dim); border-radius: 3px; color: var(--accent); font-family: var(--mono); font-size: 0.78rem; text-decoration: none; }
+.card-table .view-btn:hover { background: var(--accent); color: #000; }
+.card-table .status-minting { color: #e8a200; }
+.card-table .status-done { color: #4a4; }
+
+.quote-block { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 4px; padding: 1rem 1.25rem; margin: 1rem 0; }
+.quote-block p { color: #ccc; font-size: 0.95rem; line-height: 1.6; font-style: italic; }
+.quote-block .attribution { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; font-style: normal; }
+
+.footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--dim); font-size: 0.8rem; }
+.footer a { color: var(--muted); text-decoration: none; }
+.footer a:hover { color: var(--accent); }
+
+p.body-text { color: #ccc; font-size: 0.98rem; line-height: 1.6; margin-bottom: 1rem; }
+p.body-text a { color: var(--accent); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a class="back-link" href="../index.html">&#8592; Back to MNN</a>
+
+<div class="report-header">
+    <div class="logo">
+        <svg width="240" height="90" viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 30 120 L 30 30 L 102 120 L 174 30 L 174 120 L 174 30 L 274 120 L 274 30 L 374 120 L 374 30" stroke="#e8a200" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <div class="meta">Issue #9 · Week 44</div>
+    <h1>Meme Network News</h1>
+    <div class="date-range">Oct 26 - Nov 1, 2026</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+    <div class="toc-label">In This Issue</div>
+    <ul>
+        <li><a href="#do-something">📺 Do Something</a></li>
+        <li><a href="#dev-report">🛠️ Dev Report</a></li>
+        <li><a href="#newest-memes">🖼️ Newest Memes</a></li>
+        <li><a href="#museum">🏛️ 6529 Network Museum</a></li>
+        <li><a href="#shillandia">📣 Shillandia</a></li>
+        <li><a href="#socials">🍺 Socials</a></li>
+    </ul>
+</div>
+
+<!-- DO SOMETHING -->
+<div class="section" id="do-something">
+    <div class="section-title">📺 Do Something: Community Action Tracker</div>
+
+    <div class="headline">
+        <h3>Three MS winners, three cards minted, Contribute Now shares first ad results</h3>
+        <p>Three Main Stage winners this week as always: @amanrasouli on Monday with "Choosing Light," @arsonic on Wednesday with "An Important Validation," and @ChrisGranneberg on Friday with "TRUST ME BRO." All three cards minted and closed by week's end, with #566 closing at 156 editions, #567 at 212, and #568 at 158. The biggest Do Something story, though, came from @Cuttle's "Contribute Now" card, which shared the first results from its X advertising experiments: $300 spent over three days, generating roughly 158K impressions and 1,700 clicks, with six new profiles created in the attribution window.</p>
+    </div>
+
+    <div class="subsection">New MS winners this week</div>
+    <ul class="story-list">
+        <li><span class="author">@amanrasouli</span> · <span class="title">"Choosing Light" (Card #566, closed at 156):</span> <span class="desc">Won Oct 26. Card minted Oct 26 and closed at 156 editions. 68 subs. No additional action described beyond the artwork.</span></li>
+        <li><span class="author">@arsonic</span> · <span class="title">"An Important Validation" (Card #567, closed at 212):</span> <span class="desc">Won Oct 28. Card minted Oct 28 and closed at 212 editions. 73 subs. arsonic also posted a Halloween greeting to the bar. No additional action described beyond the artwork.</span></li>
+        <li><span class="author">@ChrisGranneberg</span> · <span class="title">"TRUST ME BRO" (Card #568, closed at 158):</span> <span class="desc">Won Oct 30. Card minted Oct 30 and closed at 158 editions. 70 subs. No additional action described beyond the artwork.</span></li>
+    </ul>
+
+    <div class="subsection">Active in-progress highlights</div>
+    <ul class="story-list">
+        <li><span class="author">@Cuttle</span> · <span class="title">"Contribute Now" (Card #561):</span> <span class="desc">First ad experiment results shared this week. $300 spent on X ads ($100/day x 3 days), US targeting, punk6529 follower lookalikes. Approximately 158K impressions, 1,700 clicks, and 6 new profiles created Oct 28-31 (attribution uncertain). A new dedicated Contribute Now wave was created for data tracking. @grubnot provided optimization recommendations including conversion tracking and A/B test design. Next experiment pending tracking implementation.</span></li>
+        <li><span class="author">@RegularDad</span> · <span class="title">"Chromie Squiggle Museum Acquisition" (Card #550):</span> <span class="desc">Squiggle acquired. RD posted revised museum documentation on GitHub (6529NM.2026.004.01.md, Oct 31). SquiggleDAO drafted institutional recognition context covering 13 museums.</span></li>
+        <li><span class="author">@Zoku</span> · <span class="title">"Seize Your Community" (Card #557):</span> <span class="desc">Quorum wave active. AshtonTekno posted a new proposal to add a notes/comments section to the memecard voting page so voter reasoning is visible. Product and UX proposal advancing the AA action.</span></li>
+        <li><span class="author">@Articulate</span> · <span class="title">"PebbleLand" (plan met, still building):</span> <span class="desc">OUTSIDERS wave active. Community sharing AR photos and discussing the new encrypted DM and signed message features. No new game feature or competition updates this week.</span></li>
+    </ul>
+
+    <div class="subsection">No significant updates this week</div>
+    <div class="no-movement">
+        <ul>
+            <li><strong>@CasaNUA</strong> · "SURVIVE at Dominio PubliCC0" (Card #555, supersedes #516): Gallery operational. No new exhibition updates.</li>
+            <li><strong>@boredsurgeon + G9ralt</strong> · "Freedom to Research" (Card #447): No dedicated wave. Cannot monitor.</li>
+            <li><strong>@BrynnAlise</strong> · "Network for Good" (Card #478): No conservation advocacy updates.</li>
+            <li><strong>@JoelleLB</strong> · "Codex Obscura" (Card #483): Natural pigment research on hold.</li>
+            <li><strong>@Zigmarillion</strong> · "Network State of Mind" (Card #499): No replica statue or farm sale progress.</li>
+            <li><strong>@Gray</strong> · "Burn Mechanism" (Card #541): No update wave. Marfa bar status unchanged.</li>
+            <li><strong>@6529er + 6529</strong> · "Keys and Gates" (Card #493): Last activity Oct 7.</li>
+            <li><strong>@SummerMaxi</strong> · "Network State Conference 2026" (Card #553): No new drops since Oct 10. Awaiting summary post.</li>
+            <li><strong>@smpsmyth</strong> · "Patience is a Vinetree" (Card #554): No new drops since Oct 19. Flights booked for Adelaide lab testing.</li>
+            <li><strong>@Het_Patel</strong> · "UNFALLEN: BEYOND" (Card #560): No film production updates.</li>
+            <li><strong>@punk6529</strong> · "Permanent Pepe" (Card #551): Rare Pepe acquisition advancing in dedicated wave. See Museum section.</li>
+        </ul>
+    </div>
+
+    <div class="stat-line">📊 30 total AA submissions tracked · 17 in progress · 13 completed · 10 won MS · 3 removed</div>
+</div>
+
+<!-- DEV REPORT -->
+<div class="section" id="dev-report">
+    <div class="section-title">🛠️ Dev Report: Follow The Repo</div>
+
+    <div class="headline">
+        <h3>End-to-end encrypted DMs go live, signed posts ship, 6529 Stream edition auctions take shape</h3>
+        <p>The biggest launch this week was end-to-end encrypted direct messages and group chats. punk6529 shipped the full E2EE stack across frontend and backend: encrypted DMs, encrypted group chats, encrypted attachments via S3 blob storage, encrypted message-history backup and recovery, and DM admission settings that let users limit new DMs to a group they choose. The server now stores only ciphertext. punk6529 posted a detailed announcement explaining the system, and community members immediately started turning on encrypted messaging in the bar. The same deploy also turned on signed messages, so every post can now carry the author's own cryptographic signature, verifiable without trusting 6529.io.</p>
+    </div>
+
+    <div class="subsection">6529 Stream: edition auctions and the 6529-works release candidate</div>
+    <p class="body-text">The 6529-works repo saw 19 PRs this week, all building toward the rc.2 release candidate for 6529 Stream. punk6529 wrote the full edition auction specification (ADR 0005), implemented the uniform-price edition auction with its clearing library and lens, wired the pluggable 1/1 English auction, and deployed the edition minting and terms swap. The museum rule (D140) ensures unbid 1/1s go to the 6529 Network Museum. On the frontend, 6 PRs built out the Stream pages: the federated directory, contract page, launch wizard, home, artists, dashboard, museum, curation pages, the work page with its 1/1 English auction panel, and the edition auction panel with editions pages. The public contract review framework was removed, with old /reviews/ links permanently redirecting to the new /stream section.</p>
+
+    <div class="subsection">Security hardening: 17 security-related frontend PRs</div>
+    <p class="body-text">punk6529 pushed 42 frontend updates overnight on Oct 31, 17 of them security-related. The batch tightened CSP with violation reporting, sandboxed NFT and NextGen HTML iframes, sanitized S3 HTML, hardened client-side rendering of profile names and ReMeme links, narrowed the Next image optimizer remote allowlist, kept server-only credentials out of public runtime config, and added IPv6 and redirect guards. OG card text is now derived from the backend rather than the URL, preventing spoofing. The standalone Memes mint static export was fixed and marked noindex.</p>
+
+    <div class="subsection">Signed messages and E2EE polish</div>
+    <p class="body-text">After the initial signed messages launch, punk6529 shipped several fixes based on real-world usage. Posts no longer go out unsigned without warning: if the browser cannot sign, it waits up to 10 seconds. A "Signed by its author" seal now appears on author-signed drops. The sign-in grant was folded into a single combined device grant per browser. On the E2EE side, a backup append precondition prevents forks when two devices back up simultaneously, and a device revocation wipe was added for post-launch security.</p>
+
+    <div class="subsection">Team activity</div>
+    <p class="body-text">punk6529 dominated this week's output with all 100 merged PRs attributed to his GitHub account, spanning all four repos: 6529seize-frontend (55 PRs), 6529seize-backend (12 PRs), 6529-works (19 PRs), and 6529-core (2 PRs for validator release signing). The E2EE launch, signed messages, 6529 Stream frontend, and the security hardening batch were all his work. The dev wave saw about 150 drops across production deploys, staging deploys, and the GitHub PR feed. Multiple production deploys went out Nov 1 for the E2EE backend, frontend, push notifications handler, and database migrations.</p>
+
+    <div class="stat-line">📊 100 PRs merged (55 frontend, 12 backend, 19 6529-works, 2 core, 12 other) · E2EE DMs and signed messages launched · 6529 Stream frontend built · Multiple production deploys Nov 1</div>
+</div>
+
+<!-- NEWEST MEMES -->
+<div class="section" id="newest-memes">
+    <div class="section-title">🖼️ Newest Memes: Card Mints & Main Stage</div>
+
+    <p class="body-text">Three new cards minted this week, all from this week's MS winners. Cards #566 and #567 closed within a day of minting, while #568 closed at 158 editions. All three are done.</p>
+
+    <table class="card-table">
+        <thead>
+            <tr>
+                <th>Card</th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Community Mints</th>
+                <th>Subs</th>
+                <th>Status</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="card-num">#568</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/568">TRUST ME BRO</a></td>
+                <td>@ChrisGranneberg</td>
+                <td>79 / 79</td>
+                <td>70</td>
+                <td class="status-done">✅ Done</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/568">View →</a></td>
+            </tr>
+            <tr>
+                <td class="card-num">#567</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/567">An Important Validation</a></td>
+                <td>@arsonic</td>
+                <td>133 / 133</td>
+                <td>73</td>
+                <td class="status-done">✅ Done</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/567">View →</a></td>
+            </tr>
+            <tr>
+                <td class="card-num">#566</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/566">Choosing Light</a></td>
+                <td>@amanrasouli</td>
+                <td>77 / 77</td>
+                <td>68</td>
+                <td class="status-done">✅ Done</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/566">View →</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="color:var(--dim);font-size:0.8rem;margin-top:0.5rem;">Community mints = total minted supply minus 79 (team + museum) minus 6529Research wallet holdings. Cards that close early have fewer community mints than the 231 maximum for a standard 310-edition card. Card #568 had an initial edition of 328 but closed at 158. Card #566 closed at 156 and #567 at 212.</p>
+</div>
+
+<!-- MUSEUM -->
+<div class="section" id="museum">
+    <div class="section-title">🏛️ 6529 Network Museum</div>
+
+    <div class="headline">
+        <h3>Museum wave silent this week, but Rare Pepe acquisition advances in dedicated wave</h3>
+        <p>The 6529 Network Museum wave had zero drops this week. No new acquisitions, proposals, or governance discussions surfaced on the wave itself. The Chromie Squiggle acquisition (Card #550) is complete, with RD posting revised museum documentation on GitHub (6529NM.2026.004.01.md) on Oct 31 and SquiggleDAO drafting institutional recognition context covering 13 museums. See Do Something for details. The Rare Pepe acquisition (Card #551) continues in its dedicated wave, where community voting has restarted with three new acquisition proposals: SHITCOINCARD (0.1 ETH), STILLPEPE (0.16 ETH), and EARTHPEPE. @DarrenSRS is coordinating with 6529 on the acquisition process.</p>
+    </div>
+
+    <div class="stat-line">📊 0 museum wave drops this week · Rare Pepe voting active in dedicated wave (3 proposals) · Squiggle acquisition complete with updated documentation</div>
+</div>
+
+<!-- SHILLANDIA -->
+<div class="section" id="shillandia">
+    <div class="section-title">📣 Shillandia</div>
+
+    <div class="headline">
+        <h3>Wave goes quiet for Halloween week, calendar holds above 1,600 cards</h3>
+        <p>The Shillandia wave itself had zero new posts this week, a continued slowdown from prior weeks. The auto-refresh crons kept running every 4 to 6 hours, maintaining mint counts across all active drops. The calendar currently shows 377 editions, 1,054 1/1s, 213 collections, 5 upcoming, and 33 sold-out pieces across roughly 1,680 total cards.</p>
+    </div>
+
+    <p class="body-text">The full calendar with live mint data, progress bars, sort filters, and allowlist information is at <a href="https://regulardad6529.github.io/mnn/shillandia.html" style="color:var(--accent);text-decoration:underline;">regulardad6529.github.io/mnn/shillandia.html</a>. The calendar opens to the Upcoming tab by default, showing drops that haven't gone live yet, with dated drops sorted by closest first.</p>
+
+    <div class="stat-line">📊 377 editions · 1,054 1/1s · 213 collections · 5 upcoming · 33 sold · ~1,680 total cards · 0 new wave posts this week</div>
+</div>
+
+<!-- SOCIALS -->
+<div class="section" id="socials">
+    <div class="section-title">🍺 Socials</div>
+
+    <div class="headline">
+        <h3>Halloween meets E2EE launch, punk6529 ships signed posts and validator hardware guides, El Memeño voting heats up</h3>
+        <p>The week split between Halloween festivities and the biggest platform launch in months. On Oct 31, punk6529 shipped end-to-end encrypted DMs and signed messages, and the bar lit up with people testing the new features. @Articulate posted: "gm team, Huge announcement just now, go and turn on encrypted DMs and signed messages." @EyEm posted "first signed message" with evident excitement. @maybe herself ran into a bug with the signed messages toggle not responding, which punk6529 acknowledged and fixed within hours, noting he was "testing again, this one should be signed." Meanwhile, Halloween brought costumes, pumpkin art, and @Soliiiart's full-blown "Minister's Cat" persona, complete with an elaborate backstory about being officially appointed by punk6529 himself on Halloween night.</p>
+    </div>
+
+    <div class="subsection">punk6529 on validators, Tor, and sovereignty</div>
+    <p class="body-text">punk6529 posted several Announcements threads this week beyond the E2EE launch. He published 6529 Validator Hardware Recommendations, noting that CPU, memory, and hard disk matter more than GPU for validation, and that having your own ETH node is a plus. He clarified that Tor is built into the validator (using arti, the Tor Project's own client) and on by default for home operators. In the bar, he framed the validator economics as the old database-versus-blockchain debate: "You should do most things on a database because it is cheaper and easier, but you should maintain some capacity to do things in a sovereign way." He also posted Ministry of Validation items from Switzerland, arranging data center logistics himself. @david asked about running nodes for friends and family with lower TDH, prompting punk6529 to promise a more detailed analysis.</p>
+
+    <div class="subsection">El Memeño competition and vote count debates</div>
+    <p class="body-text">@tito's El Memeño Meme Competition continued drawing submissions and shills. @dougfriesen promoted his "PEPE CAN'T SAVE US" entry, built from two original photographs (Comet Neowise 2020 and a hoar frost morning 2023), with a pinned article on X breaking down the source imagery. @Loop, @MAB, @farnaz_dashti, and @Mohi all shared submissions. The vote count debate from last week continued: @tito noted "185 voters for the amazing reef card" and asked how to set a new record with El Memeño. @grubnot countered with a pointed observation about 184 unique voters on senemsad's winning card and "the best efforts of a handful of whales that tried hard to keep her from winning, because they don't like 6529 gradients in meme cards." @blake69 hyped "EL PEPENO IS COMING" in the bar.</p>
+
+    <div class="subsection">Halloween in the bar</div>
+    <p class="body-text">The bar celebrated Halloween with costume photos and themed art. @dougfriesen posted a photo of himself and his son both dressed as Superman. @arsonic shared a Halloween greeting with themed artwork. @Soliiiart went all-in on a cat persona, posting trick-or-treat jokes asking for TDH and rep, sharing costume photos, and declaring herself "officially appointed 6529 Cat, Minister's Cat, and maybe's Dive Bar Cat" with punk6529's approval. @GOG wondered if dropping a community piece on Halloween was a bad idea since "everyone was outside enjoying Halloween."</p>
+
+    <div class="subsection">Quotes and moments</div>
+    <div class="quote-block">
+        <p>"gm team, Huge announcement just now, go and turn on encrypted DMs and signed messages"</p>
+        <div class="attribution">@Articulate, reacting to the E2EE and signed messages launch.</div>
+    </div>
+    <div class="quote-block">
+        <p>"You should do most things on a database because it is cheaper and easier, but you should maintain some capacity to do things in a sovereign way."</p>
+        <div class="attribution">@punk6529, framing the validator economics debate.</div>
+    </div>
+    <div class="quote-block">
+        <p>"how the fuck do we get this some tdh"</p>
+        <div class="attribution">@maybe, on a community piece struggling for visibility.</div>
+    </div>
+
+    <p class="body-text">@Cozmonika celebrated the success of her recent drop, thanking the community: "so glad people loved this collection." @tonysellen posted a supportive message to the bar: "Don't let this place drag you down, easy to say I know." @Moonzoey shared several art pieces throughout the week. The bar also saw some technical glitches: @tito reported drops failing and a DM not going through, and @ikertje noted their DMs were not yet encrypted after turning on the feature. @punk6529bot provided helpful guidance on migrating old DMs to encrypted chat.</p>
+
+    <div class="stat-line">📊 5,000+ drops sampled · 179 unique voices · 481 GMs in the dive bar this week</div>
+</div>
+
+<!-- BOTTOM LINE -->
+<div class="bottom-line">
+    <div class="label">The Bottom Line</div>
+    <p>A launch week. punk6529 shipped two major platform features, end-to-end encrypted messaging and cryptographically signed posts, and the community immediately put them to use. The same week saw 100 merged PRs, the 6529 Stream frontend taking shape with edition auction pages, a 17-PR security hardening batch, and validator hardware guidance for the road to decentralization. Three MS winners, three cards minted and closed. The Contribute Now ad experiment shared its first real data. The museum wave was silent but the Rare Pepe voting advances. Halloween brought costumes and energy to the bar, and the El Memeño competition kept the shill threads going. The infrastructure keeps maturing; the community keeps showing up. See you next week.</p>
+</div>
+
+<div class="footer">
+    Published by RegularDad &amp; <a href="https://6529.io/RegularDad">TheManager</a>
+</div>
+
+</div>
+</body>
+</html>
