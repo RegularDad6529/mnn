@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MNN · Issue #10 · Week 45 · Nov 2-8, 2026</title>
+<style>
+:root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --border: #1e1e1e;
+    --text: #e0e0e0;
+    --muted: #aaa;
+    --dim: #888;
+    --accent: #e8a200;
+    --accent-dim: #b88000;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+.container { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+.report-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.report-header .logo { margin-bottom: 1rem; }
+.report-header .logo svg { max-width: 240px; height: auto; }
+.report-header .meta { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+.report-header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.3; }
+.report-header .date-range { color: var(--muted); font-size: 0.95rem; margin-top: 0.25rem; }
+.back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--muted); font-size: 0.85rem; text-decoration: none; font-family: var(--mono); }
+.back-link:hover { color: var(--accent); }
+
+.toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 2.5rem; }
+.toc .toc-label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.toc ul { list-style: none; }
+.toc li { padding: 0.25rem 0; }
+.toc a { color: #ccc; text-decoration: none; font-size: 0.9rem; }
+.toc a:hover { color: var(--accent); }
+
+.section { margin-bottom: 2.5rem; }
+.section-title { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+
+.headline { margin-bottom: 1.5rem; }
+.headline h3 { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; line-height: 1.35; }
+.headline p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
+.headline p a { color: var(--accent); text-decoration: underline; }
+
+.story-list { list-style: none; }
+.story-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+.story-list li:last-child { border-bottom: none; }
+.story-list .author { color: var(--accent); font-weight: 600; }
+.story-list .title { color: #ccc; font-weight: 600; }
+.story-list .desc { color: #bbb; font-size: 0.92rem; line-height: 1.55; }
+
+.subsection { font-size: 0.9rem; font-weight: 600; color: #999; margin: 1.25rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--mono); }
+
+.no-movement { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; }
+.no-movement ul { list-style: none; }
+.no-movement li { padding: 0.3rem 0; color: #bbb; font-size: 0.9rem; }
+.no-movement li strong { color: #ccc; }
+
+.stat-line { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 4px; padding: 0.75rem 1.25rem; margin: 1.5rem 0; font-family: var(--mono); font-size: 0.85rem; color: #ccc; }
+
+.bottom-line { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-top: 2rem; }
+.bottom-line .label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.bottom-line p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
+
+.card-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+.card-table th { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 2px solid var(--border); color: var(--accent); font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.card-table td { padding: 0.7rem 0.5rem; border-bottom: 1px solid var(--border); color: #bbb; }
+.card-table td.card-num { color: var(--dim); font-family: var(--mono); font-size: 0.82rem; }
+.card-table a.card-link { color: var(--accent); text-decoration: underline; font-weight: 600; }
+.card-table a.card-link:hover { color: #fff; }
+.card-table .view-btn { display: inline-block; padding: 0.15rem 0.5rem; border: 1px solid var(--accent-dim); border-radius: 3px; color: var(--accent); font-family: var(--mono); font-size: 0.78rem; text-decoration: none; }
+.card-table .view-btn:hover { background: var(--accent); color: #000; }
+.card-table .status-done { color: #4a4; }
+
+.quote-block { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 4px; padding: 1rem 1.25rem; margin: 1rem 0; }
+.quote-block p { color: #ccc; font-size: 0.95rem; line-height: 1.6; font-style: italic; }
+.quote-block .attribution { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; font-style: normal; }
+
+.footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--dim); font-size: 0.8rem; }
+.footer a { color: var(--muted); text-decoration: none; }
+.footer a:hover { color: var(--accent); }
+
+p.body-text { color: #ccc; font-size: 0.98rem; line-height: 1.6; margin-bottom: 1rem; }
+p.body-text a { color: var(--accent); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a class="back-link" href="../index.html">&#8592; Back to MNN</a>
+
+<div class="report-header">
+    <div class="logo">
+        <svg width="240" height="90" viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 30 120 L 30 30 L 102 120 L 174 30 L 174 120 L 174 30 L 274 120 L 274 30 L 374 120 L 374 30" stroke="#e8a200" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <div class="meta">Issue #10 · Week 45</div>
+    <h1>Meme Network News</h1>
+    <div class="date-range">Nov 2 - 8, 2026</div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+    <div class="toc-label">In This Issue</div>
+    <ul>
+        <li><a href="#do-something">📺 Do Something</a></li>
+        <li><a href="#dev-report">🛠️ Dev Report</a></li>
+        <li><a href="#newest-memes">🖼️ Newest Memes</a></li>
+        <li><a href="#museum">🏛️ 6529 Network Museum</a></li>
+        <li><a href="#shillandia">📣 Shillandia</a></li>
+        <li><a href="#socials">🍺 Socials</a></li>
+    </ul>
+</div>
+
+<!-- DO SOMETHING -->
+<div class="section" id="do-something">
+    <div class="section-title">📺 Do Something: Community Action Tracker</div>
+
+    <div class="headline">
+        <h3>Three MS winners, three cards closed, Contribute Now ad debate continues, Seize Your Community gets a new proposal</h3>
+        <p>Three Main Stage winners this week as always: @Hedi on Monday with "Break the Pattern," @Teyhu on Wednesday with "Networked Mind," and @Beam on Friday with "WATER YOURSELF." All three cards minted and closed within a day, with #569 closing at 161 editions, #570 at 152, and #571 at 159. The biggest Do Something action came from @Zoku's "Seize Your Community" card, where @lastbubble proposed a new "Every Season Boost": +0.01 TDH boost for holding one card from every Memes season (30+ days held each). The proposal rewards collecting breadth over depth, and @grubnot endorsed it. Meanwhile, @Cuttle's "Contribute Now" continued generating community discussion around its first ad experiment results, with optimization conversations carrying into the start of the week before quieting down.</p>
+    </div>
+
+    <div class="subsection">New MS winners this week</div>
+    <ul class="story-list">
+        <li><span class="author">@Hedi</span> · <span class="title">"Break the Pattern" (Card #569, closed at 161):</span> <span class="desc">Won Nov 2. Card minted Nov 2 and closed Nov 3 at 161 editions. A faceless crowd with a woman in red standing apart, representing self-awareness and breaking free from systemic control. No additional action described beyond the artwork.</span></li>
+        <li><span class="author">@Teyhu</span> · <span class="title">"Networked Mind" (Card #570, closed at 152):</span> <span class="desc">Won Nov 4. Card minted Nov 4 and closed Nov 5 at 152 editions. Fine art portrait photography depicting the network as something carried above the head, held together by participation. No additional action described beyond the artwork.</span></li>
+        <li><span class="author">@Beam</span> · <span class="title">"WATER YOURSELF" (Card #571, closed at 159):</span> <span class="desc">Won Nov 6. Card minted Nov 6 and closed Nov 7 at 159 editions. Two figures (both the artist) in a desert bloom, one pouring water onto the other, an exploration of self-love and care. Beam shared a backstory on X and discussed the piece on a butcher stream with Darren. No additional action described beyond the artwork.</span></li>
+    </ul>
+
+    <div class="subsection">Active in-progress highlights</div>
+    <ul class="story-list">
+        <li><span class="author">@Zoku</span> · <span class="title">"Seize Your Community" (Card #557):</span> <span class="desc">Quorum wave active. New proposal from @lastbubble: "Every Season Boost" granting +0.01 TDH boost for holding one card from every Memes season, with each card held 30+ days. Rewards breadth over depth in collecting. @grubnot endorsed. Product and UX-relevant proposal advancing collecting and onboarding goals.</span></li>
+        <li><span class="author">@Cuttle</span> · <span class="title">"Contribute Now" (Card #561):</span> <span class="desc">Community engagement on the first ad experiment results continued through Nov 1-2. @grubnot's optimization plan from Oct 31 (GA4 conversion tracking, A/B test design, geographic analysis) remains the roadmap. Next experiment pending tracking implementation. No new ad spend this week.</span></li>
+        <li><span class="author">@Articulate</span> · <span class="title">"PebbleLand" (plan met, still building):</span> <span class="desc">OUTSIDERS wave active with community sharing AR photos and outdoor NFT displays. General community engagement, no new game features or competition updates this week.</span></li>
+    </ul>
+
+    <div class="subsection">No significant updates this week</div>
+    <div class="no-movement">
+        <ul>
+            <li><strong>@CasaNUA</strong> · "SURVIVE at Dominio PubliCC0" (Card #555, supersedes #516): Gallery operational. No new exhibition updates.</li>
+            <li><strong>@boredsurgeon + G9ralt</strong> · "Freedom to Research" (Card #447): No dedicated wave. Cannot monitor.</li>
+            <li><strong>@BrynnAlise</strong> · "Network for Good" (Card #478): No conservation advocacy updates.</li>
+            <li><strong>@JoelleLB</strong> · "Codex Obscura" (Card #483): Natural pigment research on hold.</li>
+            <li><strong>@Zigmarillion</strong> · "Network State of Mind" (Card #499): No replica statue or farm sale progress.</li>
+            <li><strong>@Gray</strong> · "Burn Mechanism" (Card #541): No update wave. Marfa bar status unchanged.</li>
+            <li><strong>@6529er + 6529</strong> · "Keys and Gates" (Card #493): Last activity Oct 7.</li>
+            <li><strong>@SummerMaxi</strong> · "Network State Conference 2026" (Card #553): No new drops since Oct 10. Posted "gmeme" Nov 2. Awaiting final summary write-up.</li>
+            <li><strong>@smpsmyth</strong> · "Patience is a Vinetree" (Card #554): No new drops since Oct 19. Flights booked for Adelaide lab testing.</li>
+            <li><strong>@Het_Patel</strong> · "UNFALLEN: BEYOND" (Card #560): No film production updates. See Socials for El Memeño result.</li>
+            <li><strong>@RegularDad</strong> · "Chromie Squiggle Museum Acquisition" (Card #550): No new updates. See Museum for Assembly NFT Photography acquisition.</li>
+            <li><strong>@punk6529</strong> · "Permanent Pepe" (Card #551): No new Rare Pepe proposals this week. See Museum section.</li>
+            <li><strong>@RegularDad</strong> · "Shill Alert" (Card #559): No new updates this week.</li>
+        </ul>
+    </div>
+
+    <div class="stat-line">📊 30 total AA submissions tracked · 17 in progress · 13 completed · 10 won MS · 3 removed</div>
+</div>
+
+<!-- DEV REPORT -->
+<div class="section" id="dev-report">
+    <div class="section-title">🛠️ Dev Report: Follow The Repo</div>
+
+    <div class="headline">
+        <h3>200 PRs, validator launches, performance overhaul, competitions become decisions</h3>
+        <p>The biggest story this week was the 6529 validator going live. On Nov 5, punk6529 posted "6529 Validators: So it begins," explaining the system: a small program that runs on your own computer, reads Ethereum once a day, computes everyone's TDH with two independently written programs, checks they agree, and signs the result. Validators share signatures peer to peer, and a day counts as agreed once more than two-thirds of counted TDH has signed. By Nov 6, 80 validators from 76 accounts had signed, climbing to 117 validators from 111 accounts for the next day. punk6529 framed it as likely top-10 among blockchains by independent validator count, with a 2026 goal approaching 1,000. The validator releases cycled from rc.5 through rc.10 during the week, with the final rc.5 guide published on Nov 3 and hardware pages going live the same day.</p>
+    </div>
+
+    <div class="subsection">Performance push: 6529.io gets faster</div>
+    <p class="body-text">punk6529 ran a site-wide performance push all week, with dozens of changes now in production. Many pages moved from server-rendered-per-visit to CloudFront's CDN edge. The production origin was locked to CloudFront via security group and secret origin header. On the backend, the hottest drop queries were rewritten to read from base tables instead of comparison views, schema sync metadata-lock waits were bounded, RDS Proxy session pinning was eliminated, WebSocket fan-out was tuned and measured, and wave unread summaries now cache for 10 minutes. The frontend cut notification count refetches, reduced profile picture downloads, throttled focus resyncs, and stopped open-wave reads from refetching entire wave lists. A new GET /v2/notifications/unread-count endpoint serves the unread badge without a full notification fetch.</p>
+
+    <div class="subsection">Waves chat system takes shape</div>
+    <p class="body-text">A multi-PR "Waves" initiative built a normalized chat store with gap-only sync and batched read markers. The frontend got a shared post mount that survives newer drops arriving, a typing-purpose socket separate from the app socket, chat row identity stabilization so messages re-render only their own rows, and an upgrade to @tanstack/react-virtual 3.14.24 for chat mode. The backend measured chat delivery per hop, stamped frame timings, sent reactions without the replica sleep, and excluded typing-purpose sockets from drop fan-out. All behind feature flags, staged on staging first.</p>
+
+    <div class="subsection">Competitions renamed to Decisions</div>
+    <p class="body-text">punk6529 announced that "competitions" are being renamed "decisions," and "decision moments" are being renamed "results." The reasoning: 6529 is a decentralized decision network, and decisions are a superset of competitions. The rename landed across frontend and backend, with push notifications and API error messages updated accordingly. punk6529 invited alternatives in the replies but went with the change unless he saw something compelling.</p>
+
+    <div class="subsection">6529-works and security</div>
+    <p class="body-text">The 6529-works repo saw 4 PRs, including the rc.2 release preparation with release notes and grouped changelog, Sepolia r4's live Verify recorded as passed on Nov 6, and a large mutation that named every missing shard and budgeted each one. Security work included validating access-token claims, validating multipart completion keys, installing C2PA Linux x64 native archives, hardening the session cookie, adding embargoed regions and wallet screening to the Terms sanctions section, turning off Reown AppKit analytics and Coinbase SDK telemetry, and starting AWS RUM only with performance consent. Profile picture uploads were routed through the backend to IPFS with an authenticated upload endpoint.</p>
+
+    <div class="subsection">Team activity</div>
+    <p class="body-text">This week saw the most diverse contributor set in recent memory. punk6529 led with 147 PRs, but @GelatoGenesis contributed 31 PRs (backend ENS fixes, OpenSea stream pacing, encrypted chat fixes, wave @all notification previews, competition archiving, profile level suggestions), @ragnep (prxt6529's collaborator) merged 12 PRs (profile activity optimization, reaction name management, UI refinements), and @prxt6529 merged 10 PRs (desktop fixes, device grants, sidebar notifications, touch E2E fixes). The dev wave carried 7 announcement posts from punk6529 covering validator status, performance updates, the Switzerland thought experiment, museum signer changes, and the competitions-to-decisions rename.</p>
+
+    <div class="stat-line">📊 200 PRs merged (105 frontend, 85 backend, 4 6529-works, 3 core, 3 reviewbot) · Validator launched (80 to 117 signers) · CloudFront cutover · Competitions renamed to Decisions · 4 contributors</div>
+</div>
+
+<!-- NEWEST MEMES -->
+<div class="section" id="newest-memes">
+    <div class="section-title">🖼️ Newest Memes: Card Mints & Main Stage</div>
+
+    <p class="body-text">Three new cards minted this week, all Season 17, all from this week's MS winners. All three closed within a day of minting. Card #569 closed at 161, #570 at 152, and #571 at 159. All three are done.</p>
+
+    <table class="card-table">
+        <thead>
+            <tr>
+                <th>Card</th>
+                <th>Title</th>
+                <th>Artist</th>
+                <th>Community Mints</th>
+                <th>Status</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="card-num">#571</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/571">WATER YOURSELF</a></td>
+                <td>@Beam</td>
+                <td>80 / 80</td>
+                <td class="status-done">✅ Done</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/571">View →</a></td>
+            </tr>
+            <tr>
+                <td class="card-num">#570</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/570">Networked Mind</a></td>
+                <td>@Teyhu</td>
+                <td>73 / 73</td>
+                <td class="status-done">✅ Done</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/570">View →</a></td>
+            </tr>
+            <tr>
+                <td class="card-num">#569</td>
+                <td><a class="card-link" href="https://6529.io/the-memes/569">Break the Pattern</a></td>
+                <td>@Hedi</td>
+                <td>82 / 82</td>
+                <td class="status-done">✅ Done</td>
+                <td><a class="view-btn" href="https://6529.io/the-memes/569">View →</a></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p style="color:var(--dim);font-size:0.8rem;margin-top:0.5rem;">Community mints = total minted supply minus 79 (team + museum) minus 6529Research wallet holdings. Cards that close early have fewer community mints than the 231 maximum for a standard 310-edition card. Card #569 closed at 161, #570 at 152, and #571 at 159.</p>
+</div>
+
+<!-- MUSEUM -->
+<div class="section" id="museum">
+    <div class="section-title">🏛️ 6529 Network Museum</div>
+
+    <div class="headline">
+        <h3>punk6529 buys Assembly NFT Photography collection for the Museum, signer restructuring begins</h3>
+        <p>The big museum story this week was punk6529 purchasing the entire Assembly NFT Photography collection on Nov 4 with the intention of donating it to the 6529 Network Museum, subject to community vote. He posted the proposal on the Museum wave with a link to the collection's PDF. @grubnot was enthusiastic: "everyone jump into #6529 Network Museum. this is fucking insane! what a buy! vote if you love photography." By Nov 5, grubnot reported the vote was 24 hours from official approval and moving to the Museum's safe. @EyEm flagged the photography collection to @JasonOPhoto. Separately, punk6529 proposed restructuring the Museum's signers: current signers are @6529er, @itsjpower, @HugoFaz, @maybe, and punk6529 himself, and he wants to remove himself, going to 3 community and 2 team signers by the weekend. He framed it as "a good first example for where we are going: first team is a minority and then TDH does the job."</p>
+    </div>
+
+    <div class="subsection">Rare Pepe acquisition</div>
+    <p class="body-text">The Rare Pepe acquisition wave (Card #551) continues with three existing proposals: SHITCOINCARD (0.1 ETH), STILLPEPE (0.16 ETH), and EARTHPEPE. @tito gave the Rare Pepe wave a Friday shoutout, noting EARTHPEPE needs 69M TDH and currently has 9M thanks to a big vote from @RegularDad. No new proposals this week. @gpebbles mentioned owing time to the Pepe wave for Rare Pepe buys.</p>
+
+    <div class="subsection">Other museum mentions</div>
+    <p class="body-text">@Arkinon proposed the Network Museum acquire an Untitled Punk piece from OpenSea, arguing it will become a notable historical artifact. @fercaggiano announced minting an IRL museum collection with auctions going live Nov 11. @MoTU, the bar's self-styled Museum presence, posted a welcome notice assuring visitors that "its questionable reputation is entirely intentional."</p>
+
+    <div class="quote-block">
+        <p>"a good first example for where we are going: first team is a minority and then TDH does the job"</p>
+        <div class="attribution">@punk6529, on removing himself as a Museum signer.</div>
+    </div>
+
+    <div class="stat-line">📊 Assembly NFT Photography collection purchased, pending community vote · Museum signer restructuring proposed (5 to 4, team becomes minority) · Rare Pepe voting continues (EARTHPEPE at 9M of 69M TDH needed)</div>
+</div>
+
+<!-- SHILLANDIA -->
+<div class="section" id="shillandia">
+    <div class="section-title">📣 Shillandia</div>
+
+    <div class="headline">
+        <h3>Calendar crosses 1,900 drops, fercaggiano announces IRL museum auctions</h3>
+        <p>The Shillandia calendar continues growing, now listing 1,912 total drops across 436 editions, 1,207 1/1s, 226 collections, 2 upcoming, and 41 sold out. The wave saw light activity this week, with @FRANKIEHGIH_ETH shilling a new multi-C artwork and @JasonOPhoto noting that the #Shillandia hashtag still works for promotion. @Shabarigirisan asked whether to shill in Shillandia or if there is a dedicated shill wave. The biggest shill came from @fercaggiano, who announced minting an IRL museum collection with auctions opening Nov 11, describing it as their most well-recognized exhibition with the most visitors.</p>
+    </div>
+
+    <p class="body-text">The full calendar with live mint data, progress bars, sort filters, and allowlist information is at <a href="https://regulardad6529.github.io/mnn/shillandia.html" style="color:var(--accent);text-decoration:underline;">regulardad6529.github.io/mnn/shillandia.html</a>. The calendar opens to the Upcoming tab by default, showing drops that haven't gone live yet, with dated drops sorted by closest first.</p>
+
+    <div class="stat-line">📊 436 editions · 1,207 1/1s · 226 collections · 2 upcoming · 41 sold · 1,912 total drops · Updated Nov 8, 2026</div>
+</div>
+
+<!-- SOCIALS -->
+<div class="section" id="socials">
+    <div class="section-title">🍺 Socials</div>
+
+    <div class="headline">
+        <h3>Validators go live, El Memeño crowns dougfriesen, whale voting debate erupts, node art floods Main Stage</h3>
+        <p>The week belonged to validators and El Memeño. punk6529 launched the 6529 validator on Nov 5 and the bar immediately filled with node setup discussions. @AlpineLifer asked for an explainer on what a validator actually is. @AshtonTekno recommended a dedicated computer. @ikertje noted they could not install it on a work laptop without admin rights. @Loop was stuck trying to sign without installing a wallet or writing seed phrases in a clean setup. @GhostPepper looked forward to "a glass of wine and checking if the node is still validating when I get home," and suggested a dashboard for node health stats. punk6529 clarified that with $30 you can be a validating node, and that covers up to 16 physical machines. On Nov 8 he posted he had a design in his head for years and was excited to see if it works.</p>
+    </div>
+
+    <div class="subsection">El Memeño: dougfriesen wins with pure photography</div>
+    <p class="body-text">@tito's El Memeño Meme Competition concluded Saturday with @dougfriesen taking first place with "NATURE OF THE BEAST," a pure photography piece capturing a beast-like silhouette against a burning sky. @longexposure placed second with "El Niñozilla," and @Het_Patel took third with "The Last Memory." tito posted the results at 3 PM UTC: "GM NINOS, WE HAVE A RESULT!" and urged the community to give dougfriesen's winning piece a max vote on Main Stage. @NLV had already noted dougfriesen in the lead the night before, calling it "Very cool to see dougfriesen in the lead for El Memeño. Photography." tito also highlighted that dougfriesen put a piece into the prize pool for a random artist, calling it "so cool." @GhostPepper praised the competition itself, impressed by getting over 50 artists to submit.</p>
+
+    <div class="subsection">The whale voting debate</div>
+    <p class="body-text">The bar's most heated discussion came from @grubnot questioning whether @Shelby's AI-generated card deserved to win Main Stage with two 100-level whale max votes. grubnot posted a direct challenge: "after everything you've done for the network and community, is this really what you want us to see you as moving forward? someone that's going to earn a min. of 2.5eth and 20 cards on a simple, easy to make AI card that got voted in because of two 100-level whales max voting?" punk6529 jumped in with a lengthy defense of the voting system, arguing that "people who spend their money collecting art have a greater vote in what art gets collected, just like people who spend their money eating out at nice restaurants have a greater vote on what dishes are served." He pushed back on the "cabal" narrative, saying he had been accused of being in a cabal to promote certain artists "where I had not even met let alone coordinated with the other members of the supposed cabal." He also noted that with 500M TDH voted and 420M not on the card in question, people who felt strongly could outvote the whales. grubnot followed up with a broader warning: "with great tdh, comes great power. so use it carefully and with respect. don't just dump all of it on one card."</p>
+
+    <div class="subsection">Node art submissions flood Main Stage</div>
+    <p class="body-text">RegularDad posted two participatory calls on Main Stage this week. "SET UP A NODE!" went up Nov 7 as a call for submissions to create works encouraging node setup for the 6529 network, with the artwork cycling through the top 10 voted pieces. A separate "Compute/Dev 1" drop announced that if minted, all ETH goes back to the team for dev work on the new chain. The node call drew submissions from @Bicasso ("Running a node is as simple as tying a knot"), @DaVinGi ("ARE YOU A GLADIATOR?"), @blake69, @EzMonet, @Shelby ("Birth of a Network"), @Josei ("Beyond The Node"), @HELLia ("THE NETWORK THINKS"), @Burnasso ("THE MEME IS THE MONUMENT"), @Sherie_Margaret ("LO..."), @Melted ("RESIST"), @AnaNovo ("PERMISSION NOT REQUIRED"), and @sonyart ("No Planet B"). @Bicasso promoted the node theme on X, calling it "really easy like doing a real knot."</p>
+
+    <div class="subsection">Season 17 Mintooorrs wave and other moments</div>
+    <p class="body-text">@gpebbles announced a new "#Season 17 Mintooorrs" wave by @RegularDad, committing a minimum of 5M TDH to the winning card. To be eligible to vote, you just have to have minted any card from Season 17, and you get one vote regardless of TDH. @Kubti gave a shoutout to gpebbles for minting 3 of their new editions. @senemhappy shared a personal update about helping her mom prepare for a medical procedure while studying for exams. @NLV praised @maybe's interview that dropped during the week: "your interview that just dropped was an excellent read." @Bicasso stirred the bar with a passionate take on art and money: "People have eyes blind with $ they don't give a fuck about passione or real art." @Soliiiart kept spirits light, noting her card has been sitting at #5 on the leaderboard for five weeks.</p>
+
+    <div class="quote-block">
+        <p>"with $30 you can be a validating node"</p>
+        <div class="attribution">@punk6529, on validator accessibility.</div>
+    </div>
+    <div class="quote-block">
+        <p>"with great tdh, comes great power. so use it carefully and with respect. don't just dump all of it on one card"</p>
+        <div class="attribution">@grubnot, in the whale voting debate.</div>
+    </div>
+    <div class="quote-block">
+        <p>"every other art purchase except for the memes is a vote with only 1 voter, north korean style"</p>
+        <div class="attribution">@punk6529, defending the TDH-weighted voting system.</div>
+    </div>
+
+    <div class="stat-line">📊 5,000+ drops sampled · 197 unique voices · 370 GMs in the dive bar this week</div>
+</div>
+
+<!-- BOTTOM LINE -->
+<div class="bottom-line">
+    <div class="label">The Bottom Line</div>
+    <p>A launch week that turned into a debate week. The 6529 validator went live and the community showed up: 80 signers on day one, climbing past 117 by the weekend, with bar conversations full of hardware questions, Tor configurations, and the realization that $30 buys you a seat at the table. Two hundred PRs landed across four repos, the most diverse contributor set in months, with a site-wide performance push, a CloudFront cutover, and the philosophical rename from competitions to decisions. Three MS winners, three cards closed. El Memeño crowned a pure photography winner who is now headed to Main Stage. The whale voting debate surfaced real tensions about TDH-weighted power, and punk6529 defended the system with a restaurant analogy that will probably echo for a while. The Museum got a photography collection and started restructuring its signers. Node art flooded Main Stage. The infrastructure keeps maturing; the community keeps arguing, building, and showing up. See you next week.</p>
+</div>
+
+<div class="footer">
+    Published by RegularDad &amp; <a href="https://6529.io/RegularDad">TheManager</a>
+</div>
+
+</div>
+</body>
+</html>
