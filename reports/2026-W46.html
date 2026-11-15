@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MNN · Issue #11 · Week 46 · Nov 9-15, 2026</title>
+<style>
+:root {
+    --bg: #0a0a0a;
+    --surface: #141414;
+    --border: #1e1e1e;
+    --text: #e0e0e0;
+    --muted: #aaa;
+    --dim: #888;
+    --accent: #e8a200;
+    --accent-dim: #b88000;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: var(--sans); background: var(--bg); color: var(--text); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+.container { max-width: 720px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+
+.report-header { margin-bottom: 2.5rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+.report-header .logo { margin-bottom: 1rem; }
+.report-header .logo svg { max-width: 240px; height: auto; }
+.report-header .meta { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+.report-header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.3; }
+.report-header .date-range { color: var(--muted); font-size: 0.95rem; margin-top: 0.25rem; }
+.back-link { display: inline-block; margin-bottom: 1.5rem; color: var(--muted); font-size: 0.85rem; text-decoration: none; font-family: var(--mono); }
+.back-link:hover { color: var(--accent); }
+
+.toc { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 2.5rem; }
+.toc .toc-label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.toc ul { list-style: none; }
+.toc li { padding: 0.25rem 0; }
+.toc a { color: #ccc; text-decoration: none; font-size: 0.9rem; }
+.toc a:hover { color: var(--accent); }
+
+.section { margin-bottom: 2.5rem; }
+.section-title { font-size: 1.05rem; font-weight: 600; color: var(--accent); margin-bottom: 1.25rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border); }
+
+.headline { margin-bottom: 1.5rem; }
+.headline h3 { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; line-height: 1.35; }
+.headline p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
+.headline p a { color: var(--accent); text-decoration: underline; }
+
+.story-list { list-style: none; }
+.story-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--border); }
+.story-list li:last-child { border-bottom: none; }
+.story-list .author { color: var(--accent); font-weight: 600; }
+.story-list .title { color: #ccc; font-weight: 600; }
+.story-list .desc { color: #bbb; font-size: 0.92rem; line-height: 1.55; }
+
+.subsection { font-size: 0.9rem; font-weight: 600; color: #999; margin: 1.25rem 0 0.5rem; text-transform: uppercase; letter-spacing: 0.05em; font-family: var(--mono); }
+
+.no-movement { background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; }
+.no-movement ul { list-style: none; }
+.no-movement li { padding: 0.3rem 0; color: #bbb; font-size: 0.9rem; }
+.no-movement li strong { color: #ccc; }
+
+.stat-line { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: 4px; padding: 0.75rem 1.25rem; margin: 1.5rem 0; font-family: var(--mono); font-size: 0.85rem; color: #ccc; }
+
+.bottom-line { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem 1.5rem; margin-top: 2rem; }
+.bottom-line .label { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.5rem; }
+.bottom-line p { color: #ccc; font-size: 0.98rem; line-height: 1.6; }
+
+.card-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.88rem; }
+.card-table th { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 2px solid var(--border); color: var(--accent); font-family: var(--mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+.card-table td { padding: 0.7rem 0.5rem; border-bottom: 1px solid var(--border); color: #bbb; }
+.card-table td.card-num { color: var(--dim); font-family: var(--mono); font-size: 0.82rem; }
+.card-table a.card-link { color: var(--accent); text-decoration: underline; font-weight: 600; }
+.card-table a.card-link:hover { color: #fff; }
+.card-table .view-btn { display: inline-block; padding: 0.15rem 0.5rem; border: 1px solid var(--accent-dim); border-radius: 3px; color: var(--accent); font-family: var(--mono); font-size: 0.78rem; text-decoration: none; }
+.card-table .view-btn:hover { background: var(--accent); color: #000; }
+.card-table .status-done { color: #4a4; }
+
+.quote-block { background: var(--surface); border-left: 3px solid var(--accent); border-radius: 4px; padding: 1rem 1.25rem; margin: 1rem 0; }
+.quote-block p { color: #ccc; font-size: 0.95rem; line-height: 1.6; font-style: italic; }
+.quote-block .attribution { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; font-style: normal; }
+
+.footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--border); text-align: center; color: var(--dim); font-size: 0.8rem; }
+.footer a { color: var(--muted); text-decoration: none; }
+.footer a:hover { color: var(--accent); }
+
+p.body-text { color: #ccc; font-size: 0.98rem; line-height: 1.6; margin-bottom: 1rem; }
+p.body-text a { color: var(--accent); text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a class="back-link" href="../index.html">&#8592; All Issues</a>
+
+<div class="report-header">
+    <div class="logo">
+        <svg width="240" height="80" viewBox="0 0 380 140" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 18 120 L 18 30 L 102 120 L 174 30 L 174 120 L 174 30 L 274 120 L 274 30 L 374 120 L 374 30" stroke="#e8a200" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </div>
+    <div class="meta">Issue #11 · Week 46</div>
+    <h1>MNN · Meme Network News</h1>
+    <div class="date-range">Nov 9-15, 2026</div>
+</div>
+
+<div class="toc">
+    <div class="toc-label">In This Issue</div>
+    <ul>
+        <li><a href="#do-something">📺 Do Something</a></li>
+        <li><a href="#dev-report">🛠️ Dev Report</a></li>
+        <li><a href="#newest-memes">🖼️ Newest Memes</a></li>
+        <li><a href="#museum">🏛️ Museum</a></li>
+        <li><a href="#shillandia">📣 Shillandia</a></li>
+        <li><a href="#socials">🍺 Socials</a></li>
+    </ul>
+</div>
+
+<div class="section" id="do-something">
+<h2 class="section-title">📺 Do Something: Community Action Tracker</h2>
+
+<div class="headline">
+<h3>CasaNUA ships a validator monitor app and teases NUA gallery</h3>
+<p class="body-text">The biggest Do Something story this week came from CasaNUA, who launched the 6529 Validator Monitor, a mobile app for iPhone, Apple Watch, and Android (via TestFlight) that lets validators check their signing status from anywhere. HugoFaz was in the bar answering questions about it all week, explaining that phones can monitor but not run validators, while iPads can already download NUA, a separate app for navigating and exhibiting NFTs that is in late beta. CasaNUA also submitted a new Main Stage entry (serial 1672764, currently rank #30, scored 14/25) to fund continued app development. The open call for community curation of the next exhibition at Dominio PubliCC0 continues, with Allexpop submitting the first curatorial proposal, "The Future Has No Owner."</p>
+</div>
+
+<div class="subsection">In Progress</div>
+<ul class="story-list">
+<li>
+<span class="author">@Cuttle (Contribute Now):</span>
+<span class="desc">Second ad experiment launched Nov 12, a $300 three-day run featuring "Running 6529" content encouraging signups and reposts. First experiment results from Oct 31 (158K impressions, 1,700 clicks, +6 new profiles) are being integrated with grubnot's optimization plan: GA4 conversion tracking, A/B tests, and geographic analysis. Next full experiment pending tracking implementation.</span>
+</li>
+<li>
+<span class="author">@Zoku (Seize Your Community):</span>
+<span class="desc">Posted a 6-week assessment of the 3-phase plan. Phase 1 is partially done: homepage copy updated, subscription page redesigned, Validator now visible in the nav bar. dougfriesen endorsed the clean CTA and language. New Quorum proposals from Burnasso (a Discover category for Main Stage exploration, one selection per artist per season) and Jenifer_Pepen (updating meme card attributes for better discovery) are advancing through the product pipeline.</span>
+</li>
+<li>
+<span class="author">@JoelleLB (Codex Obscura):</span>
+<span class="desc">Published a new Substack article on making botanical inks, and built an app to convert experiment notes into Substack articles. AshtonTekno and JoelleLB were discussing research progress. Natural pigment research showing continued activity, with the Substack growing to help fund the work.</span>
+</li>
+<li>
+<span class="author">@SummerMaxi (Network State Conference):</span>
+<span class="desc">Conference attendance is complete. SummerMaxi confirmed on the tracker wave that a full NS conference report is coming "in a day or two" but is currently traveling with a node running at another location. No new drops on the progress wave since Oct 10.</span>
+</li>
+<li>
+<span class="author">@punk6529 (Permanent Pepe, #551):</span>
+<span class="desc">Community voting continues in the dedicated Pepe wave. DarrenSRS confirmed as curator. Three proposals remain active: SHITCOINCARD (0.1 ETH), STILLPEPE (0.16 ETH), and EARTHPEPE (climate theme). GOXPEPE was previously approved. tito offered to donate a card if budget is tight.</span>
+</li>
+</ul>
+
+<div class="subsection">No Significant Updates</div>
+<div class="no-movement">
+<ul>
+<li><strong>@Gray (Burn Mechanism, #541):</strong> No update wave. No progress. Marfa bar status unchanged.</li>
+<li><strong>@RegularDad (Chromie Squiggle, #550):</strong> Squiggle acquired. Documentation updated. No new updates.</li>
+<li><strong>@BrynnAlise (Network for Good, #478):</strong> Wave activity is GMs and social. No shark conservation campaigns this week.</li>
+<li><strong>@Zigmarillion (Network State of Mind, #499):</strong> Wave activity is GMs only. No replica statue or farm sale progress.</li>
+<li><strong>@Articulate (PebbleLand):</strong> OUTSIDERS wave active with AR photos and outdoor NFT displays. No new game features or competition updates.</li>
+<li><strong>@Het_Patel (UNFALLEN):</strong> ThinkingOut wave active with GMs and Diwali greetings. No film production updates.</li>
+</ul>
+</div>
+
+<div class="subsection">New This Week</div>
+<p class="body-text">30 new Main Stage submissions this week, a notably high volume. Standout entries include @SummerMaxi's "Seize the Nodes of Production" (a CC0'd 3D-printable Raspberry Pi validator node case), @YEKTA's "CHECKMEME: The Move" (an interactive painting you can play), @CasaNUA's validator monitor funding proposal, @Nova, @fercaggiano, @HIPOCREATE, @Drexx, @sonyart, @MahsaAli, and @Xoniyagar's "The Validator" animation celebrating the 6529 Network launch.</p>
+
+<div class="stat-line">📊 26 AA submissions tracked · 14 in progress · 12 completed · 14 won MS · 0 removed</div>
+</div>
+
+<div class="section" id="dev-report">
+<h2 class="section-title">🛠️ Dev Report: Follow The Repo</h2>
+
+<div class="headline">
+<h3>6529 Desktop app takes center stage as 50 PRs ship</h3>
+<p class="body-text">It was a massive week for development, with 50 merged PRs across the 6529-Collections organization. The dominant theme was the 6529 Desktop app, which saw more than 20 PRs from punk6529 covering wallet forwarding, browser connector sign-in, system notifications, app updates, the desktop title strip, deep link handling, and macOS Keychain seed-wallet storage. GelatoGenesis contributed pinned wave ordering for both desktop and mobile, the unread jump fix during chat layout changes, and Keychain password storage for the desktop seed wallet. ragnep shipped profile REP and NIC management improvements, ReMemes tab styling, Wave layout fixes for iPhone image viewing, and general UI refinements. prxt6529 updated the desktop renderer to the latest web build.</p>
+</div>
+
+<p class="body-text">Beyond the desktop push, punk6529 completed the full teardown of all Prenode infrastructure across the entire application: frontend, backend, database, and AWS account. He marked the occasion with a "Prenode Final Salute" announcement, acknowledging the prenode's role as a stepping stone that was never meant to be the actual validator. Staging was moved into its own dedicated AWS account (6529-staging), and the retired Prenode registry routes were removed from the backend.</p>
+
+<p class="body-text">Other notable changes: the help bot and moderation classifiers were moved to Claude Sonnet 5.5; a video conversion service (dropVideoConversionInvokerLoop) got its own production deploy home; market-depth storage was bounded with a retention pass; a backfill tool was added to strip identifying metadata from published chat media; and the wave history gap marker was renamed "Load more messages" for clarity. On the 6529-works repo, work powers (lower-only royalty, renounce) and off-chain conventions were formalized in ADR 0006, with a hardening pass covering claims, locators, entropy backoff, and deploy guards.</p>
+
+<div class="stat-line">📊 50 PRs merged · 4 contributors (punk6529, GelatoGenesis, ragnep, prxt6529) · 6 repos touched</div>
+</div>
+
+<div class="section" id="newest-memes">
+<h2 class="section-title">🖼️ Newest Memes: Main Stage Winners and Card Mints</h2>
+
+<div class="headline">
+<h3>Three cards close as validator-themed submissions flood Main Stage</h3>
+<p class="body-text">Three Main Stage winners minted this week, all closing at reduced edition sizes. The lower closing numbers reflect the current demand environment, where subscription growth rather than minting volume is the stated KPI. All three cards are fully minted and closed.</p>
+</div>
+
+<table class="card-table">
+<thead>
+<tr>
+<th>Card</th>
+<th>Title</th>
+<th>Artist</th>
+<th>Community Mints</th>
+<th>Subs</th>
+<th>Status</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="card-num">#572</td>
+<td><a class="card-link" href="https://6529.io/the-memes/572">6529 SVNTIKYTHERA</a></td>
+<td>@Jedi69</td>
+<td>78 / 231</td>
+<td>67</td>
+<td class="status-done">✅ Closed at 157</td>
+<td><a class="view-btn" href="https://6529.io/the-memes/572">View &#8594;</a></td>
+</tr>
+<tr>
+<td class="card-num">#573</td>
+<td><a class="card-link" href="https://6529.io/the-memes/573">Birth of a Network</a></td>
+<td>@Shelby</td>
+<td>107 / 231</td>
+<td>72</td>
+<td class="status-done">✅ Closed at 186</td>
+<td><a class="view-btn" href="https://6529.io/the-memes/573">View &#8594;</a></td>
+</tr>
+<tr>
+<td class="card-num">#574</td>
+<td><a class="card-link" href="https://6529.io/the-memes/574">BORN TO BE FREE</a></td>
+<td>@Nicolas_Bets</td>
+<td>82 / 231</td>
+<td>72</td>
+<td class="status-done">✅ Closed at 161</td>
+<td><a class="view-btn" href="https://6529.io/the-memes/574">View &#8594;</a></td>
+</tr>
+</tbody>
+</table>
+
+<p class="body-text" style="font-size: 0.82rem; color: var(--dim);">Community mints = closing edition size minus 79 (team + museum) minus 6529Research wallet holdings (0 for all three cards).</p>
+
+<div class="subsection">Main Stage Winner: Nicolas_Bets</div>
+<p class="body-text">Nicolas_Bets took the final Main Stage slot of the week with "BORN TO BE FREE" (#574), closing at 161 editions. The card generated cross-platform attention, with DeltaSauce noting in the bar that it "breached the broader Twitter" and was getting some negative comments from outside the community, a sign of the card reaching beyond the usual 6529 audience. Jedi69 and Shelby took the earlier two slots with "6529 SVNTIKYTHERA" and "Birth of a Network" respectively.</p>
+</div>
+
+<div class="section" id="museum">
+<h2 class="section-title">🏛️ 6529 Network Museum</h2>
+
+<div class="headline">
+<h3>Terraforms acquisition proposed as Opepen enters scope</h3>
+<p class="body-text">The Museum wave saw two significant developments this week. SonOfLasG submitted a formal proposal to acquire Terraforms by Mathcastles for the 6529 Network Museum, targeting a complete Binary set (boons #8910 Arc, #5760 Kairo, #1627 Dhampir) plus two Meadow parcels. TerraformsOTC has agreed in writing to the proposed pricing approach. This would be one of the most significant generative art acquisitions for the museum if it proceeds.</p>
+</div>
+
+<p class="body-text">RegularDad submitted a formal scope proposal to include Opepen, the ERC721 collection by Jack Butcher under Visualize Value, within the Museum's collection criteria. The proposal defines "Opepen" as the 200-set permanent collection and the broader edition on Ethereum. This is a governance milestone: expanding the museum's scope beyond its original acquisitions framework.</p>
+
+<p class="body-text">tito raised a broader question about preserving books and writing from pre-LLM days, noting that while Project Gutenberg books were put on-chain in 2021 via bookweave, much else remains unpreserved. The Museum wave also saw a tense exchange between gpebbles and Arkinon about provenance and art history versus cryptography in determining museum worthiness, with david weighing in to support gpebbles and call for respectful debate rather than personal attacks.</p>
+
+<p class="body-text">Botto, the AI artist, was welcomed to the Museum wave by Shelby, adding an unexpected new voice to the collection discussions. See Do Something for Rare Pepe voting updates.</p>
+
+<div class="stat-line">📊 23 drops this week · 2 formal proposals · 1 scope expansion · 1 acquisition target (Terraforms)</div>
+</div>
+
+<div class="section" id="shillandia">
+<h2 class="section-title">📣 Shillandia</h2>
+
+<div class="headline">
+<h3>Calendar crosses 2,000 drops as wave activity surges</h3>
+<p class="body-text">The Shillandia calendar continued its rapid expansion this week, growing from roughly 1,976 to 2,042 tracked drops across all tabs. The auto-scanner crons added dozens of new cards throughout the week, including new editions from dougfriesen, Michael_Buda, arctefact, MartaTimmer, Killstrike, and many others. New 1/1s came from SajiFall, 4448DigitalArt, GIANT, Elfilter, amanrasouli, SASHA_CHUDO, and more. Several sold-out drops were moved to the archive tab as Transient sales ended.</p>
+</div>
+
+<p class="body-text">The BLUES/SHILL wave itself was relatively quiet this week, with only one new post from Elham7sarve sharing a Transient Labs 1/1 listing. The calendar's growth came primarily from the automated scanner crons catching up on backlog rather than new wave posts.</p>
+
+<table class="card-table" style="margin-top: 1rem;">
+<thead>
+<tr>
+<th>Editions</th>
+<th>1/1s</th>
+<th>Collections</th>
+<th>Upcoming</th>
+<th>Sold Out</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>475</td>
+<td>1,284</td>
+<td>232</td>
+<td>1</td>
+<td>50</td>
+<td>2,042</td>
+</tr>
+</tbody>
+</table>
+
+<p class="body-text" style="font-size: 0.88rem;">Full calendar: <a href="https://regulardad6529.github.io/mnn/shillandia.html" style="color: var(--accent); text-decoration: underline;">regulardad6529.github.io/mnn/shillandia.html</a></p>
+</div>
+
+<div class="section" id="socials">
+<h2 class="section-title">🍺 Socials</h2>
+
+<div class="headline">
+<h3>maybe redefines TDH, the Prenode gets its salute, and Rakesh sets the leaderboard on fire</h3>
+<p class="body-text">maybe dropped a series of reflections on TDH that got the bar talking. "The purpose of TDH is not to vote," he wrote, "it is the hash rate of 6529." He walked through his thinking on tdh.market, a platform he created to rent TDH, and shared that he is building a TDH calculator in MemesEx that will show real-time annualized returns for buying cards at specific TDH rates. He also put out a call for artists to help create beautiful buyer's guides. "Just some random thoughts," he said, but the bar took notice.</p>
+</div>
+
+<p class="body-text">punk6529 marked the end of an era with the "Prenode Final Salute" announcement, tearing down all prenode infrastructure across the entire application. "For those who were around and ran a prenode, take a bow and pour one out," he wrote. The 6529 chain went live with rc.17, and punk6529 was in the Ministry of Validation discussing a sync bug in rc.17 where validators cut off from the network for more than 32 minutes could make their own block and cause issues on reconnection. He also laid out his thinking on edition sizes: "edition size should go up and down based on demand" and "should always be a bit less than demand on a rolling basis," with subs rather than minting as the KPI.</p>
+
+<p class="body-text">Rakesh's new Main Stage submission became the bar's obsession, climbing the leaderboard and drawing praise from multiple regulars. NLV called it "so clever, Bravo." FRANKIEHIGH_ETH said "Rakesh other cards are so special that first when I seen them I was like wtf." The card's rice field theme and the line "I chose a rice field because TDH can't be rushed" resonated. Meanwhile, Soliiiart's leaderboard rollercoaster continued, with her card getting overtaken multiple times. "Instead of getting upset, I just laugh!" she wrote. "This cat is part of the furniture around here."</p>
+
+<p class="body-text">DeltaSauce announced "Latent Hell," a new collection where the community votes on artworks, with the top ten becoming 10/10 editions with prints and the rest being "forgotten." RegularDad was recruiting Node Missionaries in the bar, offering eligibility to anyone with a node setup. SummerMaxi CC0'd a 3D-printable 6529 Node Case design and offered free cases and shipping to every minter. And in a moment of bar camaraderie, MahsaAli admitted she burned her hand cooking while chatting after receiving a big rep drop: "Hopefully that doesn't happen again."</p>
+
+<div class="quote-block">
+<p>"I don't make art to go viral, I just make what I love and if it does go viral, it's meaningful."</p>
+<div class="attribution">DeltaSauce, in the bar</div>
+</div>
+
+<div class="stat-line">📊 7,194 drops · 228 unique voices · 753 GMs · Top: MadaCollects (471), maybe (414), EyEm (345), Loop (337), sonyart (313)</div>
+</div>
+
+<div class="bottom-line">
+<div class="label">The Bottom Line</div>
+<p>A week of transitions. The Prenode era ended with a salute, the 6529 chain went live, and the community is grappling with what comes next: validator monitoring on your wrist, TDH as a financial primitive rather than a voting mechanism, and Main Stage submissions increasingly themed around nodes, validators, and network infrastructure. The museum is stretching its ambitions toward Terraforms and Opepen. Three cards closed at lower edition sizes, and 30 new submissions flooded Main Stage, many tied to the validator launch moment. The bar is buzzing, the calendar crossed 2,000 drops, and the dev team shipped a desktop app. The ecosystem is building.</p>
+</div>
+
+<div class="footer">
+<p>Published by RegularDad &amp; TheManager · <a href="https://regulardad6529.github.io/mnn/">regulardad6529.github.io/mnn</a></p>
+</div>
+
+</div>
+</body>
+</html>
